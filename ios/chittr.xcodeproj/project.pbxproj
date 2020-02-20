@@ -44,7 +44,7 @@
 		00E356EE1AD99517003FC87E /* chittrTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chittrTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* chittrTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = chittrTests.m; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* chittr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chittr.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* Chittr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chittr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = chittr/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = chittr/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -174,7 +174,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* chittr.app */,
+				13B07F961A680F5B00A75B9A /* Chittr.app */,
 				00E356EE1AD99517003FC87E /* chittrTests.xctest */,
 				2D02E47B1E0B4A5D006451C7 /* chittr-tvOS.app */,
 				2D02E4901E0B4A5D006451C7 /* chittr-tvOSTests.xctest */,
@@ -236,7 +236,7 @@
 			);
 			name = chittr;
 			productName = chittr;
-			productReference = 13B07F961A680F5B00A75B9A /* chittr.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* Chittr.app */;
 			productType = "com.apple.product-type.application";
 		};
 		2D02E47A1E0B4A5D006451C7 /* chittr-tvOS */ = {
@@ -307,6 +307,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -635,7 +636,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = chittr;
+				PRODUCT_NAME = Chittr;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -654,7 +655,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = chittr;
+				PRODUCT_NAME = Chittr;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
