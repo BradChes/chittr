@@ -5,9 +5,10 @@ import {
     Button, 
     Alert, 
     Text, 
-    AsyncStorage, 
     StyleSheet, 
     TextInput } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+
 
 const style = StyleSheet.create({
     container: {
@@ -38,8 +39,12 @@ export default class LoginScreen extends Component {
 
         //TODO logic when talking to the API
 
-        await AsyncStorage.setItem('UserName', email);
-        await AsyncStorage.setItem('Password', password);
+        try {
+            await AsyncStorage.setItem('UserName', email);
+            await AsyncStorage.setItem('Password', password);
+          } catch (e) {
+            // TODO
+          }
 
         this.props.navigation.navigate('App');
     }

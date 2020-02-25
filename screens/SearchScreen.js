@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { 
     StyleSheet,
     View,
-    Text,
-    AsyncStorage } from 'react-native';
+    Text } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const styles = StyleSheet.create({
     container: {
@@ -23,8 +23,12 @@ export default class SearchScreen extends Component {
     }
 
     _readyUp = async () =>  {
-        const userName = await AsyncStorage.getItem('UserName');
-        this.setState({name: userName});
+        try {
+            const userName = await AsyncStorage.getItem('UserName');
+            this.setState({name: userName});
+          } catch(e) {
+            //TODO
+        }
     }
 
     render() {

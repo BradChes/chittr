@@ -3,8 +3,8 @@ import {
     StyleSheet,
     View,
     Button,
-    Text,
-    AsyncStorage } from 'react-native';
+    Text } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const styles = StyleSheet.create({
     container: {
@@ -25,10 +25,14 @@ export default class SettingsScreen extends Component {
     }
 
     _readyUp = async () =>  {
-        const userName = await AsyncStorage.getItem('UserName');
-        const password = await AsyncStorage.getItem('Password');
-        this.setState({name: userName});
-        this.setState({password: password});
+        try {
+            const userName = await AsyncStorage.getItem('UserName');
+            const password = await AsyncStorage.getItem('Password');
+            this.setState({name: userName});
+            this.setState({password: password});
+          } catch(e) {
+            //TODO
+        }
     }
 
     _onPressedLogOut = async () => {
