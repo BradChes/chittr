@@ -23,7 +23,7 @@ export default class SettingsScreen extends Component {
         this._readyUp();
     }
 
-    _readyUp = async => {
+    _readyUp = async () =>  {
         const userName = await AsyncStorage.getItem('UserName');
         const password = await AsyncStorage.getItem('Password');
         this.setState({name: userName});

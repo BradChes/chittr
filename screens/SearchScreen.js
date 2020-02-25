@@ -22,7 +22,7 @@ export default class SearchScreen extends Component {
         this._readyUp();
     }
 
-    _readyUp = async => {
+    _readyUp = async () =>  {
         const userName = await AsyncStorage.getItem('UserName');
         this.setState({name: userName});
     }
