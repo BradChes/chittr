@@ -5,8 +5,8 @@ import AuthLoadingScreen from './screens/AuthLoadingScreen'
 import { createAppContainer, createSwitchNavigator } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
 
-const AppStack = createStackNavigator({ TabScreen });
-const AuthStack = createStackNavigator({ Signin: LoginScreen }); 
+const AppStack = createStackNavigator({ TabScreen }, { headerMode: 'none' });
+const AuthStack = createStackNavigator({ Signin: LoginScreen }, { headerMode: 'none' }); 
 
 export default createAppContainer(createSwitchNavigator(
     {
