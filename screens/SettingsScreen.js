@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { 
     StyleSheet,
     View,
+    Button,
     Text,
     AsyncStorage } from 'react-native';
 
@@ -30,12 +31,21 @@ export default class SettingsScreen extends Component {
         this.setState({password: password});
     }
 
+    _onPressedLogOut = async () => {
+        await AsyncStorage.clear();
+        this.props.navigation.navigate('Auth');
+    }
+
     render() {
         return (
             <View style={styles.container}>
-                <Text>Welcome {this.state.name}</Text>
-                <Text>Welcome {this.state.name}</Text>
+                <Text>Name: {this.state.name}</Text>
+                <Text>Password: {this.state.password}</Text>
                 <Text>to Settings Screen</Text>
+                <Button 
+                    title = "Log out"
+                    onPress = {this._onPressedLogOut} 
+                />
             </View>
         );
     }
