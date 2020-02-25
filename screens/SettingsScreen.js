@@ -27,7 +27,7 @@ export default class SettingsScreen extends Component {
         const userName = await AsyncStorage.getItem('UserName');
         const password = await AsyncStorage.getItem('Password');
         this.setState({name: userName});
-        this.setState({password});
+        this.setState({password: password});
     }
 
     render() {

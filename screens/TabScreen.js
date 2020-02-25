@@ -1,16 +1,11 @@
-import React, { Component } from 'react';
-import { View, Text, AsyncStorage, StyleSheet } from 'react-native'
+import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { createBottomTabNavigator } from 'react-navigation-tabs'
-import SettingsScreen from './SettingsScreen';
 
-const style = StyleSheet.create({
-    container: {
-        flex: 1, 
-        justifyContent: 'center', 
-        alignItems: 'center'
-    }
-});
+import HomeScreen from './HomeScreen';
+import PostScreen from './PostScreen';
+import SearchScreen from './SearchScreen';
+import SettingsScreen from './SettingsScreen';
 
 export const TabScreen = createBottomTabNavigator({
     Home: {

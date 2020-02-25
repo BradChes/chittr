@@ -50,13 +50,13 @@ export default class LoginScreen extends Component {
                 <View style={style.container}>
                     <TextInput
                         keyboardType = "email-address"
-                        onChangeText = {email => this.state({email})}
+                        onChangeText = {email => this.setState({email})}
                         placeholder = "Email Address"
                         value = {this.state.email}  
                     />
                     <TextInput
                         secureTextEntry = {true}
-                        onChangeText = {password => this.state({password})}
+                        onChangeText = {password => this.setState({password})}
                         placeholder = "Password"
                         value = {this.state.password}  
                     />
