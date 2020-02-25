@@ -26,7 +26,7 @@ export const TabScreen = createBottomTabNavigator({
             tabBarLabel: 'Post',
             tabBarIcon: ({tintColor}) => (
                 <Icon 
-                    name = 'home' 
+                    name = 'share' 
                     color = {tintColor} 
                     size = {25} />
             )
@@ -38,7 +38,7 @@ export const TabScreen = createBottomTabNavigator({
             tabBarLabel: 'Search',
             tabBarIcon: ({tintColor}) => (
                 <Icon 
-                    name = 'home' 
+                    name = 'search' 
                     color = {tintColor} 
                     size = {25} />
             )
@@ -59,7 +59,6 @@ export const TabScreen = createBottomTabNavigator({
 }, {
     tabBarOptions: {
         activeTintColor: 'red',
-        inactiveBackgroundColor: 'grey',
         showIcon: true
     }
 });
