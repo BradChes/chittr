@@ -1,6 +1,6 @@
-import { TabScreen } from './screens/TabScreen'
-import LoginScreen from './screens/LoginScreen'
-import AuthLoadingScreen from './screens/AuthLoadingScreen'
+import { TabScreen } from './screens/navigation/TabScreen'
+import LoginScreen from './screens/auth/LoginScreen'
+import AuthLoadingScreen from './screens/auth/AuthLoadingScreen'
 
 import { createAppContainer, createSwitchNavigator } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
