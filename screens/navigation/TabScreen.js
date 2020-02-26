@@ -2,10 +2,10 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 
-import HomeScreen from './../HomeScreen';
-import PostScreen from './../PostScreen';
-import SearchScreen from './../SearchScreen';
-import SettingsScreen from './../SettingsScreen';
+import HomeScreen from './../app/HomeScreen';
+import PostScreen from './../app/PostScreen';
+import SearchScreen from './../app/SearchScreen';
+import SettingsScreen from './../app/SettingsScreen';
 
 export const TabScreen = createBottomTabNavigator({
     Home: {
