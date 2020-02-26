@@ -18,9 +18,15 @@ const styles = StyleSheet.create({
 
 class ChitView extends Component {
     render() {
+        var date = new Date(this.props.timestamp);
+        var day = date.getDate();
+        var month = date.getMonth();
+        var year = date.getFullYear();
+
       return (
         <View>
-          <Text> Chit: {this.props.body}</Text>
+            <Text>@{this.props.user} | {day}/{month}/{year}</Text>
+            <Text>Chit: {this.props.body}</Text>
         </View>
       );
     }
@@ -77,7 +83,12 @@ export default class HomeScreen extends Component {
             <View style = {styles.container}>
                 <FlatList
                     data={this.state.chitListData}
-                    renderItem={({item}) => <ChitView body = {item.chit_content} /> }
+                    renderItem={({item}) => 
+                        <ChitView 
+                            user = {item.user.given_name + " " + item.user.family_name} 
+                            timestamp = {item.timestamp}
+                            body = {item.chit_content} /> 
+                    }
                     keyExtractor={({chit_id}) => chit_id } />
             </View>
         );
