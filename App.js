@@ -1,4 +1,7 @@
+// Navigation Screen
 import { TabScreen } from './screens/navigation/TabScreen'
+
+// Authentication Screens
 import LoginScreen from './screens/auth/LoginScreen'
 import AuthLoadingScreen from './screens/auth/AuthLoadingScreen'
 

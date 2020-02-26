@@ -1,7 +1,9 @@
+// React
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 
+// Application Screens
 import HomeScreen from './../app/HomeScreen';
 import PostScreen from './../app/PostScreen';
 import SearchScreen from './../app/SearchScreen';
