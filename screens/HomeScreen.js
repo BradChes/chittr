@@ -57,14 +57,14 @@ export default class HomeScreen extends Component {
     render() {
         if(this.state.isLoading) {
             return(
-                <View>
+                <View style = {styles.container}>
                     <ActivityIndicator/>
                 </View>
             )
         }
       
         return (
-            <View>
+            <View style = {styles.container}>
                 <FlatList
                     data={this.state.chitListData}
                     renderItem={({item}) => <Text>{item.chit_content}</Text> }
