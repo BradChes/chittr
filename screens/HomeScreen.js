@@ -12,7 +12,24 @@ const styles = StyleSheet.create({
     container: {
         flex: 1, 
         justifyContent: 'center', 
-        alignItems: 'center',
+        alignItems: 'center'
+    },
+    divider: {
+        height: 0.5,
+        backgroundColor: "gray"
+    },
+    chitContainer: {
+        paddingHorizontal: 10,
+        paddingVertical:10
+    },
+    chitHeader: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: 'gray',
+        paddingBottom: 4
+    },
+    chitBody: {
+        fontSize: 18
     }
 });
 
@@ -24,9 +41,9 @@ class ChitView extends Component {
         var year = date.getFullYear();
 
       return (
-        <View>
-            <Text>@{this.props.user} | {day}/{month}/{year}</Text>
-            <Text>Chit: {this.props.body}</Text>
+        <View style = { styles.chitContainer }>
+            <Text style = { styles.chitHeader }>{this.props.user} | {day}/{month}/{year}</Text>
+            <Text style = { styles.chitBody }>{this.props.body}</Text>
         </View>
       );
     }
@@ -70,6 +87,13 @@ export default class HomeScreen extends Component {
         }
     }
 
+    renderSeparator = () => {
+        return (
+            <View style={ styles.divider }
+          />
+        );
+    };
+
     render() {
         if(this.state.isLoading) {
             return(
@@ -80,10 +104,11 @@ export default class HomeScreen extends Component {
         }
       
         return (
-            <View style = {styles.container}>
+            <View style = { styles.container }>
                 <FlatList
-                    data={this.state.chitListData}
-                    renderItem={({item}) => 
+                    data = { this.state.chitListData }
+                    ItemSeparatorComponent = {this.renderSeparator }
+                    renderItem = {({item}) => 
                         <ChitView 
                             user = {item.user.given_name + " " + item.user.family_name} 
                             timestamp = {item.timestamp}
