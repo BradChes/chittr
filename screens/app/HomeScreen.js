@@ -1,12 +1,14 @@
+// React
 import React, { Component } from 'react';
 import { 
     StyleSheet,
     View,
-    Text,
     ActivityIndicator,
     FlatList } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
+// Components
+import ChitView from './../../components/ChitView';
 
 const styles = StyleSheet.create({
     container: {
@@ -17,37 +19,8 @@ const styles = StyleSheet.create({
     divider: {
         height: 0.5,
         backgroundColor: "gray"
-    },
-    chitContainer: {
-        paddingHorizontal: 10,
-        paddingVertical:10
-    },
-    chitHeader: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: 'gray',
-        paddingBottom: 4
-    },
-    chitBody: {
-        fontSize: 18
     }
 });
-
-class ChitView extends Component {
-    render() {
-        var date = new Date(this.props.timestamp);
-        var day = date.getDate();
-        var month = date.getMonth();
-        var year = date.getFullYear();
-
-      return (
-        <View style = { styles.chitContainer }>
-            <Text style = { styles.chitHeader }>{this.props.user} | {day}/{month}/{year}</Text>
-            <Text style = { styles.chitBody }>{this.props.body}</Text>
-        </View>
-      );
-    }
-  }
 
 export default class HomeScreen extends Component {
     constructor() {

@@ -1,41 +1,44 @@
+// React
 import React, { Component } from 'react';
 import { 
-    View, 
-    StatusBar, 
-    ActivityIndicator,  
-    StyleSheet } from 'react-native';
+    StyleSheet,
+    View,
+    Text } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
+        flex: 1, 
+        justifyContent: 'center', 
+        alignItems: 'center'
+    }
 });
 
-export default class AuthLoadingScreen extends Component {
+export default class PostScreen extends Component {
     constructor() {
         super();
+        this.state = {
+            name: ''
+        };
         this._readyUp();
     }
 
     _readyUp = async () =>  {
         try {
             const userName = await AsyncStorage.getItem('UserName');
-            this.props.navigation.navigate(userName ? 'App' : 'Auth');
+            this.setState({name: userName});
           } catch(e) {
-            // TODO
-          }
+            //TODO
+        }
     }
 
     render() {
         return (
             <View style={styles.container}>
-                <ActivityIndicator />
-                <StatusBar barStyle="default" />
+                <Text>Welcome {this.state.name}</Text>
+                <Text>to Post Screen</Text>
             </View>
-        )
+        );
     }
 }

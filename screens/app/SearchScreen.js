@@ -1,10 +1,10 @@
+// React
 import React, { Component } from 'react';
 import { 
     StyleSheet,
     View,
     Text } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-
 
 const styles = StyleSheet.create({
     container: {
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     }
 });
 
-export default class PostScreen extends Component {
+export default class SearchScreen extends Component {
     constructor() {
         super();
         this.state = {
@@ -36,7 +36,7 @@ export default class PostScreen extends Component {
         return (
             <View style={styles.container}>
                 <Text>Welcome {this.state.name}</Text>
-                <Text>to Post Screen</Text>
+                <Text>to Search Screen</Text>
             </View>
         );
     }
