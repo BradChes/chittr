@@ -16,6 +16,16 @@ const styles = StyleSheet.create({
     }
 });
 
+class ChitView extends Component {
+    render() {
+      return (
+        <View>
+          <Text> Chit: {this.props.body}</Text>
+        </View>
+      );
+    }
+  }
+
 export default class HomeScreen extends Component {
     constructor() {
         super();
@@ -67,7 +77,7 @@ export default class HomeScreen extends Component {
             <View style = {styles.container}>
                 <FlatList
                     data={this.state.chitListData}
-                    renderItem={({item}) => <Text>{item.chit_content}</Text> }
+                    renderItem={({item}) => <ChitView body = {item.chit_content} /> }
                     keyExtractor={({chit_id}) => chit_id } />
             </View>
         );
