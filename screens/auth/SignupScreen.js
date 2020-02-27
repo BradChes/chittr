@@ -49,21 +49,45 @@ export default class LoginScreen extends Component {
     }
 
     _onPressedSubmit = async () => {
+        const {givenName, familyName, email, password} = this.state;
+
         this.setState({spinner: true});
-        Alert.alert(
-            'Congraulations!',  
-            'You\'ve made an account on Chittr, welcome to the family.',
-            [
-                {
-                    text: 'Go back',
-                    onPress: () => this.props.navigation.goBack()
-                },
-                {
-                    text: 'Log in!',
-                    onPress: () => this.props.navigation.navigate('Login')
-                }
-            ]
-        )
+        try {
+            const response = await fetch("http://10.0.2.2:3333/api/v0.0.5/user", {
+                method: 'POST',
+                 headers: {
+                    'Content-Type': 'application/json'
+                }, 
+                body: JSON.stringify({
+                    given_name: givenName,
+                    family_name: familyName,
+                    email: email,
+                    password: password
+                })
+            });
+            console.log(response)
+            if (response.status == 201) {
+                Alert.alert(
+                    'Congraulations!',  
+                    'You\'ve made an account on Chittr, welcome to the family.',
+                    [
+                        {
+                            text: 'Go back',
+                            onPress: () => this.props.navigation.goBack()
+                        },
+                        {
+                            text: 'Log in!',
+                            onPress: () => this.props.navigation.navigate('Login')
+                        }
+                    ]
+                )    
+            } else {
+                const responseText = await response.text();
+                Alert.alert('Error', responseText)
+            }
+        } catch (error) {
+            Alert.alert('Error',  'Couldn\'t reach the server.')
+        }
         this.setState({spinner: false})
     }
 
@@ -101,7 +125,7 @@ export default class LoginScreen extends Component {
                     value = {this.state.password}  
                 />
                 {this.state.spinner &&
-                    <Text style={style.spinnerTextStyle}>Working on it...</Text>
+                    <Text style={styles.spinnerTextStyle}>Working on it...</Text>
                 }
                 {!this.state.spinner &&
                     <Button 
