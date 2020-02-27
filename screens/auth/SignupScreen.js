@@ -8,7 +8,6 @@ import {
     StyleSheet, 
     TextInput,
     Dimensions } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
 
 const deviceWidth = Dimensions.get('window').width;
 
@@ -41,31 +40,47 @@ export default class LoginScreen extends Component {
         super(props);
 
         this.state = {
+            givenName: '',
+            familyName: '',
             email: '', 
             password: '',
             spinner: false
         };
     }
 
-    _onPressedLogIn = async () => {
-        const {email, password} = this.state;
+    _onPressedSubmit = async () => {
+        const {givenName, familyName, email, password} = this.state;
+
         this.setState({spinner: true});
         try {
-            const response = await fetch("http://10.0.2.2:3333/api/v0.0.5/login", {
+            const response = await fetch("http://10.0.2.2:3333/api/v0.0.5/user", {
                 method: 'POST',
                  headers: {
                     'Content-Type': 'application/json'
                 }, 
                 body: JSON.stringify({
+                    given_name: givenName,
+                    family_name: familyName,
                     email: email,
                     password: password
                 })
             });
             console.log(response)
-            if (response.status == 200) {
-                const responseJson = await response.json();
-                await AsyncStorage.setItem('USER_INFO', JSON.stringify(responseJson));
-                this.props.navigation.navigate('App');    
+            if (response.status == 201) {
+                Alert.alert(
+                    'Congraulations!',  
+                    'You\'ve made an account on Chittr, welcome to the family.',
+                    [
+                        {
+                            text: 'Go back',
+                            onPress: () => this.props.navigation.goBack()
+                        },
+                        {
+                            text: 'Log in!',
+                            onPress: () => this.props.navigation.navigate('Login')
+                        }
+                    ]
+                )    
             } else {
                 const responseText = await response.text();
                 Alert.alert('Error', responseText)
@@ -79,18 +94,34 @@ export default class LoginScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
-            <TextInput
-                keyboardType = "email-address"
-                onChangeText = {email => this.setState({email})}
-                style = {styles.input}
-                placeholder = "Email Address"
-                value = {this.state.email}  
-            />
+                <TextInput
+                    autoCompleteType = 'name'
+                    onChangeText = {givenName => this.setState({givenName})}
+                    style = {styles.input}
+                    placeholder = 'First name'
+                    value = {this.state.givenName}  
+                />
+                    <TextInput
+                    autoCompleteType = 'name'
+                    onChangeText = {familyName => this.setState({familyName})}
+                    style = {styles.input}
+                    placeholder = 'Surname'
+                    value = {this.state.familyName}  
+                />
+                <TextInput
+                    keyboardType = 'email-address'
+                    autoCompleteType = 'email'
+                    onChangeText = {email => this.setState({email})}
+                    style = {styles.input}
+                    placeholder = 'Email Address'
+                    value = {this.state.email}  
+                />
                 <TextInput
                     secureTextEntry = {true}
+                    autoCompleteType = 'password'
                     onChangeText = {password => this.setState({password})}
                     style = {styles.input}
-                    placeholder = "Password"
+                    placeholder = 'Password'
                     value = {this.state.password}  
                 />
                 {this.state.spinner &&
@@ -98,9 +129,9 @@ export default class LoginScreen extends Component {
                 }
                 {!this.state.spinner &&
                     <Button 
-                        title = "Log In"
+                        title = 'Submit'
                         color = 'red'
-                        onPress = {this._onPressedLogIn} 
+                        onPress = {this._onPressedSubmit} 
                     />
                 }
             </View>

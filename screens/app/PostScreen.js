@@ -19,15 +19,18 @@ export default class PostScreen extends Component {
     constructor() {
         super();
         this.state = {
-            name: ''
+            id: 0,
+            token: '',
         };
         this._readyUp();
     }
 
     _readyUp = async () =>  {
         try {
-            const userName = await AsyncStorage.getItem('UserName');
-            this.setState({name: userName});
+            const userInfo = await AsyncStorage.getItem('USER_INFO')
+            const userInfoJson = JSON.parse(userInfo)
+            this.setState({id: userInfoJson.id})
+            this.setState({token: userInfoJson.token})
           } catch(e) {
             //TODO
         }
@@ -36,7 +39,7 @@ export default class PostScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text>Welcome {this.state.name}</Text>
+                <Text>Welcome {this.state.id}</Text>
                 <Text>to Post Screen</Text>
             </View>
         );

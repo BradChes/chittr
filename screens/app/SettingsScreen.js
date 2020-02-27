@@ -19,33 +19,33 @@ export default class SettingsScreen extends Component {
     constructor() {
         super();
         this.state = {
-            name: '',
-            password: ''
+            id: '',
+            token: ''
         };
-        this._readyUp();
+        this._readyUp()
     }
 
     _readyUp = async () =>  {
         try {
-            const userName = await AsyncStorage.getItem('UserName');
-            const password = await AsyncStorage.getItem('Password');
-            this.setState({name: userName});
-            this.setState({password: password});
+            const userInfo = await AsyncStorage.getItem('USER_INFO')
+            const userInfoJson = JSON.parse(userInfo)
+            this.setState({id: userInfoJson.id})
+            this.setState({token: userInfoJson.token})
           } catch(e) {
             //TODO
         }
     }
 
     _onPressedLogOut = async () => {
-        await AsyncStorage.clear();
-        this.props.navigation.navigate('Auth');
+        await AsyncStorage.clear()
+        this.props.navigation.navigate('Auth')
     }
 
     render() {
         return (
             <View style={styles.container}>
-                <Text>Name: {this.state.name}</Text>
-                <Text>Password: {this.state.password}</Text>
+                <Text>ID: {this.state.id}</Text>
+                <Text>Token: {this.state.token}</Text>
                 <Text>to Settings Screen</Text>
                 <Button 
                     title = "Log out"
