@@ -4,7 +4,9 @@ import {
     StyleSheet,
     View,
     Button,
-    Text } from 'react-native';
+    Text,
+    Alert,
+    ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const styles = StyleSheet.create({
@@ -20,7 +22,8 @@ export default class SettingsScreen extends Component {
         super();
         this.state = {
             id: '',
-            token: ''
+            token: '',
+            isLoading: true,
         };
         this._readyUp()
     }
@@ -31,17 +34,44 @@ export default class SettingsScreen extends Component {
             const userInfoJson = JSON.parse(userInfo)
             this.setState({id: userInfoJson.id})
             this.setState({token: userInfoJson.token})
+            this.setState({isLoading: false})
           } catch(e) {
             //TODO
         }
     }
 
     _onPressedLogOut = async () => {
+        const { token } = this.state;
+        try {
+            const response = await fetch("http://10.0.2.2:3333/api/v0.0.5/logout", {
+                method: 'POST',
+                 headers: {
+                    'X-Authorization': token
+                }
+            });
+            if (response.status == 200) {
+                await AsyncStorage.clear()
+                this.props.navigation.navigate('Auth')   
+            } else {
+                const responseText = await response.text();
+                Alert.alert('Error', responseText)
+            }
+        } catch (error) {
+            Alert.alert('Error',  'Couldn\'t reach the server.')
+        }
         await AsyncStorage.clear()
-        this.props.navigation.navigate('Auth')
+        this.props.navigation.navigate('Auth')   
     }
 
     render() {
+        if(this.state.isLoading) {
+            return(
+                <View style = {styles.container}>
+                    <ActivityIndicator/>
+                </View>
+            )
+        }
+
         return (
             <View style={styles.container}>
                 <Text>ID: {this.state.id}</Text>
