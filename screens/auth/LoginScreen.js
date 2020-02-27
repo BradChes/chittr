@@ -35,9 +35,7 @@ export default class LoginScreen extends Component {
 
     _onPressedLogIn = async () => {
         const {email, password} = this.state;
-
         this.setState({spinner: true});
-
         try {
             const response = await fetch("http://10.0.2.2:3333/api/v0.0.5/login", {
                 method: 'POST',
@@ -49,19 +47,19 @@ export default class LoginScreen extends Component {
                     password: password
                 })
             });
-
-            const responseJson = await response.json();
-            await AsyncStorage.setItem('USER_INFO', JSON.stringify(responseJson));
-            this.props.navigation.navigate('App');
-            this.setState({spinner: false})
+            console.log(response)
+            if (response.status == 200) {
+                const responseJson = await response.json();
+                await AsyncStorage.setItem('USER_INFO', JSON.stringify(responseJson));
+                this.props.navigation.navigate('App');    
+            } else {
+                const responseText = await response.text();
+                Alert.alert('Error', responseText)
+            }
         } catch (error) {
-            console.log(error)
-            this.setState({spinner: false})
+            Alert.alert('Error',  'Couldn\'t reach the server.')
         }
-    }
-
-    storeUserInfo = async (responseJson) => {
-
+        this.setState({spinner: false})
     }
 
     render() {
