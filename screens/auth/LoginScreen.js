@@ -1,7 +1,6 @@
 // React
 import React, { Component } from 'react';
 import { 
-    KeyboardAvoidingView, 
     View, 
     Button, 
     Alert, 
@@ -79,34 +78,32 @@ export default class LoginScreen extends Component {
 
     render() {
         return (
-            <KeyboardAvoidingView style={{flexGrow: 1}} behavior="padding" enabled>
-                <View style={styles.container}>
-                    <TextInput
-                        keyboardType = "email-address"
-                        onChangeText = {email => this.setState({email})}
-                        style = {styles.input}
-                        placeholder = "Email Address"
-                        value = {this.state.email}  
+            <View style={styles.container}>
+            <TextInput
+                keyboardType = "email-address"
+                onChangeText = {email => this.setState({email})}
+                style = {styles.input}
+                placeholder = "Email Address"
+                value = {this.state.email}  
+            />
+                <TextInput
+                    secureTextEntry = {true}
+                    onChangeText = {password => this.setState({password})}
+                    style = {styles.input}
+                    placeholder = "Password"
+                    value = {this.state.password}  
+                />
+                {this.state.spinner &&
+                    <Text style={styles.spinnerTextStyle}>Working on it...</Text>
+                }
+                {!this.state.spinner &&
+                    <Button 
+                        title = "Log In"
+                        color = 'red'
+                        onPress = {this._onPressedLogIn} 
                     />
-                    <TextInput
-                        secureTextEntry = {true}
-                        onChangeText = {password => this.setState({password})}
-                        style = {styles.input}
-                        placeholder = "Password"
-                        value = {this.state.password}  
-                    />
-                    {this.state.spinner &&
-                        <Text style={style.spinnerTextStyle}>Working on it...</Text>
-                    }
-                    {!this.state.spinner &&
-                        <Button 
-                            title = "Log In"
-                            color = 'red'
-                            onPress = {this._onPressedLogIn} 
-                        />
-                    }
-                </View>
-            </KeyboardAvoidingView>
+                }
+            </View>
         );
     }
 }
