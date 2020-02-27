@@ -26,7 +26,8 @@ export default class HomeScreen extends Component {
     constructor() {
         super();
         this.state = {
-            name: '',
+            id: 0,
+            token: '',
             isLoading: true,
             chitListData: []
         };
@@ -39,8 +40,10 @@ export default class HomeScreen extends Component {
 
     _readyUp = async () =>  {
         try {
-            const userName = await AsyncStorage.getItem('UserName');
-            this.setState({name: userName});
+            const userInfo = await AsyncStorage.getItem('USER_INFO')
+            const userInfoJson = JSON.parse(userInfo)
+            this.setState({id: userInfoJson.id})
+            this.setState({token: userInfoJson.token})
           } catch(e) {
             console.log(e);
         }

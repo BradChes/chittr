@@ -38,16 +38,30 @@ export default class LoginScreen extends Component {
 
         this.setState({spinner: true});
 
-        //TODO logic when talking to the API
-
         try {
-            await AsyncStorage.setItem('UserName', email);
-            await AsyncStorage.setItem('Password', password);
-          } catch (e) {
-            // TODO
-          }
+            const response = await fetch("http://10.0.2.2:3333/api/v0.0.5/login", {
+                method: 'POST',
+                 headers: {
+                    'Content-Type': 'application/json'
+                }, 
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
+            });
 
-        this.props.navigation.navigate('App');
+            const responseJson = await response.json();
+            await AsyncStorage.setItem('USER_INFO', JSON.stringify(responseJson));
+            this.props.navigation.navigate('App');
+            this.setState({spinner: false})
+        } catch (error) {
+            console.log(error)
+            this.setState({spinner: false})
+        }
+    }
+
+    storeUserInfo = async (responseJson) => {
+
     }
 
     render() {
