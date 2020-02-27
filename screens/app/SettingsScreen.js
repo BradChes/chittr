@@ -74,11 +74,9 @@ export default class SettingsScreen extends Component {
 
         return (
             <View style={styles.container}>
-                <Text>ID: {this.state.id}</Text>
-                <Text>Token: {this.state.token}</Text>
-                <Text>to Settings Screen</Text>
                 <Button 
                     title = "Log out"
+                    color = 'red'
                     onPress = {this._onPressedLogOut} 
                 />
             </View>
