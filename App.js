@@ -1,5 +1,6 @@
 // Navigation Screen
 import { TabScreen } from './screens/navigation/TabScreen'
+import UpdateScreen from './screens/app/UpdateScreen';
 
 // Authentication Screens
 import LandingScreen from './screens/auth/LandingScreen'
@@ -10,7 +11,9 @@ import AuthLoadingScreen from './screens/auth/AuthLoadingScreen'
 import { createAppContainer, createSwitchNavigator } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
 
-const AppStack = createStackNavigator({ TabScreen }, { headerMode: 'none' });
+const AppStack = createStackNavigator({ 
+    Tab: TabScreen, 
+    UserUpdate: UpdateScreen }, { headerMode: 'none' });
 const AuthStack = createStackNavigator({ 
     Landing: LandingScreen, 
     Login: LoginScreen,

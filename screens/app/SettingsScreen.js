@@ -137,7 +137,7 @@ export default class SettingsScreen extends Component {
                     <Text style={styles.text}>Surname: {this.state.familyName}</Text>
                     <Text style={styles.text}>Email: {this.state.email}</Text>
                     <ActionButton
-                        onPress = {this._onPressedLogOut}
+                        onPress = {() => this.props.navigation.navigate('UserUpdate')}
                         text = 'Update User Information'/>
                 </View>
                 <View style={styles.logoutContainer}>

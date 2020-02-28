@@ -59,7 +59,7 @@ export default class LandingScreen extends Component {
                 <View style = {styles.loginContainer}>
                     <ActionButton
                         onPress = {() => this.props.navigation.navigate('Login')}
-                        text = 'Log in'/>
+                        text = 'Log In'/>
                 </View>
                 <View style = {styles.signupContainer}>
                     <Text style = {styles.signupPrompt}>Don't have an account?</Text>
