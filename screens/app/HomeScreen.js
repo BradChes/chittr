@@ -65,7 +65,7 @@ export default class HomeScreen extends Component {
         }
     }
 
-    onRefresh() {
+    _onRefresh() {
         this.setState({ isRefreshing: true }, function() { this._getChits() });
     }
 
@@ -89,7 +89,7 @@ export default class HomeScreen extends Component {
             <View style = { styles.container }>
                 <FlatList
                     data = { this.state.chitListData }
-                    onRefresh = {() => this.onRefresh()}
+                    onRefresh = {() => this._onRefresh()}
                     refreshing = { this.state.isRefreshing }
                     ItemSeparatorComponent = {this.renderSeparator }
                     renderItem = {({item}) => 

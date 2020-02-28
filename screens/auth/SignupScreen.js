@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { 
     View, 
-    Button, 
     Alert, 
     Text, 
     StyleSheet, 
@@ -10,6 +9,9 @@ import {
     Dimensions } from 'react-native';
 
 const deviceWidth = Dimensions.get('window').width;
+
+// Components
+import ActionButton from '../../components/ActionButton';
 
 const styles = StyleSheet.create({
     container: {
@@ -26,9 +28,6 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         marginVertical: 10
 
-    },
-    submit: {
-        width: deviceWidth - 100,
     },
     spinnerTextStyle: {
         textAlign: 'center'
@@ -65,7 +64,6 @@ export default class LoginScreen extends Component {
                     password: password
                 })
             });
-            console.log(response)
             if (response.status == 201) {
                 Alert.alert(
                     'Congraulations!',  
@@ -128,11 +126,10 @@ export default class LoginScreen extends Component {
                     <Text style={styles.spinnerTextStyle}>Working on it...</Text>
                 }
                 {!this.state.spinner &&
-                    <Button 
-                        title = 'Submit'
-                        color = 'red'
-                        onPress = {this._onPressedSubmit} 
-                    />
+                <ActionButton
+                    text = 'Submit'
+                    onPress = {this._onPressedSubmit} 
+                />
                 }
             </View>
         );
