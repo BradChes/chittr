@@ -25,7 +25,7 @@ export default class ChitView extends Component {
     render() {
         var date = new Date(this.props.timestamp);
         var day = date.getDate();
-        var month = date.getMonth();
+        var month = date.getMonth() + 1;
         var year = date.getFullYear();
 
       return (
