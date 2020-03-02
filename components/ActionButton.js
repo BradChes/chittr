@@ -20,12 +20,13 @@ const styles = StyleSheet.create({
 });
 
 export default class ActionButton extends Component {
+
     render() {
         return (
             <TouchableOpacity 
-                style={styles.container} 
+                style = {styles.container} 
                 onPress = {() => this.props.onPress()}>
-                <Text style={styles.text}>{this.props.text}</Text>
+                <Text style = {styles.text}>{this.props.text}</Text>
             </TouchableOpacity>
         );
     }

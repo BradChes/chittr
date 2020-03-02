@@ -5,6 +5,7 @@ import {
     View,
     Text,
     TextInput,
+    Alert,
     Dimensions } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -60,6 +61,54 @@ export default class UpdateScreen extends Component {
         }
     }
 
+    _onPressedSubmit = async () => {
+        const {id, token, givenName, familyName, email, password} = this.state;
+
+        var  body = JSON.stringify({
+            "given_name": givenName,
+            "family_name": familyName,
+            email: email,
+            password: password
+        }, (key, value) => {
+            if (value !== '') return value
+          })
+
+        try {
+            const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/user/'+ id, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Authorization': token
+                }, 
+                body: body
+            });
+            if (response.status == 201) {
+                Alert.alert(
+                    'Updated!',  
+                    'Your user infomation has been updated!',
+                    [
+                        {
+                            text: 'Go back',
+                            onPress: () => this.props.navigation.goBack()
+                        },
+                    ]
+                )    
+            } else {
+                const responseText = await response.text();
+                Alert.alert('Error', responseText)
+            }
+            this.setState({
+                givenName: '',
+                familyName: '',
+                email: '',
+                password: '', 
+                spinner: false,
+            });
+        } catch(error) {
+            Alert.alert('Error',  'Couldn\'t reach the server.')
+        }
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -70,7 +119,7 @@ export default class UpdateScreen extends Component {
                     placeholder = 'First name'
                     value = {this.state.givenName}  
                 />
-                    <TextInput
+                <TextInput
                     autoCompleteType = 'name'
                     onChangeText = {familyName => this.setState({familyName})}
                     style = {styles.input}
@@ -82,7 +131,7 @@ export default class UpdateScreen extends Component {
                     autoCompleteType = 'email'
                     onChangeText = {email => this.setState({email})}
                     style = {styles.input}
-                    placeholder = 'Email Address'
+                    placeholder = 'Email address'
                     value = {this.state.email}  
                 />
                 <TextInput
@@ -99,7 +148,7 @@ export default class UpdateScreen extends Component {
                 {!this.state.spinner &&
                 <ActionButton
                     text = 'Submit'
-                    onPress = { () => this.props.navigation.goBack() } 
+                    onPress = { () => this._onPressedSubmit() } 
                 />
                 }
             </View>

@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { 
     View, 
-    TouchableOpacity, 
     Alert, 
     Text, 
     StyleSheet, 
@@ -78,13 +77,13 @@ export default class LoginScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
-            <TextInput
-                keyboardType = "email-address"
-                onChangeText = {email => this.setState({email})}
-                style = {styles.input}
-                placeholder = "Email Address"
-                value = {this.state.email}  
-            />
+                <TextInput
+                    keyboardType = "email-address"
+                    onChangeText = {email => this.setState({email})}
+                    style = {styles.input}
+                    placeholder = "Email Address"
+                    value = {this.state.email}  
+                />
                 <TextInput
                     secureTextEntry = {true}
                     onChangeText = {password => this.setState({password})}
