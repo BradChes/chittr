@@ -90,7 +90,10 @@ export default class UpdateScreen extends Component {
                     [
                         {
                             text: 'Go back',
-                            onPress: () => this.props.navigation.goBack()
+                            onPress: () => {
+                                this.props.navigation.state.params.onGoBack();
+                                this.props.navigation.goBack();
+                            }
                         },
                     ]
                 )    
@@ -114,7 +117,7 @@ export default class UpdateScreen extends Component {
     render() {
         const { givenName, familyName, email, password } = this.state;
         const enabled = givenName.length > 0 || familyName.length > 0 || email.length > 0 || password.length > 0;
-        
+
         return (
             <View style={styles.container}>
                 <TextInput

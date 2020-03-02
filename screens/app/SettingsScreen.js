@@ -64,6 +64,7 @@ export default class SettingsScreen extends Component {
             email: '', 
             password: '',
             isLoading: true,
+            isRefreshing: false,
         };
         this._readyUp()
     }
@@ -90,6 +91,7 @@ export default class SettingsScreen extends Component {
                 familyName: responseJson.family_name,
                 email: responseJson.email, 
                 isLoading: false,
+                isRefreshing: false
             });
         }
         catch(e) {
@@ -120,8 +122,12 @@ export default class SettingsScreen extends Component {
         this.props.navigation.navigate('Auth')   
     }
 
+    _onRefresh() {
+        this.setState({ isRefreshing: true }, function() { this._getUserInfo() });
+    }
+
     render() {
-        if(this.state.isLoading) {
+        if(this.state.isLoading || this.state.isRefreshing) {
             return(
                 <View style = {styles.container}>
                     <ActivityIndicator/>
@@ -137,7 +143,9 @@ export default class SettingsScreen extends Component {
                     <Text style={styles.text}>Surname: {this.state.familyName}</Text>
                     <Text style={styles.text}>Email: {this.state.email}</Text>
                     <ActionButton
-                        onPress = {() => this.props.navigation.navigate('UserUpdate')}
+                        onPress = {() => this.props.navigation.navigate('UserUpdate', {
+                            onGoBack: () => this._onRefresh()
+                        })}
                         text = 'Update User Information'/>
                 </View>
                 <View style={styles.logoutContainer}>
