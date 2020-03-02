@@ -3,16 +3,35 @@ import React, { Component } from 'react';
 import { 
     StyleSheet,
     View,
-    Text } from 'react-native';
+    Text,
+    TextInput,
+    Dimensions, 
+    Alert } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
+// Components
+import ActionButton from '../../components/ActionButton';
+
+const deviceWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
     container: {
         flex: 1, 
         justifyContent: 'center', 
         alignItems: 'center'
-    }
+    },
+    input: {
+        width: deviceWidth - 50,
+        backgroundColor: '#FFFFFF',
+        borderColor: 'red',
+        borderWidth: 1,
+        borderRadius: 20,
+        paddingLeft: 10,
+        marginVertical: 10
+    },
+    spinnerTextStyle: {
+        textAlign: 'center'
+    },
 });
 
 export default class PostScreen extends Component {
@@ -21,6 +40,7 @@ export default class PostScreen extends Component {
         this.state = {
             id: 0,
             token: '',
+            chit: '',
         };
         this._readyUp();
     }
@@ -39,8 +59,21 @@ export default class PostScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text>Welcome {this.state.id}</Text>
-                <Text>to Post Screen</Text>
+                <TextInput
+                    onChangeText = {chit => this.setState({chit})}
+                    style = {styles.input}
+                    placeholder = "What's on your mind?"
+                    value = {this.state.chit}  
+                />
+                {this.state.spinner &&
+                    <Text style={styles.spinnerTextStyle}>Working on it...</Text>
+                }
+                {!this.state.spinner &&
+                <ActionButton
+                    text = 'Submit'
+                    onPress = { () => Alert.alert("Post", "Hello, world!") } 
+                />
+                }
             </View>
         );
     }
