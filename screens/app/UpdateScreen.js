@@ -63,6 +63,7 @@ export default class UpdateScreen extends Component {
 
     _onPressedSubmit = async () => {
         const {id, token, givenName, familyName, email, password} = this.state;
+        this.setState({spinner: true});
 
         var  body = JSON.stringify({
             "given_name": givenName,
@@ -107,6 +108,7 @@ export default class UpdateScreen extends Component {
         } catch(error) {
             Alert.alert('Error',  'Couldn\'t reach the server.')
         }
+        this.setState({spinner: true});
     }
 
     render() {
