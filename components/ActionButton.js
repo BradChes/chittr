@@ -24,6 +24,7 @@ export default class ActionButton extends Component {
     render() {
         return (
             <TouchableOpacity 
+                disabled={this.props.disabled}
                 style = {styles.container} 
                 onPress = {() => this.props.onPress()}>
                 <Text style = {styles.text}>{this.props.text}</Text>
