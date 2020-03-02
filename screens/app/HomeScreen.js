@@ -98,7 +98,7 @@ export default class HomeScreen extends Component {
                             timestamp = {item.timestamp}
                             body = {item.chit_content} /> 
                     }
-                    keyExtractor={({chit_id}) => chit_id } />
+                    keyExtractor = {({chit_id}) => chit_id.toString() } />
             </View>
         );
     }
