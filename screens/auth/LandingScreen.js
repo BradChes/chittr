@@ -2,10 +2,12 @@
 import React, { Component } from 'react';
 import { 
     View, 
-    Button, 
     Text, 
     Image,
     StyleSheet } from 'react-native';
+
+// Components
+import ActionButton from '../../components/ActionButton';
 
 const styles = StyleSheet.create({
     container: {
@@ -21,6 +23,7 @@ const styles = StyleSheet.create({
         flex: 2,
     },
     signupContainer: {
+        alignItems: 'center',
         flex: 1
     },
     header: {
@@ -36,7 +39,7 @@ const styles = StyleSheet.create({
         marginVertical: 20
     },
     signupPrompt: {
-        marginVertical: 10,
+        marginVertical: 5,
         fontSize: 14
     }
 });
@@ -54,17 +57,15 @@ export default class LandingScreen extends Component {
                     <Text style = { styles.slogan }>What has happened?</Text>
                 </View>
                 <View style = {styles.loginContainer}>
-                    <Button 
-                        title = "Log In"
-                        color = 'red'
-                        onPress = {() => this.props.navigation.navigate('Login')} />
+                    <ActionButton
+                        onPress = {() => this.props.navigation.navigate('Login')}
+                        text = 'Log In'/>
                 </View>
                 <View style = {styles.signupContainer}>
-                    <Text style = {styles.signupPrompt}>Otherwise...</Text>
-                    <Button 
-                        title = "Sign Up"
-                        color = 'red'
-                        onPress= {() => this.props.navigation.navigate('Signup')} />
+                    <Text style = {styles.signupPrompt}>Don't have an account?</Text>
+                    <ActionButton
+                        onPress = {() => this.props.navigation.navigate('Signup')}
+                        text = 'Sign Up'/>
                 </View>
             </View>
         );

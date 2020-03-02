@@ -1,17 +1,18 @@
 // React
 import React, { Component } from 'react';
 import { 
-    View, 
-    Alert, 
-    Text, 
-    StyleSheet, 
+    StyleSheet,
+    View,
+    Text,
     TextInput,
+    Alert,
     Dimensions } from 'react-native';
-
-const deviceWidth = Dimensions.get('window').width;
+import AsyncStorage from '@react-native-community/async-storage';
 
 // Components
 import ActionButton from '../../components/ActionButton';
+
+const deviceWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
     container: {
@@ -34,62 +35,89 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class LoginScreen extends Component {
-    constructor(props) {
-        super(props);
-
+export default class UpdateScreen extends Component {
+    constructor() {
+        super();
         this.state = {
+            id: 0,
+            token: '',
             givenName: '',
             familyName: '',
             email: '', 
             password: '',
             spinner: false
         };
+        this._readyUp();
+    }
+
+    _readyUp = async () =>  {
+        try {
+            const userInfo = await AsyncStorage.getItem('USER_INFO')
+            const userInfoJson = JSON.parse(userInfo)
+            this.setState({id: userInfoJson.id})
+            this.setState({token: userInfoJson.token})
+          } catch(e) {
+            //TODO
+        }
     }
 
     _onPressedSubmit = async () => {
-        const {givenName, familyName, email, password} = this.state;
-
+        const {id, token, givenName, familyName, email, password} = this.state;
         this.setState({spinner: true});
+
+        var  body = JSON.stringify({
+            "given_name": givenName,
+            "family_name": familyName,
+            email: email,
+            password: password
+        }, (key, value) => {
+            if (value !== '') return value
+          })
+
         try {
-            const response = await fetch("http://10.0.2.2:3333/api/v0.0.5/user", {
-                method: 'POST',
-                 headers: {
-                    'Content-Type': 'application/json'
+            const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/user/'+ id, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Authorization': token
                 }, 
-                body: JSON.stringify({
-                    given_name: givenName,
-                    family_name: familyName,
-                    email: email,
-                    password: password
-                })
+                body: body
             });
             if (response.status == 201) {
                 Alert.alert(
-                    'Congraulations!',  
-                    'You\'ve made an account on Chittr, welcome to the family.',
+                    'Updated!',  
+                    'Your user infomation has been updated!',
                     [
                         {
                             text: 'Go back',
-                            onPress: () => this.props.navigation.goBack()
+                            onPress: () => {
+                                this.props.navigation.state.params.onGoBack();
+                                this.props.navigation.goBack();
+                            }
                         },
-                        {
-                            text: 'Log in!',
-                            onPress: () => this.props.navigation.navigate('Login')
-                        }
                     ]
                 )    
             } else {
                 const responseText = await response.text();
                 Alert.alert('Error', responseText)
             }
-        } catch (error) {
+            this.setState({
+                givenName: '',
+                familyName: '',
+                email: '',
+                password: '', 
+                spinner: false,
+            });
+        } catch(error) {
             Alert.alert('Error',  'Couldn\'t reach the server.')
         }
-        this.setState({spinner: false})
+        this.setState({spinner: true});
     }
 
     render() {
+        const { givenName, familyName, email, password } = this.state;
+        const enabled = givenName.length > 0 || familyName.length > 0 || email.length > 0 || password.length > 0;
+
         return (
             <View style={styles.container}>
                 <TextInput
@@ -99,7 +127,7 @@ export default class LoginScreen extends Component {
                     placeholder = 'First name'
                     value = {this.state.givenName}  
                 />
-                    <TextInput
+                <TextInput
                     autoCompleteType = 'name'
                     onChangeText = {familyName => this.setState({familyName})}
                     style = {styles.input}
@@ -111,7 +139,7 @@ export default class LoginScreen extends Component {
                     autoCompleteType = 'email'
                     onChangeText = {email => this.setState({email})}
                     style = {styles.input}
-                    placeholder = 'Email Address'
+                    placeholder = 'Email address'
                     value = {this.state.email}  
                 />
                 <TextInput
@@ -127,8 +155,9 @@ export default class LoginScreen extends Component {
                 }
                 {!this.state.spinner &&
                 <ActionButton
+                    disabled={!enabled}
                     text = 'Submit'
-                    onPress = {this._onPressedSubmit} 
+                    onPress = { () => this._onPressedSubmit() } 
                 />
                 }
             </View>

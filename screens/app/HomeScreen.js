@@ -29,6 +29,7 @@ export default class HomeScreen extends Component {
             id: 0,
             token: '',
             isLoading: true,
+            isRefreshing: false,
             chitListData: []
         };
         this._readyUp();
@@ -55,12 +56,17 @@ export default class HomeScreen extends Component {
             const responseJson = await response.json();
             this.setState({
                 isLoading: false,
+                isRefreshing: false,
                 chitListData: responseJson,
             });
         }
         catch(e) {
             console.log(e);
         }
+    }
+
+    _onRefresh() {
+        this.setState({ isRefreshing: true }, function() { this._getChits() });
     }
 
     renderSeparator = () => {
@@ -83,6 +89,8 @@ export default class HomeScreen extends Component {
             <View style = { styles.container }>
                 <FlatList
                     data = { this.state.chitListData }
+                    onRefresh = {() => this._onRefresh()}
+                    refreshing = { this.state.isRefreshing }
                     ItemSeparatorComponent = {this.renderSeparator }
                     renderItem = {({item}) => 
                         <ChitView 

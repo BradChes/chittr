@@ -2,13 +2,15 @@
 import React, { Component } from 'react';
 import { 
     View, 
-    Button, 
     Alert, 
     Text, 
     StyleSheet, 
     TextInput,
     Dimensions } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+
+// Components
+import ActionButton from '../../components/ActionButton';
 
 const deviceWidth = Dimensions.get('window').width;
 
@@ -27,9 +29,6 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         marginVertical: 10
 
-    },
-    submit: {
-        width: deviceWidth - 100,
     },
     spinnerTextStyle: {
         textAlign: 'center'
@@ -61,7 +60,6 @@ export default class LoginScreen extends Component {
                     password: password
                 })
             });
-            console.log(response)
             if (response.status == 200) {
                 const responseJson = await response.json();
                 await AsyncStorage.setItem('USER_INFO', JSON.stringify(responseJson));
@@ -79,13 +77,13 @@ export default class LoginScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
-            <TextInput
-                keyboardType = "email-address"
-                onChangeText = {email => this.setState({email})}
-                style = {styles.input}
-                placeholder = "Email Address"
-                value = {this.state.email}  
-            />
+                <TextInput
+                    keyboardType = "email-address"
+                    onChangeText = {email => this.setState({email})}
+                    style = {styles.input}
+                    placeholder = "Email Address"
+                    value = {this.state.email}  
+                />
                 <TextInput
                     secureTextEntry = {true}
                     onChangeText = {password => this.setState({password})}
@@ -97,11 +95,9 @@ export default class LoginScreen extends Component {
                     <Text style={styles.spinnerTextStyle}>Working on it...</Text>
                 }
                 {!this.state.spinner &&
-                    <Button 
-                        title = "Log In"
-                        color = 'red'
-                        onPress = {this._onPressedLogIn} 
-                    />
+                    <ActionButton
+                    onPress = {() => this._onPressedLogIn()}
+                    text = 'Log in'/>
                 }
             </View>
         );
