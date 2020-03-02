@@ -41,6 +41,11 @@ export default class PostScreen extends Component {
             id: 0,
             token: '',
             chit: '',
+            location: {
+                longitude: 0.0,
+                latitude: 0.0
+            },
+            spinner: false,
         };
         this._readyUp();
     }
@@ -56,7 +61,47 @@ export default class PostScreen extends Component {
         }
     }
 
+    _postChit = async () => {
+        const {token, chit, location} = this.state;
+        this.setState({spinner: true})
+
+        var jsonBody = JSON.stringify({
+            timestamp: new Date().getTime(),
+            chit_content: chit,
+            location: location
+        })
+
+        console.log(jsonBody)
+
+        try {
+            const response = await fetch("http://10.0.2.2:3333/api/v0.0.5/chits", {
+                method: 'POST',
+                 headers: {
+                    'Content-Type': 'application/json',
+                    'X-Authorization': token
+                }, 
+                body: jsonBody
+            });
+
+
+
+            if (response.status == 201) {
+            } else {
+                const responseText = await response.text();
+                Alert.alert('Error', responseText)
+            }
+        } catch (error) {
+            Alert.alert('Error',  'Couldn\'t reach the server.')
+        }
+        this.setState({
+            chit: '',
+            spinner: false
+        });
+    }
+
     render() {
+        const { chit } = this.state;
+        const enabled = chit.length > 0;
         return (
             <View style={styles.container}>
                 <TextInput
@@ -66,12 +111,13 @@ export default class PostScreen extends Component {
                     value = {this.state.chit}  
                 />
                 {this.state.spinner &&
-                    <Text style={styles.spinnerTextStyle}>Working on it...</Text>
+                    <Text style={styles.spinnerTextStyle}>Posting...</Text>
                 }
                 {!this.state.spinner &&
                 <ActionButton
+                    disabled = {!enabled}
                     text = 'Submit'
-                    onPress = { () => Alert.alert("Post", "Hello, world!") } 
+                    onPress = { () => this._postChit() } 
                 />
                 }
             </View>

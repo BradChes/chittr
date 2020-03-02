@@ -66,8 +66,8 @@ export default class UpdateScreen extends Component {
         this.setState({spinner: true});
 
         var  body = JSON.stringify({
-            "given_name": givenName,
-            "family_name": familyName,
+            given_name: givenName,
+            family_name: familyName,
             email: email,
             password: password
         }, (key, value) => {
@@ -155,7 +155,7 @@ export default class UpdateScreen extends Component {
                 }
                 {!this.state.spinner &&
                 <ActionButton
-                    disabled={!enabled}
+                    disabled = {!enabled}
                     text = 'Submit'
                     onPress = { () => this._onPressedSubmit() } 
                 />
