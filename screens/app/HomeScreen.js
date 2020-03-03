@@ -35,16 +35,13 @@ export default class HomeScreen extends Component {
         this._readyUp();
     }
 
-    componentDidMount() {
-        this._getChits();
-    }
-
     _readyUp = async () =>  {
         try {
             const userInfo = await AsyncStorage.getItem('USER_INFO')
             const userInfoJson = JSON.parse(userInfo)
             this.setState({id: userInfoJson.id})
             this.setState({token: userInfoJson.token})
+            this._getChits()
           } catch(e) {
             console.log(e);
         }
@@ -61,7 +58,7 @@ export default class HomeScreen extends Component {
             });
         }
         catch(e) {
-            console.log(e);
+            Alert.alert('Error',  'Couldn\'t reach the server.')
         }
     }
 
@@ -98,7 +95,7 @@ export default class HomeScreen extends Component {
                             timestamp = {item.timestamp}
                             body = {item.chit_content} /> 
                     }
-                    keyExtractor={({chit_id}) => chit_id } />
+                    keyExtractor = {({chit_id}) => chit_id.toString() } />
             </View>
         );
     }

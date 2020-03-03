@@ -83,7 +83,7 @@ export default class UpdateScreen extends Component {
                 }, 
                 body: body
             });
-            if (response.status == 201) {
+            if (response.status === 201) {
                 Alert.alert(
                     'Updated!',  
                     'Your user infomation has been updated!',
@@ -111,7 +111,6 @@ export default class UpdateScreen extends Component {
         } catch(error) {
             Alert.alert('Error',  'Couldn\'t reach the server.')
         }
-        this.setState({spinner: true});
     }
 
     render() {
@@ -151,7 +150,7 @@ export default class UpdateScreen extends Component {
                     value = {this.state.password}  
                 />
                 {this.state.spinner &&
-                    <Text style={styles.spinnerTextStyle}>Working on it...</Text>
+                    <Text style={styles.spinnerTextStyle}>Updating...</Text>
                 }
                 {!this.state.spinner &&
                 <ActionButton
