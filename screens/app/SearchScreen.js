@@ -7,6 +7,7 @@ import {
     FlatList,
     Dimensions, 
     ActivityIndicator,
+    Alert,
     Keyboard } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -65,22 +66,29 @@ export default class SearchScreen extends Component {
 
     _onPressedSearch = async () => {
         const {query} = this.state;
+        Keyboard.dismiss()
         this.setState({loading: true});
 
         try {
             const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/search_user?q=' + query);
+
+            if (response.status !== 200) {
+                const responseText = await response.text();
+                Alert.alert('Error', responseText)
+                return
+            }
+
             const responseJson = await response.json();
-            console.log(responseJson)
+            
             this.setState({
                 isLoading: false,
                 results: responseJson,
             });
         }
         catch(e) {
-            console.log(e);
+            Alert.alert('Error',  'Couldn\'t reach the server.')
         }
 
-        Keyboard.dismiss()
     }
 
     renderSeparator = () => {

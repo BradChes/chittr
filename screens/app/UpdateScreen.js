@@ -83,7 +83,7 @@ export default class UpdateScreen extends Component {
                 }, 
                 body: body
             });
-            if (response.status == 201) {
+            if (response.status === 201) {
                 Alert.alert(
                     'Updated!',  
                     'Your user infomation has been updated!',

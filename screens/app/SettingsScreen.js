@@ -95,7 +95,7 @@ export default class SettingsScreen extends Component {
             });
         }
         catch(e) {
-            console.log(e);
+            Alert.alert('Error',  'Couldn\'t reach the server.')
         }
     }
 

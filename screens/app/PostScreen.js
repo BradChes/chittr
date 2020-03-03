@@ -83,10 +83,7 @@ export default class PostScreen extends Component {
                 body: jsonBody
             });
 
-
-
-            if (response.status == 201) {
-            } else {
+            if (response.status !== 201) {
                 const responseText = await response.text();
                 Alert.alert('Error', responseText)
             }
