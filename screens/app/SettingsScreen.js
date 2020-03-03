@@ -78,7 +78,6 @@ export default class SettingsScreen extends Component {
             this.setState({id: userInfoJson.id})
             this.setState({token: userInfoJson.token})
             this._getUserInfo()
-            this.setState({isLoading: false})
           } catch(e) {
             //TODO
         }
@@ -155,7 +154,7 @@ export default class SettingsScreen extends Component {
                 <View style={styles.followerManagementContainer}>
                     <Text style={styles.header}>Follower Management</Text>
                     <ActionButton
-                        onPress = {() => Alert.alert("Alert", "Hello, World!")}
+                        onPress = {() => this.props.navigation.navigate('Following')}
                         text = 'Following'/>
                     <ActionButton
                         onPress = {() => Alert.alert("Alert", "Hello, World!")}

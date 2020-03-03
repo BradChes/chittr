@@ -21,6 +21,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1, 
     },
+    divider: {
+        height: 0.5,
+        backgroundColor: "gray"
+    },
     searchBoxContainer: {
         flex: 1,
         marginTop: 30,

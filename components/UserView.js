@@ -32,7 +32,6 @@ export default class ChitView extends Component {
                     'X-Authorization': this.props.token
                 }
             });
-            console.log("Followed")
         } catch(e) {
             Alert.alert('Error',  'Couldn\'t reach the server.')
         }
@@ -46,7 +45,6 @@ export default class ChitView extends Component {
                     'X-Authorization': this.props.token
                 }
             });
-            console.log("Unfollowed")
         } catch(e) {
             Alert.alert('Error',  'Couldn\'t reach the server.')
         }
