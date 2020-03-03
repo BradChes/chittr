@@ -23,7 +23,8 @@ const styles = StyleSheet.create({
     },
     searchBoxContainer: {
         flex: 1,
-        marginVertical: 20,
+        marginTop: 30,
+        marginBottom: 10,
         justifyContent: 'center', 
         alignItems: 'center'
     },
@@ -88,7 +89,7 @@ export default class SearchScreen extends Component {
         catch(e) {
             Alert.alert('Error',  'Couldn\'t reach the server.')
         }
-
+        this.setState({loading: false});
     }
 
     renderSeparator = () => {
@@ -114,16 +115,22 @@ export default class SearchScreen extends Component {
                     />
                 </View>
                 <View style={styles.searchResultsContainer}>
-                    <FlatList
-                        data = { this.state.results }
-                        ItemSeparatorComponent = {this.renderSeparator }
-                        renderItem = {({item}) => 
-                            <UserView
-                                user = {item.given_name + " " + item.family_name} 
-                                email = {item.email}
-                            />
-                        }   
-                        keyExtractor = {({user_id}) => user_id.toString() } />
+                    {this.state.loading &&  
+                        <ActivityIndicator/>
+                    }
+                    {!this.state.loading &&
+                        <FlatList
+                            data = { this.state.results }
+                            ItemSeparatorComponent = {this.renderSeparator }
+                            renderItem = {({item}) => 
+                                <UserView
+                                    user = {item.given_name + " " + item.family_name} 
+                                    email = {item.email}
+                                />
+                            }   
+                            keyExtractor = {({user_id}) => user_id.toString() } 
+                        />
+                    }
                 </View>
             </View>
         );
