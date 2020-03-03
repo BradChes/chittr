@@ -3,7 +3,9 @@ import React, { Component } from 'react';
 import { 
     StyleSheet,
     View,
-    Text } from 'react-native';
+    Text,
+    TouchableHighlight,
+    Alert } from 'react-native';
 
 const styles = StyleSheet.create({
         container: {
@@ -24,10 +26,12 @@ const styles = StyleSheet.create({
 export default class ChitView extends Component {
     render() {
       return (
-        <View style = { styles.container }>
-            <Text style = { styles.header }>{this.props.user}</Text>
-            <Text style = { styles.body }>{this.props.email}</Text>
-        </View>
+        <TouchableHighlight onPress = {() => Alert.alert("Alert", "Hello, World!")}>
+            <View style = { styles.container }>
+                <Text style = { styles.header }>{this.props.user}</Text>
+                <Text style = { styles.body }>{this.props.email}</Text>
+            </View>
+        </TouchableHighlight>
       );
     }
   }

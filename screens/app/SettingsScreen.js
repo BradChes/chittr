@@ -11,6 +11,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 // Components
 import ActionButton from '../../components/ActionButton';
+import UserView from './../../components/UserView';
 
 const deviceWidth = Dimensions.get('window').width;
 
@@ -33,10 +34,6 @@ const styles = StyleSheet.create({
         fontSize: 26,
         fontWeight: 'bold',
         marginVertical: 10
-    },
-    text: {
-        fontSize: 16,
-        marginVertical: 5
     },
     input: {
         width: deviceWidth - 50,
@@ -139,9 +136,10 @@ export default class SettingsScreen extends Component {
             <View style={styles.container}>
                 <View style={styles.userInfoContainer}>
                     <Text style={styles.header}>User Information</Text>
-                    <Text style={styles.text}>First name: {this.state.givenName}</Text>
-                    <Text style={styles.text}>Surname: {this.state.familyName}</Text>
-                    <Text style={styles.text}>Email: {this.state.email}</Text>
+                    <UserView
+                        user = {this.state.givenName + " " + this.state.familyName} 
+                        email = {this.state.email}
+                    />
                     <ActionButton
                         onPress = {() => this.props.navigation.navigate('UserUpdate', {
                             onGoBack: () => this._onRefresh()
