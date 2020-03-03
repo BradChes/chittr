@@ -5,26 +5,19 @@ import {
     View,
     ActivityIndicator,
     FlatList,
-    Text,
     Alert } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 // Components
 import UserView from '../../components/UserView';
+import FlatListEmpty from '../../components/FlatListEmpty';
+import FlatListDivider from '../../components/FlatListDivider';
+import FlatListHeader from '../../components/FlatListHeader';
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
-    },
-    header: {
-        fontSize: 26,
-        fontWeight: 'bold',
-        marginHorizontal: 20,
-        marginVertical: 10
-    },
-    divider: {
-        height: 0.5,
-        backgroundColor: "gray"
+        flex: 1, 
+        justifyContent: 'center', 
     }
 });
 
@@ -72,41 +65,45 @@ export default class HomeScreen extends Component {
 
     renderSeparator = () => {
         return (
-            <View style={ styles.divider }
-          />
-        );
-    };
-
-    renderEmptyComponent = () => {
-        return (
-            <Text>Need some friends</Text>
+            <FlatListDivider/>
         );
     };
 
     render() {
-        return(
-            <View style = {styles.container}>
-                <Text style = {styles.header}>{this.state.header}</Text>
-                {this.state.loading &&  
+        if(this.state.isLoading) {
+            return(
+                <View style = { styles.container } >
                     <ActivityIndicator/>
-                }
-                {!this.state.loading &&
-                        <FlatList
-                            data = { this.state.results }
-                            ItemSeparatorComponent = {this.renderSeparator }
-                            ListEmptyComponent = { this.renderEmptyComponent }
-                            renderItem = {({item}) => 
-                                <UserView
-                                    token = {this.state.token}
-                                    userId = {item.user_id}
-                                    user = {item.given_name + " " + item.family_name} 
-                                    email = {item.email}
-                                />
-                            }   
-                            keyExtractor = {({user_id}) => user_id.toString() } 
+                </View>
+            )
+        }
+    
+        return (
+            <View style = { styles.container }>
+                <FlatList
+                    data = { this.state.results }
+                    ListHeaderComponent = {
+                        <FlatListHeader
+                            title = {this.state.header}
                         />
-                }
+                    }
+                    ItemSeparatorComponent = {this.renderSeparator }
+                    ListEmptyComponent = { 
+                        <FlatListEmpty 
+                            message = "You need to get some friends :-(" 
+                        /> 
+                    }
+                    renderItem = {({item}) => 
+                        <UserView
+                            token = {this.state.token}
+                            userId = {item.user_id}
+                            user = {item.given_name + " " + item.family_name} 
+                            email = {item.email}
+                        />
+                    }   
+                    keyExtractor = {({user_id}) => user_id.toString() } 
+                />
             </View>
-        )
+        );
     }
 }
