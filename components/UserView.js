@@ -26,7 +26,10 @@ const styles = StyleSheet.create({
 export default class ChitView extends Component {
     render() {
       return (
-        <TouchableHighlight onPress = {() => Alert.alert("Alert", "Hello, World!")}>
+        <TouchableHighlight 
+            disabled = {this.props.disabled}
+            underlayColor = 'lightgray'
+            onPress = {() => Alert.alert("Alert", "Hello, World!")}>
             <View style = { styles.container }>
                 <Text style = { styles.header }>{this.props.user}</Text>
                 <Text style = { styles.body }>{this.props.email}</Text>

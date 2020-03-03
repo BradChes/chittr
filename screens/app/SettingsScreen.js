@@ -137,6 +137,7 @@ export default class SettingsScreen extends Component {
                 <View style={styles.userInfoContainer}>
                     <Text style={styles.header}>User Information</Text>
                     <UserView
+                        disabled = {true}
                         user = {this.state.givenName + " " + this.state.familyName} 
                         email = {this.state.email}
                     />
