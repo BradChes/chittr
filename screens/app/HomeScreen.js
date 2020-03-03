@@ -35,16 +35,13 @@ export default class HomeScreen extends Component {
         this._readyUp();
     }
 
-    componentDidMount() {
-        this._getChits();
-    }
-
     _readyUp = async () =>  {
         try {
             const userInfo = await AsyncStorage.getItem('USER_INFO')
             const userInfoJson = JSON.parse(userInfo)
             this.setState({id: userInfoJson.id})
             this.setState({token: userInfoJson.token})
+            this._getChits()
           } catch(e) {
             console.log(e);
         }
