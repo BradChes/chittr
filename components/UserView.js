@@ -24,12 +24,55 @@ const styles = StyleSheet.create({
     });
 
 export default class ChitView extends Component {
+    _follow = async () => {
+        try {
+            const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/user/' + this.props.userId + '/follow', {
+                method: 'POST',
+                headers: {
+                    'X-Authorization': this.props.token
+                }
+            });
+            console.log("Followed")
+        } catch(e) {
+            Alert.alert('Error',  'Couldn\'t reach the server.')
+        }
+    }
+
+    _unfollow = async () => {
+        try {
+            const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/user/' + this.props.userId + '/follow', {
+                method: 'DELETE',
+                headers: {
+                    'X-Authorization': this.props.token
+                }
+            });
+            console.log("Unfollowed")
+        } catch(e) {
+            Alert.alert('Error',  'Couldn\'t reach the server.')
+        }
+    }
+
     render() {
       return (
         <TouchableHighlight 
             disabled = {this.props.disabled}
             underlayColor = 'lightgray'
-            onPress = {() => Alert.alert("Alert", "Hello, World!")}>
+            onPress = {() => 
+                Alert.alert(
+                    'Follower Management',  
+                    'Follow or unfollow, that is the question?',
+                    [
+                        {
+                            text: 'Follow',
+                            onPress: () => this._follow()
+                        },
+                        {
+                            text: 'Unfollow',
+                            onPress: () => this._unfollow()
+                        }
+                    ]
+                )}
+            >
             <View style = { styles.container }>
                 <Text style = { styles.header }>{this.props.user}</Text>
                 <Text style = { styles.body }>{this.props.email}</Text>

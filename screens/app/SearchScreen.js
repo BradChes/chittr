@@ -124,6 +124,8 @@ export default class SearchScreen extends Component {
                             ItemSeparatorComponent = {this.renderSeparator }
                             renderItem = {({item}) => 
                                 <UserView
+                                    token = {this.state.token}
+                                    userId = {item.user_id}
                                     user = {item.given_name + " " + item.family_name} 
                                     email = {item.email}
                                 />
