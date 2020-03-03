@@ -21,8 +21,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     userInfoContainer: {
-        flex: 5,
+        flex: 2,
         justifyContent: 'flex-start', 
+        marginHorizontal: 20
+    },
+    followerManagementContainer: {
+        flex: 2,
+        justifyContent: 'flex-start',
         marginHorizontal: 20
     },
     logoutContainer: {
@@ -146,6 +151,15 @@ export default class SettingsScreen extends Component {
                             onGoBack: () => this._onRefresh()
                         })}
                         text = 'Update User Information'/>
+                </View>
+                <View style={styles.followerManagementContainer}>
+                    <Text style={styles.header}>Follower Management</Text>
+                    <ActionButton
+                        onPress = {() => Alert.alert("Alert", "Hello, World!")}
+                        text = 'Following'/>
+                    <ActionButton
+                        onPress = {() => Alert.alert("Alert", "Hello, World!")}
+                        text = 'Followers'/>
                 </View>
                 <View style={styles.logoutContainer}>
                     <ActionButton
