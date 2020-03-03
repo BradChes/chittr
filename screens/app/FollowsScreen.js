@@ -10,7 +10,7 @@ import {
 import AsyncStorage from '@react-native-community/async-storage';
 
 // Components
-import UserView from './../../components/UserView';
+import UserView from '../../components/UserView';
 
 const styles = StyleSheet.create({
     container: {
@@ -29,13 +29,15 @@ const styles = StyleSheet.create({
 });
 
 export default class HomeScreen extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             id: 0,
             token: '',
             isLoading: true,
-            following: []
+            results: [],
+            header: this.props.navigation.state.params.header,
+            followsUrl: this.props.navigation.state.params.followsUrl
         };
 
         this._readyUp()
@@ -47,20 +49,20 @@ export default class HomeScreen extends Component {
             const userInfoJson = JSON.parse(userInfo)
             this.setState({id: userInfoJson.id})
             this.setState({token: userInfoJson.token})
-            this._getFollowing()
+            this._getFollows()
           } catch(e) {
             //TODO
         }
     }
 
-    _getFollowing = async () => {
-        const {id} = this.state;
+    _getFollows = async () => {
+        const {followsUrl} = this.state;
         try {
-            const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/user/' + id + '/following');
+            const response = await fetch(followsUrl);
             const responseJson = await response.json();
             this.setState({
                 isLoading: false,
-                following: responseJson,
+                results: responseJson,
             });
         }
         catch(e) {
@@ -84,13 +86,13 @@ export default class HomeScreen extends Component {
     render() {
         return(
             <View style = {styles.container}>
-                <Text style = {styles.header}>Following</Text>
+                <Text style = {styles.header}>{this.state.header}</Text>
                 {this.state.loading &&  
                     <ActivityIndicator/>
                 }
                 {!this.state.loading &&
                         <FlatList
-                            data = { this.state.following }
+                            data = { this.state.results }
                             ItemSeparatorComponent = {this.renderSeparator }
                             ListEmptyComponent = { this.renderEmptyComponent }
                             renderItem = {({item}) => 
