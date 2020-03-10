@@ -14,6 +14,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 // Components
 import ActionButton from '../../components/ActionButton';
 import UserView from './../../components/UserView';
+import FlatListEmpty from '../../components/FlatListEmpty';
+import FlatListDivider from '../../components/FlatListDivider';
 
 const deviceWidth = Dimensions.get('window').width;
 
@@ -21,13 +23,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1, 
     },
-    divider: {
-        height: 0.5,
-        backgroundColor: "gray"
-    },
     searchBoxContainer: {
         flex: 1,
-        marginTop: 30,
+        marginTop: 40,
         marginBottom: 10,
         justifyContent: 'center', 
         alignItems: 'center'
@@ -93,19 +91,25 @@ export default class SearchScreen extends Component {
         catch(e) {
             Alert.alert('Error',  'Couldn\'t reach the server.')
         }
-        this.setState({loading: false});
     }
 
     renderSeparator = () => {
         return (
-            <View style={ styles.divider }
-          />
+            <FlatListDivider/>
         );
     };
 
     render() {
+        if(this.state.isLoading) {
+            return(
+                <View style = { styles.container} >
+                    <ActivityIndicator/>
+                </View>
+            )
+        }
+      
         return (
-            <View style={styles.container}>
+            <View style={styles.container}> 
                 <View style={styles.searchBoxContainer}>
                     <TextInput
                         onChangeText = {query => this.setState({query})}
@@ -119,13 +123,14 @@ export default class SearchScreen extends Component {
                     />
                 </View>
                 <View style={styles.searchResultsContainer}>
-                    {this.state.loading &&  
-                        <ActivityIndicator/>
-                    }
-                    {!this.state.loading &&
                         <FlatList
                             data = { this.state.results }
                             ItemSeparatorComponent = {this.renderSeparator }
+                            ListEmptyComponent = {
+                                <FlatListEmpty
+                                    message = "No search results."  
+                                />
+                            }
                             renderItem = {({item}) => 
                                 <UserView
                                     token = {this.state.token}
@@ -136,7 +141,6 @@ export default class SearchScreen extends Component {
                             }   
                             keyExtractor = {({user_id}) => user_id.toString() } 
                         />
-                    }
                 </View>
             </View>
         );
