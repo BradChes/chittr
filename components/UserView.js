@@ -15,6 +15,14 @@ const styles = StyleSheet.create({
             paddingHorizontal: 10,
             paddingVertical:10
         },
+        image: {
+            width: 60,
+            height: 60,
+            borderRadius: 60 / 2,
+            overflow: 'hidden',
+            borderWidth: 1,
+            borderColor: 'black'
+        },
         header: {
             fontSize: 18
         },
@@ -75,7 +83,7 @@ export default class ChitView extends Component {
                 )}
             >
             <View style = { styles.container }>
-                <FastImage style={{ width: 50, height: 50 }}
+                <FastImage style={ styles.image }
                     source={{
                         uri: 'http://10.0.2.2:3333/api/v0.0.5/user/' + this.props.userId + '/photo',
                         headers: { 'Content-Type': 'image/png' },
