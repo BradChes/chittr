@@ -41,6 +41,7 @@ export default class PostScreen extends Component {
             id: 0,
             token: '',
             chit: '',
+            image: '',
             location: {
                 longitude: 0.0,
                 latitude: 0.0
@@ -96,6 +97,10 @@ export default class PostScreen extends Component {
         });
     }
 
+    returnData(image) {
+        this.setState({image: image});
+    }
+
     render() {
         const { chit } = this.state;
         const enabled = chit.length > 0;
@@ -107,6 +112,13 @@ export default class PostScreen extends Component {
                     placeholder = "What's on your mind?"
                     value = {this.state.chit}  
                 />
+                <ActionButton
+                    onPress = {() => this.props.navigation.navigate('Camera', 
+                        { 
+                            returnData: this.returnData.bind(this),
+                            onGoBack: () => console.log(this.state.image)
+                        })}
+                    text = 'Include picture?'/>
                 {this.state.spinner &&
                     <Text style={styles.spinnerTextStyle}>Posting...</Text>
                 }
