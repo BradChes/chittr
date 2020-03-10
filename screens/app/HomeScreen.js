@@ -93,6 +93,8 @@ export default class HomeScreen extends Component {
                     }
                     renderItem = { ({ item }) => 
                         <ChitView 
+                            chitId = { item.chit_id }
+                            userId = { item.user.user_id }
                             user = { item.user.given_name + " " + item.user.family_name } 
                             timestamp = { item.timestamp }
                             body = { item.chit_content } /> 

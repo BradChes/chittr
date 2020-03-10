@@ -5,23 +5,52 @@ import {
     View,
     Text } from 'react-native';
 
+// FastImage
+import FastImage from 'react-native-fast-image'
+
 const styles = StyleSheet.create({
-        container: {
+        superContainer: {
             paddingHorizontal: 10,
             paddingVertical:10
         },
-        header: {
-            fontSize: 16,
+        headerContainer: {
+            flexDirection: 'row'
+        },
+        headerText: {
+            fontSize: 20,
             fontWeight: 'bold',
             color: 'gray',
             paddingBottom: 4
         },
-        body: {
-            fontSize: 18
+        headerImage: {
+            width: 60,
+            height: 60,
+            borderRadius: 60 / 2,
+            overflow: 'hidden',
+            borderWidth: 1,
+            borderColor: 'black'
+        },
+        bodyContainer: {
+            flexDirection: 'column'
+        },
+        bodyImage: {
+            width: 150,
+            height: 150,
+            marginVertical: 5
+        },
+        bodyText: {
+            fontSize: 22
         }
     });
 
 export default class ChitView extends Component {
+    constructor() {
+        super();
+        this.state = {
+          showImage: true,
+        };
+      }
+    
     render() {
         var date = new Date(this.props.timestamp);
         var day = date.getDate();
@@ -29,9 +58,35 @@ export default class ChitView extends Component {
         var year = date.getFullYear();
 
       return (
-        <View style = { styles.container }>
-            <Text style = { styles.header }>{this.props.user} | {day}/{month}/{year}</Text>
-            <Text style = { styles.body }>{this.props.body}</Text>
+        <View style = { styles.superContainer }>
+            <View style = { styles.headerContainer }>
+                <FastImage style={ styles.headerImage }
+                        source={{
+                            uri: 'http://10.0.2.2:3333/api/v0.0.5/user/' + this.props.userId + '/photo',
+                            headers: { 'Content-Type': 'image/png' },
+                            priority: FastImage.priority.normal,
+                        }}
+                        resizeMode={FastImage.resizeMode.contain}
+                    />
+
+                <View style = { styles.headerTextContainer }>
+                    <Text style = { styles.headerText }> {this.props.user} </Text>
+                    <Text style = { styles.headerText }> {day}/{month}/{year} </Text>
+                </View>
+            </View>
+
+            <View style = { styles.bodyContainer} >
+                <Text style = { styles.bodyText }>{this.props.body}</Text>
+                <FastImage 
+                    style = { styles.bodyImage }
+                    source = {{
+                        uri: 'http://10.0.2.2:3333/api/v0.0.5/chits/' + this.props.chitId + '/photo',
+                        headers: { 'Content-Type': 'image/png' },
+                        priority: FastImage.priority.normal,
+                    }}
+                    resizeMode = { FastImage.resizeMode.contain }
+                />
+            </View>
         </View>
       );
     }
