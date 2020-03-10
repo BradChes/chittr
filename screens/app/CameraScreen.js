@@ -61,11 +61,21 @@ export default class CameraScreen extends Component {
 
   takePicture = async() => {
     if (this.camera) {
-      const options = { quality: 0.5, base64: true };
+      const options = { 
+        quality: 0.5, 
+        base64: true, 
+        orientation: 'portrait', 
+        fixOrientation: true 
+      };
       const data = await this.camera.takePictureAsync(options);
-      console.log(data)
-      this.props.navigation.state.params.returnData(data.uri);
-      this.props.navigation.goBack();
+
+      fetch(data.uri)
+      .then((response) => response.blob())
+      .then((response) => {
+        this.props.navigation.state.params.returnData(response);
+        this.props.navigation.state.params.onGoBack();
+        this.props.navigation.goBack();
+      });
     }
   };
 }

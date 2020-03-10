@@ -66,7 +66,7 @@ export default class SettingsScreen extends Component {
             familyName: '',
             email: '', 
             password: '',
-            imageUri: '',
+            image: '',
             isLoading: true,
             isRefreshing: false,
         };
@@ -107,17 +107,22 @@ export default class SettingsScreen extends Component {
         }
     }
 
+    returnData(image) {
+        this.setState({image: image});
+    }
+
     _updateUserPicture = async () => {
-        const { token, id } = this.state;
+        const { token, id, image } = this.state;
         this.setState({ isRefreshing: true });
 
         try {
-            const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/'+ id + '/photo', {
+            const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/user/photo', {
                 method: 'POST',
                  headers: {
                     'X-Authorization': token,
-                    'Content-Type': 'image.jpeg'
-                }
+                    'Content-Type': 'image/jpeg'
+                },
+                body: image
             });
             if (response.status !== 201) {
                 const responseText = await response.text();
@@ -130,10 +135,6 @@ export default class SettingsScreen extends Component {
             Alert.alert('Error',  'Couldn\'t reach the server.')
             this.setState({ isRefreshing: false });
         }
-    }
-
-    returnData(imageUri) {
-        this.setState({imageUri: imageUri});
     }
 
     _onPressedLogOut = async () => {
@@ -186,10 +187,8 @@ export default class SettingsScreen extends Component {
                     <ActionButton
                         onPress = {() => this.props.navigation.navigate('Camera', 
                         { 
-                            returnData: this.returnData.bind(this)
-                        }, 
-                        {
-                            onGoBack: () => this._onProfilePictureUpdate()
+                            returnData: this.returnData.bind(this),
+                            onGoBack: () => this._updateUserPicture()
                         })}
                         text = 'Update Profile Picture'/>
                 </View>
