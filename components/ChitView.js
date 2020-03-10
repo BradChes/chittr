@@ -25,10 +25,10 @@ const styles = StyleSheet.create({
         headerImage: {
             width: 60,
             height: 60,
-            borderRadius: 60 / 2,
             overflow: 'hidden',
             borderWidth: 1,
-            borderColor: 'black'
+            borderColor: 'black',
+            marginEnd: 10
         },
         bodyContainer: {
             flexDirection: 'column'
