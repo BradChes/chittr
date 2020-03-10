@@ -66,6 +66,7 @@ export default class SettingsScreen extends Component {
             familyName: '',
             email: '', 
             password: '',
+            imageUri: '',
             isLoading: true,
             isRefreshing: false,
         };
@@ -85,6 +86,10 @@ export default class SettingsScreen extends Component {
         }
     }
 
+    _onUserInformationUpdate() {
+        this.setState({ isRefreshing: true }, () => { this._getUserInfo() });
+    }
+
     _getUserInfo = async () => {
         try {
             const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/user/'+ this.state.id);
@@ -100,6 +105,35 @@ export default class SettingsScreen extends Component {
         catch(e) {
             Alert.alert('Error',  'Couldn\'t reach the server.')
         }
+    }
+
+    _updateUserPicture = async () => {
+        const { token, id } = this.state;
+        this.setState({ isRefreshing: true });
+
+        try {
+            const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/'+ id + '/photo', {
+                method: 'POST',
+                 headers: {
+                    'X-Authorization': token,
+                    'Content-Type': 'image.jpeg'
+                }
+            });
+            if (response.status !== 201) {
+                const responseText = await response.text();
+                Alert.alert('Error', responseText)
+            } else {
+                Alert.alert('Updated', 'Your user profile has been changed.')
+            }
+            this.setState({ isRefreshing: false });
+        } catch (error) {
+            Alert.alert('Error',  'Couldn\'t reach the server.')
+            this.setState({ isRefreshing: false });
+        }
+    }
+
+    returnData(imageUri) {
+        this.setState({imageUri: imageUri});
     }
 
     _onPressedLogOut = async () => {
@@ -125,10 +159,6 @@ export default class SettingsScreen extends Component {
         this.props.navigation.navigate('Auth')   
     }
 
-    _onRefresh() {
-        this.setState({ isRefreshing: true }, function() { this._getUserInfo() });
-    }
-
     render() {
         if(this.state.isLoading || this.state.isRefreshing) {
             return(
@@ -150,12 +180,16 @@ export default class SettingsScreen extends Component {
                     />
                     <ActionButton
                         onPress = {() => this.props.navigation.navigate('UserUpdate', {
-                            onGoBack: () => this._onRefresh()
+                            onGoBack: () => this._onUserInformationUpdate()
                         })}
                         text = 'Update User Information'/>
                     <ActionButton
-                        onPress = {() => this.props.navigation.navigate('Camera', {
-                            onGoBack: () => this._onRefresh()
+                        onPress = {() => this.props.navigation.navigate('Camera', 
+                        { 
+                            returnData: this.returnData.bind(this)
+                        }, 
+                        {
+                            onGoBack: () => this._onProfilePictureUpdate()
                         })}
                         text = 'Update Profile Picture'/>
                 </View>

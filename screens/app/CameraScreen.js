@@ -34,15 +34,16 @@ const styles = StyleSheet.create({
 export default class CameraScreen extends Component {
   render() {
     return (
-      <View style={styles.container}>
+      <View style = { styles.container }>
         <RNCamera
-          ref={ref => {
+          ref = { ref => {
             this.camera = ref;
           }}
-          style={styles.preview}
-          type={RNCamera.Constants.Type.back}
-          flashMode={RNCamera.Constants.FlashMode.on}
+          style = { styles.preview }
+          type = { RNCamera.Constants.Type.back }
+          flashMode={ RNCamera.Constants.FlashMode.on }
           captureAudio = { false }
+          captureTarget={Camera.constants.CaptureTarget.disk}
           androidCameraPermissionOptions={{
             title: 'Permission to use camera',
             message: 'We need your permission to use your camera',
@@ -52,7 +53,7 @@ export default class CameraScreen extends Component {
         />
         <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center' }}>
           <TouchableOpacity onPress={this.takePicture.bind(this)} style={styles.capture}>
-            <Text style={{ fontSize: 14 }}> SNAP </Text>
+            <Text style={{ fontSize: 14 }}> Capture </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -63,7 +64,9 @@ export default class CameraScreen extends Component {
     if (this.camera) {
       const options = { quality: 0.5, base64: true };
       const data = await this.camera.takePictureAsync(options);
-      console.log(data.uri);
+      console.log(data)
+      this.props.navigation.state.params.returnData(data.uri);
+      this.props.navigation.goBack();
     }
   };
 }
