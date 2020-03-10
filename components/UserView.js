@@ -13,7 +13,12 @@ import FastImage from 'react-native-fast-image'
 const styles = StyleSheet.create({
         container: {
             paddingHorizontal: 10,
-            paddingVertical:10
+            paddingVertical:10,
+            flexDirection: 'row',
+            alignItems: 'center'
+        },
+        testContainer: {
+            flexDirection: 'column',
         },
         image: {
             width: 60,
@@ -21,7 +26,8 @@ const styles = StyleSheet.create({
             borderRadius: 60 / 2,
             overflow: 'hidden',
             borderWidth: 1,
-            borderColor: 'black'
+            borderColor: 'black',
+            marginEnd: 10
         },
         header: {
             fontSize: 18
@@ -91,8 +97,10 @@ export default class ChitView extends Component {
                     }}
                     resizeMode={FastImage.resizeMode.contain}
                 />
-                <Text style = { styles.header }>{this.props.user}</Text>
-                <Text style = { styles.body }>{this.props.email}</Text>
+                <View style = { styles.textContainer }>
+                    <Text style = { styles.header }>{this.props.user}</Text>
+                    <Text style = { styles.body }>{this.props.email}</Text>
+                </View>
             </View>
         </TouchableHighlight>
       );
