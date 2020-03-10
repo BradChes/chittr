@@ -23,8 +23,9 @@ const styles = StyleSheet.create({
     userInfoContainer: {
         flex: 2,
         justifyContent: 'flex-start', 
-        marginHorizontal: 20
-    },
+        marginHorizontal: 20,
+        marginBottom: 30
+        },
     followerManagementContainer: {
         flex: 2,
         justifyContent: 'flex-start',
@@ -152,6 +153,11 @@ export default class SettingsScreen extends Component {
                             onGoBack: () => this._onRefresh()
                         })}
                         text = 'Update User Information'/>
+                    <ActionButton
+                        onPress = {() => this.props.navigation.navigate('Camera', {
+                            onGoBack: () => this._onRefresh()
+                        })}
+                        text = 'Update Profile Picture'/>
                 </View>
                 <View style={styles.followerManagementContainer}>
                     <Text style={styles.header}>Follower Management</Text>
