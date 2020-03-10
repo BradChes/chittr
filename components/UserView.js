@@ -7,6 +7,9 @@ import {
     TouchableHighlight,
     Alert } from 'react-native';
 
+// FastImage
+import FastImage from 'react-native-fast-image'
+
 const styles = StyleSheet.create({
         container: {
             paddingHorizontal: 10,
@@ -72,6 +75,14 @@ export default class ChitView extends Component {
                 )}
             >
             <View style = { styles.container }>
+                <FastImage style={{ width: 50, height: 50 }}
+                    source={{
+                        uri: 'http://10.0.2.2:3333/api/v0.0.5/user/' + this.props.userId + '/photo',
+                        headers: { 'Content-Type': 'image/png' },
+                        priority: FastImage.priority.normal,
+                    }}
+                    resizeMode={FastImage.resizeMode.contain}
+                />
                 <Text style = { styles.header }>{this.props.user}</Text>
                 <Text style = { styles.body }>{this.props.email}</Text>
             </View>
