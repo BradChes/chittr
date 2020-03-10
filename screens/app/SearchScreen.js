@@ -100,6 +100,14 @@ export default class SearchScreen extends Component {
     };
 
     render() {
+        if(this.state.isLoading) {
+            return(
+                <View style = { styles.container} >
+                    <ActivityIndicator/>
+                </View>
+            )
+        }
+      
         return (
             <View style={styles.container}>
                 <View style={styles.searchBoxContainer}>
@@ -115,10 +123,6 @@ export default class SearchScreen extends Component {
                     />
                 </View>
                 <View style={styles.searchResultsContainer}>
-                    {this.state.loading &&  
-                        <ActivityIndicator/>
-                    }
-                    {!this.state.loading &&
                         <FlatList
                             data = { this.state.results }
                             ItemSeparatorComponent = {this.renderSeparator }
@@ -137,7 +141,6 @@ export default class SearchScreen extends Component {
                             }   
                             keyExtractor = {({user_id}) => user_id.toString() } 
                         />
-                    }
                 </View>
             </View>
         );
