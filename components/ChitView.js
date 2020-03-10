@@ -64,7 +64,8 @@ export default class ChitView extends Component {
                         source={{
                             uri: 'http://10.0.2.2:3333/api/v0.0.5/user/' + this.props.userId + '/photo',
                             headers: { 'Content-Type': 'image/png' },
-                            priority: FastImage.priority.normal,
+                            priority: FastImage.priority.high,
+                            cache: FastImage.cacheControl.web
                         }}
                         resizeMode={FastImage.resizeMode.contain}
                     />
