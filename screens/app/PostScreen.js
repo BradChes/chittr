@@ -58,7 +58,10 @@ export default class PostScreen extends Component {
             token: '',
             chit: '',
             image: '',
-            location: null,
+            location: {
+                latitude: 0.0,
+                longitude: 0.0
+            },
             locationPermission: false,
             spinner: false,
         };
@@ -148,9 +151,12 @@ export default class PostScreen extends Component {
 
     Geolocation.getCurrentPosition(
       (position) => {
-        const location = position
-        this.setState({ location });
-        console.log(location)
+        this.setState({ 
+            location: { 
+                latitude: position.coords.latitude, 
+                longitude: position.coords.longitude
+            } 
+        });
       },
       (error) => {
         Alert.alert(error.message)

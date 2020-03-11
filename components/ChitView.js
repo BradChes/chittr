@@ -14,9 +14,10 @@ const styles = StyleSheet.create({
             paddingVertical:10
         },
         headerContainer: {
-            flexDirection: 'row'
+            flexDirection: 'row',
+            marginBottom: 10
         },
-        headerText: {
+        informationText: {
             fontSize: 20,
             fontWeight: 'bold',
             color: 'gray',
@@ -36,7 +37,6 @@ const styles = StyleSheet.create({
         bodyImage: {
             width: 150,
             height: 150,
-            marginVertical: 5
         },
         bodyText: {
             fontSize: 22
@@ -71,8 +71,8 @@ export default class ChitView extends Component {
                     />
 
                 <View style = { styles.headerTextContainer }>
-                    <Text style = { styles.headerText }> {this.props.user} </Text>
-                    <Text style = { styles.headerText }> {day}/{month}/{year} </Text>
+                    <Text style = { styles.informationText }> {this.props.user} </Text>
+                    <Text style = { styles.informationText }> {day}/{month}/{year} </Text>
                 </View>
             </View>
 

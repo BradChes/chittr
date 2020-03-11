@@ -96,7 +96,7 @@ export default class HomeScreen extends Component {
                             userId = { item.user.user_id }
                             user = { item.user.given_name + " " + item.user.family_name } 
                             timestamp = { item.timestamp }
-                            body = { item.chit_content } /> 
+                            body = { item.chit_content }/> 
                     }
                     keyExtractor = { ({ chit_id }) => chit_id.toString() } />
             </View>
