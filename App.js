@@ -2,6 +2,7 @@
 import { TabScreen } from './screens/navigation/TabScreen'
 import UpdateScreen from './screens/app/UpdateScreen';
 import FollowsScreen from './screens/app/FollowsScreen';
+import CameraScreen from './screens/app/CameraScreen';
 
 // Authentication Screens
 import LandingScreen from './screens/auth/LandingScreen'
@@ -16,7 +17,8 @@ const AppStack = createStackNavigator({
     Tab: TabScreen, 
     UserUpdate: UpdateScreen,
     Following: FollowsScreen,
-    Followers: FollowsScreen }, { headerMode: 'none' });
+    Followers: FollowsScreen,
+    Camera: CameraScreen }, { headerMode: 'none' });
 const AuthStack = createStackNavigator({ 
     Landing: LandingScreen, 
     Login: LoginScreen,

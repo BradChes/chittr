@@ -23,8 +23,9 @@ const styles = StyleSheet.create({
     userInfoContainer: {
         flex: 2,
         justifyContent: 'flex-start', 
-        marginHorizontal: 20
-    },
+        marginHorizontal: 20,
+        marginBottom: 30
+        },
     followerManagementContainer: {
         flex: 2,
         justifyContent: 'flex-start',
@@ -65,6 +66,7 @@ export default class SettingsScreen extends Component {
             familyName: '',
             email: '', 
             password: '',
+            image: '',
             isLoading: true,
             isRefreshing: false,
         };
@@ -84,6 +86,10 @@ export default class SettingsScreen extends Component {
         }
     }
 
+    _onUserInformationUpdate() {
+        this.setState({ isRefreshing: true }, () => { this._getUserInfo() });
+    }
+
     _getUserInfo = async () => {
         try {
             const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/user/'+ this.state.id);
@@ -101,10 +107,40 @@ export default class SettingsScreen extends Component {
         }
     }
 
+    returnData(image) {
+        this.setState({image: image});
+    }
+
+    _updateUserPicture = async () => {
+        const { token, image } = this.state;
+        this.setState({ isRefreshing: true });
+
+        try {
+            const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/user/photo', {
+                method: 'POST',
+                 headers: {
+                    'X-Authorization': token,
+                    'Content-Type': 'image/jpeg'
+                },
+                body: image
+            });
+            if (response.status !== 201) {
+                const responseText = await response.text();
+                Alert.alert('Error', responseText)
+            } else {
+                Alert.alert('Updated', 'Your user profile has been changed.')
+            }
+            this.setState({ isRefreshing: false });
+        } catch (error) {
+            Alert.alert('Error',  'Couldn\'t reach the server.')
+            this.setState({ isRefreshing: false });
+        }
+    }
+
     _onPressedLogOut = async () => {
         const { token } = this.state;
         try {
-            const response = await fetch("http://10.0.2.2:3333/api/v0.0.5/logout", {
+            const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/logout', {
                 method: 'POST',
                  headers: {
                     'X-Authorization': token
@@ -122,10 +158,6 @@ export default class SettingsScreen extends Component {
         }
         await AsyncStorage.clear()
         this.props.navigation.navigate('Auth')   
-    }
-
-    _onRefresh() {
-        this.setState({ isRefreshing: true }, function() { this._getUserInfo() });
     }
 
     render() {
@@ -149,9 +181,16 @@ export default class SettingsScreen extends Component {
                     />
                     <ActionButton
                         onPress = {() => this.props.navigation.navigate('UserUpdate', {
-                            onGoBack: () => this._onRefresh()
+                            onGoBack: () => this._onUserInformationUpdate()
                         })}
                         text = 'Update User Information'/>
+                    <ActionButton
+                        onPress = {() => this.props.navigation.navigate('Camera', 
+                        { 
+                            returnData: this.returnData.bind(this),
+                            onGoBack: () => this._updateUserPicture()
+                        })}
+                        text = 'Update Profile Picture'/>
                 </View>
                 <View style={styles.followerManagementContainer}>
                     <Text style={styles.header}>Follower Management</Text>
