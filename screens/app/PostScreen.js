@@ -10,6 +10,7 @@ import {
     TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Geolocation from 'react-native-geolocation-service';
 
 // Components
 import ActionButton from '../../components/ActionButton';
@@ -162,6 +163,13 @@ export default class PostScreen extends Component {
                         })
                     }>
                         <Icon name = 'camera' 
+                            color = '#FFF'
+                            size = {20} />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity 
+                        style = {styles.cameraIcon} >
+                        <Icon name = 'map-pin' 
                             color = '#FFF'
                             size = {20} />
                     </TouchableOpacity>
