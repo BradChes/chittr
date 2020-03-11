@@ -6,8 +6,10 @@ import {
     Text,
     TextInput,
     Dimensions, 
-    Alert } from 'react-native';
+    Alert,
+    TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 // Components
 import ActionButton from '../../components/ActionButton';
@@ -20,6 +22,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center', 
         alignItems: 'center'
     },
+    actionContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center', 
+        alignItems: 'center'
+    },
     input: {
         width: deviceWidth - 50,
         backgroundColor: '#FFFFFF',
@@ -28,6 +35,13 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         paddingLeft: 10,
         marginVertical: 10
+    },
+    cameraIcon: {        
+        marginHorizontal: 20,
+        alignItems: 'center',
+        backgroundColor: 'red',
+        padding: 10,
+        borderRadius: 50
     },
     spinnerTextStyle: {
         textAlign: 'center'
@@ -38,7 +52,7 @@ export default class PostScreen extends Component {
     constructor() {
         super();
         this.state = {
-            id: 0,
+            userId: 0,
             token: '',
             chit: '',
             image: '',
@@ -55,7 +69,7 @@ export default class PostScreen extends Component {
         try {
             const userInfo = await AsyncStorage.getItem('USER_INFO')
             const userInfoJson = JSON.parse(userInfo)
-            this.setState({id: userInfoJson.id})
+            this.setState({userId: userInfoJson.id})
             this.setState({token: userInfoJson.token})
           } catch(e) {
             //TODO
@@ -63,7 +77,7 @@ export default class PostScreen extends Component {
     }
 
     _postChit = async () => {
-        const {token, chit, location} = this.state;
+        const {token, chit, image, location} = this.state;
         this.setState({spinner: true})
 
         var jsonBody = JSON.stringify({
@@ -71,8 +85,6 @@ export default class PostScreen extends Component {
             chit_content: chit,
             location: location
         })
-
-        console.log(jsonBody)
 
         try {
             const response = await fetch("http://10.0.2.2:3333/api/v0.0.5/chits", {
@@ -82,19 +94,47 @@ export default class PostScreen extends Component {
                     'X-Authorization': token
                 }, 
                 body: jsonBody
-            });
-
-            if (response.status !== 201) {
-                const responseText = await response.text();
-                Alert.alert('Error', responseText)
-            }
+            })
+            .then((response) => response.json())
+            .then((response) => {  
+                if (image !== '') {
+                    this._postImage(response.chit_id)
+                }
+            })
+            .catch(e => Alert.alert('Connection Error',  e)); 
         } catch (error) {
+            console.log(error.message)
             Alert.alert('Error',  'Couldn\'t reach the server.')
         }
         this.setState({
             chit: '',
             spinner: false
         });
+    }
+
+    _postImage = async (chitId) => {
+        const { token, image } = this.state;
+
+        try {
+            const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/chits/' + chitId + '/photo', {
+                method: 'POST',
+                 headers: {
+                    'X-Authorization': token,
+                    'Content-Type': 'image/jpeg'
+                },
+                body: image
+            });
+            if (response.status !== 201) {
+                const responseText = await response.text();
+                Alert.alert('Error', responseText)
+            } 
+            this.setState({ isRefreshing: false });
+        } catch (error) {
+            Alert.alert('Error',  'Couldn\'t reach the server to post image.')
+            this.setState({ isRefreshing: false });
+        }
+
+        this.setState({image: ''});
     }
 
     returnData(image) {
@@ -112,23 +152,31 @@ export default class PostScreen extends Component {
                     placeholder = "What's on your mind?"
                     value = {this.state.chit}  
                 />
-                <ActionButton
-                    onPress = {() => this.props.navigation.navigate('Camera', 
-                        { 
+
+                <View style = { styles.actionContainer }>
+                    <TouchableOpacity 
+                        style = {styles.cameraIcon} 
+                        onPress = {() => this.props.navigation.navigate('Camera', { 
                             returnData: this.returnData.bind(this),
                             onGoBack: () => console.log(this.state.image)
-                        })}
-                    text = 'Include picture?'/>
-                {this.state.spinner &&
-                    <Text style={styles.spinnerTextStyle}>Posting...</Text>
-                }
-                {!this.state.spinner &&
-                <ActionButton
-                    disabled = {!enabled}
-                    text = 'Submit'
-                    onPress = { () => this._postChit() } 
-                />
-                }
+                        })
+                    }>
+                        <Icon name = 'camera' 
+                            color = '#FFF'
+                            size = {20} />
+                    </TouchableOpacity>
+
+                    {this.state.spinner &&
+                        <Text style={styles.spinnerTextStyle}>Posting...</Text>
+                    }
+                    {!this.state.spinner &&
+                        <ActionButton
+                            disabled = {!enabled}
+                            text = 'Submit'
+                            onPress = { () => this._postChit() } 
+                        />
+                    }
+                </View>
             </View>
         );
     }

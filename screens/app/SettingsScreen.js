@@ -112,7 +112,7 @@ export default class SettingsScreen extends Component {
     }
 
     _updateUserPicture = async () => {
-        const { token, id, image } = this.state;
+        const { token, image } = this.state;
         this.setState({ isRefreshing: true });
 
         try {
@@ -140,7 +140,7 @@ export default class SettingsScreen extends Component {
     _onPressedLogOut = async () => {
         const { token } = this.state;
         try {
-            const response = await fetch("http://10.0.2.2:3333/api/v0.0.5/logout", {
+            const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/logout', {
                 method: 'POST',
                  headers: {
                     'X-Authorization': token
