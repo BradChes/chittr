@@ -7,7 +7,8 @@ import {
     TextInput,
     Dimensions, 
     Alert,
-    TouchableOpacity } from 'react-native';
+    TouchableOpacity,
+    PermissionsAndroid } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Geolocation from 'react-native-geolocation-service';
@@ -57,10 +58,8 @@ export default class PostScreen extends Component {
             token: '',
             chit: '',
             image: '',
-            location: {
-                longitude: 0.0,
-                latitude: 0.0
-            },
+            location: null,
+            locationPermission: false,
             spinner: false,
         };
         this._readyUp();
@@ -142,6 +141,51 @@ export default class PostScreen extends Component {
         this.setState({image: image});
     }
 
+  findCoordinates = () => {
+    if(!this.state.locationPermission){
+      this.state.locationPermission = this.requestLocationPermission();
+    }
+
+    Geolocation.getCurrentPosition(
+      (position) => {
+        const location = position
+        this.setState({ location });
+        console.log(location)
+      },
+      (error) => {
+        Alert.alert(error.message)
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 1000
+      }
+    );
+  };
+
+  async requestLocationPermission() {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: 'Lab6 Location Permission',
+          message: 'This app requires access to your location.',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  }
+
     render() {
         const { chit } = this.state;
         const enabled = chit.length > 0;
@@ -168,7 +212,9 @@ export default class PostScreen extends Component {
                     </TouchableOpacity>
 
                     <TouchableOpacity 
-                        style = {styles.cameraIcon} >
+                        style = {styles.cameraIcon} 
+                        onPress = {() => this.findCoordinates()}
+                    >
                         <Icon name = 'map-pin' 
                             color = '#FFF'
                             size = {20} />
