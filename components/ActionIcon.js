@@ -1,8 +1,9 @@
 // React
 import React, { Component } from 'react';
-import { 
+import {
     StyleSheet,
-    TouchableOpacity } from 'react-native';
+    TouchableOpacity
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
@@ -14,7 +15,7 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 50
     },
-    icon: {        
+    icon: {
         alignItems: 'center',
         backgroundColor: 'red',
         color: '#FFF',
@@ -26,13 +27,13 @@ export default class ActionIcon extends Component {
 
     render() {
         return (
-            <TouchableOpacity 
-                style = {styles.container} 
-                disabled={ this.props.disabled } 
-                onPress = {() => this.props.onPress()}>
-                    <Icon 
-                        style = { styles.icon }
-                        name = { this.props.name } />
+            <TouchableOpacity
+                style={styles.container}
+                disabled={this.props.disabled}
+                onPress={() => this.props.onPress()}>
+                <Icon
+                    style={styles.icon}
+                    name={this.props.name} />
             </TouchableOpacity>
         );
     }

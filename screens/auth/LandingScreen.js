@@ -1,18 +1,19 @@
 // React
 import React, { Component } from 'react';
-import { 
-    View, 
-    Text, 
+import {
+    View,
+    Text,
     Image,
-    StyleSheet } from 'react-native';
+    StyleSheet
+} from 'react-native';
 
 // Components
 import ActionButton from '../../components/ActionButton';
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, 
-        justifyContent: 'center', 
+        flex: 1,
+        justifyContent: 'center',
         alignItems: 'center'
     },
     headingContainer: {
@@ -47,25 +48,25 @@ const styles = StyleSheet.create({
 export default class LandingScreen extends Component {
     render() {
         return (
-            <View style = { styles.container }>
-                <View style = {styles.headingContainer}>
-                    <Text style = { styles.header }>Chittr</Text>
+            <View style={styles.container}>
+                <View style={styles.headingContainer}>
+                    <Text style={styles.header}>Chittr</Text>
                     <Image
-                        source = {require('./../../images/app-icon.png')}
-                        style = {styles.image}
+                        source={require('./../../images/app-icon.png')}
+                        style={styles.image}
                     />
-                    <Text style = { styles.slogan }>What has happened?</Text>
+                    <Text style={styles.slogan}>What has happened?</Text>
                 </View>
-                <View style = {styles.loginContainer}>
+                <View style={styles.loginContainer}>
                     <ActionButton
-                        onPress = {() => this.props.navigation.navigate('Login')}
-                        text = 'Log In'/>
+                        onPress={() => this.props.navigation.navigate('Login')}
+                        text='Log In' />
                 </View>
-                <View style = {styles.signupContainer}>
-                    <Text style = {styles.signupPrompt}>Don't have an account?</Text>
+                <View style={styles.signupContainer}>
+                    <Text style={styles.signupPrompt}>Don't have an account?</Text>
                     <ActionButton
-                        onPress = {() => this.props.navigation.navigate('Signup')}
-                        text = 'Sign Up'/>
+                        onPress={() => this.props.navigation.navigate('Signup')}
+                        text='Sign Up' />
                 </View>
             </View>
         );

@@ -1,8 +1,9 @@
 // React
 import React, { Component } from 'react';
-import { 
+import {
     StyleSheet,
-    View } from 'react-native';
+    View
+} from 'react-native';
 
 const styles = StyleSheet.create({
     divider: {
@@ -13,8 +14,8 @@ const styles = StyleSheet.create({
 
 export default class FlatListDivider extends Component {
     render() {
-        return(
-            <View style={ styles.divider }/>
+        return (
+            <View style={styles.divider} />
         );
     }
 }

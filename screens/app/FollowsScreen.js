@@ -1,11 +1,12 @@
 // React
 import React, { Component } from 'react';
-import { 
+import {
     StyleSheet,
     View,
     ActivityIndicator,
     FlatList,
-    Alert } from 'react-native';
+    Alert
+} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 // Components
@@ -16,8 +17,8 @@ import FlatListHeader from '../../components/FlatListHeader';
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, 
-        justifyContent: 'center', 
+        flex: 1,
+        justifyContent: 'center',
     }
 });
 
@@ -37,20 +38,20 @@ export default class FollowsScreen extends Component {
         this._readyUp()
     }
 
-    _readyUp = async () =>  {
+    _readyUp = async () => {
         try {
             const userInfo = await AsyncStorage.getItem('USER_INFO')
             const userInfoJson = JSON.parse(userInfo)
-            this.setState({id: userInfoJson.id})
-            this.setState({token: userInfoJson.token})
+            this.setState({ id: userInfoJson.id })
+            this.setState({ token: userInfoJson.token })
             this._getFollows()
-          } catch(e) {
+        } catch (e) {
             //TODO
         }
     }
 
     _getFollows = async () => {
-        const {followsUrl} = this.state;
+        const { followsUrl } = this.state;
         try {
             const response = await fetch(followsUrl);
             const responseJson = await response.json();
@@ -60,56 +61,56 @@ export default class FollowsScreen extends Component {
                 results: responseJson,
             });
         }
-        catch(e) {
-            Alert.alert('Error',  'Couldn\'t reach the server.')
+        catch (e) {
+            Alert.alert('Error', 'Couldn\'t reach the server.')
         }
     }
 
     _onRefresh() {
-        this.setState({ isRefreshing: true }, function() { this._getFollows() });
+        this.setState({ isRefreshing: true }, function () { this._getFollows() });
     }
 
     renderSeparator = () => {
         return (
-            <FlatListDivider/>
+            <FlatListDivider />
         );
     };
 
     render() {
-        if(this.state.isLoading) {
-            return(
-                <View style = { styles.container } >
-                    <ActivityIndicator/>
+        if (this.state.isLoading) {
+            return (
+                <View style={styles.container} >
+                    <ActivityIndicator />
                 </View>
             )
         }
-    
+
         return (
-            <View style = { styles.container }>
+            <View style={styles.container}>
                 <FlatList
-                    data = { this.state.results }
-                    onRefresh = { () => this._onRefresh() }
-                    refreshing = { this.state.isRefreshing }
-                    ListHeaderComponent = {
+                    data={this.state.results}
+                    onRefresh={() => this._onRefresh()}
+                    refreshing={this.state.isRefreshing}
+                    ListHeaderComponent={
                         <FlatListHeader
-                            title = {this.state.header}
+                            title={this.state.header}
                         />
                     }
-                    ItemSeparatorComponent = {this.renderSeparator }
-                    ListEmptyComponent = { 
-                        <FlatListEmpty 
-                            message = "You need to get some friends :-(" 
-                        /> 
+                    ItemSeparatorComponent={this.renderSeparator}
+                    ListEmptyComponent={
+                        <FlatListEmpty
+                            message="You need to get some friends :-("
+                        />
                     }
-                    renderItem = {({item}) => 
+                    renderItem={({ item }) =>
                         <UserView
-                            token = {this.state.token}
-                            userId = {item.user_id}
-                            user = {item.given_name + " " + item.family_name} 
-                            email = {item.email}
+                            token={this.state.token}
+                            userId={item.user_id}
+                            user={item.given_name + " " + item.family_name}
+                            email={item.email}
                         />
-                    }   
-                    keyExtractor = {({user_id}) => user_id.toString() } 
+                    }
+                    keyExtractor={({ user_id }) => user_id.toString()}
                 />
             </View>
         );

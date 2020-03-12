@@ -1,9 +1,10 @@
 // React
 import React, { Component } from 'react';
-import { 
+import {
     StyleSheet,
     TouchableOpacity,
-    Text } from 'react-native';
+    Text
+} from 'react-native';
 
 const styles = StyleSheet.create({
     container: {
@@ -23,11 +24,11 @@ export default class ActionButton extends Component {
 
     render() {
         return (
-            <TouchableOpacity 
+            <TouchableOpacity
                 disabled={this.props.disabled}
-                style = {styles.container} 
-                onPress = {() => this.props.onPress()}>
-                <Text style = {styles.text}>{this.props.text}</Text>
+                style={styles.container}
+                onPress={() => this.props.onPress()}>
+                <Text style={styles.text}>{this.props.text}</Text>
             </TouchableOpacity>
         );
     }

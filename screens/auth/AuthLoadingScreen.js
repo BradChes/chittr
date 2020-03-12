@@ -1,10 +1,11 @@
 // React
 import React, { Component } from 'react';
-import { 
-    View, 
-    StatusBar, 
-    ActivityIndicator,  
-    StyleSheet } from 'react-native';
+import {
+    View,
+    StatusBar,
+    ActivityIndicator,
+    StyleSheet
+} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 
@@ -22,13 +23,13 @@ export default class AuthLoadingScreen extends Component {
         this._readyUp();
     }
 
-    _readyUp = async () =>  {
+    _readyUp = async () => {
         try {
             const userToken = await AsyncStorage.getItem('USER_INFO');
             this.props.navigation.navigate(userToken ? 'App' : 'Auth');
-          } catch(e) {
+        } catch (e) {
             // TODO
-          }
+        }
     }
 
     render() {

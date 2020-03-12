@@ -1,11 +1,12 @@
 // React
 import React, { Component } from 'react';
-import { 
+import {
     StyleSheet,
     View,
     ActivityIndicator,
     FlatList,
-    Alert } from 'react-native';
+    Alert
+} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 // Components
@@ -15,8 +16,8 @@ import FlatListDivider from '../../components/FlatListDivider';
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, 
-        justifyContent: 'center', 
+        flex: 1,
+        justifyContent: 'center',
     }
 });
 
@@ -33,14 +34,14 @@ export default class HomeScreen extends Component {
         this._readyUp();
     }
 
-    _readyUp = async () =>  {
+    _readyUp = async () => {
         try {
             const userInfo = await AsyncStorage.getItem('USER_INFO')
             const userInfoJson = JSON.parse(userInfo)
-            this.setState({id: userInfoJson.id})
-            this.setState({token: userInfoJson.token})
+            this.setState({ id: userInfoJson.id })
+            this.setState({ token: userInfoJson.token })
             this._getChits()
-          } catch(e) {
+        } catch (e) {
             console.log(e);
         }
     }
@@ -55,55 +56,55 @@ export default class HomeScreen extends Component {
                 chitListData: responseJson,
             });
         }
-        catch(e) {
-            Alert.alert('Error',  'Couldn\'t reach the server.')
+        catch (e) {
+            Alert.alert('Error', 'Couldn\'t reach the server.')
         }
     }
 
     _onRefresh() {
-        this.setState({ isRefreshing: true }, function() { this._getChits() });
+        this.setState({ isRefreshing: true }, function () { this._getChits() });
     }
 
     renderSeparator = () => {
         return (
-            <FlatListDivider/>
+            <FlatListDivider />
         );
     };
 
     render() {
-        if(this.state.isLoading) {
-            return(
-                <View style = { styles.container} >
-                    <ActivityIndicator/>
+        if (this.state.isLoading) {
+            return (
+                <View style={styles.container} >
+                    <ActivityIndicator />
                 </View>
             )
         }
-      
+
         return (
-            <View style = { styles.container }>
+            <View style={styles.container}>
                 <FlatList
-                    data = { this.state.chitListData }
-                    onRefresh = { () => this._onRefresh() }
-                    refreshing = { this.state.isRefreshing }
-                    ItemSeparatorComponent = { this.renderSeparator }
-                    ListEmptyComponent = { 
-                        <FlatListEmpty 
-                            message = "There are no tweets to display at the moment..." 
-                        /> 
+                    data={this.state.chitListData}
+                    onRefresh={() => this._onRefresh()}
+                    refreshing={this.state.isRefreshing}
+                    ItemSeparatorComponent={this.renderSeparator}
+                    ListEmptyComponent={
+                        <FlatListEmpty
+                            message="There are no tweets to display at the moment..."
+                        />
                     }
-                    renderItem = { ({ item }) => 
-                        <ChitView 
-                            chitId = { item.chit_id }
-                            userId = { item.user.user_id }
-                            user = { item.user.given_name + " " + item.user.family_name } 
-                            timestamp = { item.timestamp }
-                            body = { item.chit_content }
-                            latitude = { item.location ?
-                                item.location.latitude : null }
-                            longitude = { item.location ?
-                                item.location.longitude : null } /> 
+                    renderItem={({ item }) =>
+                        <ChitView
+                            chitId={item.chit_id}
+                            userId={item.user.user_id}
+                            user={item.user.given_name + " " + item.user.family_name}
+                            timestamp={item.timestamp}
+                            body={item.chit_content}
+                            latitude={item.location ?
+                                item.location.latitude : null}
+                            longitude={item.location ?
+                                item.location.longitude : null} />
                     }
-                    keyExtractor = { ({ chit_id }) => chit_id.toString() } />
+                    keyExtractor={({ chit_id }) => chit_id.toString()} />
             </View>
         );
     }

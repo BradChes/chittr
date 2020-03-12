@@ -1,12 +1,13 @@
 // React
 import React, { Component } from 'react';
-import { 
+import {
     StyleSheet,
     View,
     Text,
     TextInput,
     Alert,
-    Dimensions } from 'react-native';
+    Dimensions
+} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 // Components
@@ -16,8 +17,8 @@ const deviceWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, 
-        justifyContent: 'center', 
+        flex: 1,
+        justifyContent: 'center',
         alignItems: 'center'
     },
     input: {
@@ -43,49 +44,49 @@ export default class UpdateScreen extends Component {
             token: '',
             givenName: '',
             familyName: '',
-            email: '', 
+            email: '',
             password: '',
             spinner: false
         };
         this._readyUp();
     }
 
-    _readyUp = async () =>  {
+    _readyUp = async () => {
         try {
             const userInfo = await AsyncStorage.getItem('USER_INFO')
             const userInfoJson = JSON.parse(userInfo)
-            this.setState({id: userInfoJson.id})
-            this.setState({token: userInfoJson.token})
-          } catch(e) {
+            this.setState({ id: userInfoJson.id })
+            this.setState({ token: userInfoJson.token })
+        } catch (e) {
             //TODO
         }
     }
 
     _onPressedSubmit = async () => {
-        const {id, token, givenName, familyName, email, password} = this.state;
-        this.setState({spinner: true});
+        const { id, token, givenName, familyName, email, password } = this.state;
+        this.setState({ spinner: true });
 
-        var  body = JSON.stringify({
+        var body = JSON.stringify({
             given_name: givenName,
             family_name: familyName,
             email: email,
             password: password
         }, (key, value) => {
             if (value !== '') return value
-          })
+        })
 
         try {
-            const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/user/'+ id, {
+            const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/user/' + id, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-Authorization': token
-                }, 
+                },
                 body: body
             });
             if (response.status === 201) {
                 Alert.alert(
-                    'Updated!',  
+                    'Updated!',
                     'Your user infomation has been updated!',
                     [
                         {
@@ -96,7 +97,7 @@ export default class UpdateScreen extends Component {
                             }
                         },
                     ]
-                )    
+                )
             } else {
                 const responseText = await response.text();
                 Alert.alert('Error', responseText)
@@ -105,11 +106,11 @@ export default class UpdateScreen extends Component {
                 givenName: '',
                 familyName: '',
                 email: '',
-                password: '', 
+                password: '',
                 spinner: false,
             });
-        } catch(error) {
-            Alert.alert('Error',  'Couldn\'t reach the server.')
+        } catch (error) {
+            Alert.alert('Error', 'Couldn\'t reach the server.')
         }
     }
 
@@ -120,44 +121,44 @@ export default class UpdateScreen extends Component {
         return (
             <View style={styles.container}>
                 <TextInput
-                    autoCompleteType = 'name'
-                    onChangeText = {givenName => this.setState({givenName})}
-                    style = {styles.input}
-                    placeholder = 'First name'
-                    value = {this.state.givenName}  
+                    autoCompleteType='name'
+                    onChangeText={givenName => this.setState({ givenName })}
+                    style={styles.input}
+                    placeholder='First name'
+                    value={this.state.givenName}
                 />
                 <TextInput
-                    autoCompleteType = 'name'
-                    onChangeText = {familyName => this.setState({familyName})}
-                    style = {styles.input}
-                    placeholder = 'Surname'
-                    value = {this.state.familyName}  
+                    autoCompleteType='name'
+                    onChangeText={familyName => this.setState({ familyName })}
+                    style={styles.input}
+                    placeholder='Surname'
+                    value={this.state.familyName}
                 />
                 <TextInput
-                    keyboardType = 'email-address'
-                    autoCompleteType = 'email'
-                    onChangeText = {email => this.setState({email})}
-                    style = {styles.input}
-                    placeholder = 'Email address'
-                    value = {this.state.email}  
+                    keyboardType='email-address'
+                    autoCompleteType='email'
+                    onChangeText={email => this.setState({ email })}
+                    style={styles.input}
+                    placeholder='Email address'
+                    value={this.state.email}
                 />
                 <TextInput
-                    secureTextEntry = {true}
-                    autoCompleteType = 'password'
-                    onChangeText = {password => this.setState({password})}
-                    style = {styles.input}
-                    placeholder = 'Password'
-                    value = {this.state.password}  
+                    secureTextEntry={true}
+                    autoCompleteType='password'
+                    onChangeText={password => this.setState({ password })}
+                    style={styles.input}
+                    placeholder='Password'
+                    value={this.state.password}
                 />
                 {this.state.spinner &&
                     <Text style={styles.spinnerTextStyle}>Updating...</Text>
                 }
                 {!this.state.spinner &&
-                <ActionButton
-                    disabled = {!enabled}
-                    text = 'Submit'
-                    onPress = { () => this._onPressedSubmit() } 
-                />
+                    <ActionButton
+                        disabled={!enabled}
+                        text='Submit'
+                        onPress={() => this._onPressedSubmit()}
+                    />
                 }
             </View>
         );
