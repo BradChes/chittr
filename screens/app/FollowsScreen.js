@@ -108,7 +108,7 @@ export default class FollowsScreen extends Component {
               user={item.given_name + ' ' + item.family_name}
               email={item.email}
             />}
-          keyExtractor={({ user_id }) => user_id.toString()}
+          keyExtractor={({ user_id }) => user_id.toString()} // eslint-disable-line camelcase
         />
       </View>
     )

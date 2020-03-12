@@ -103,7 +103,7 @@ export default class HomeScreen extends Component {
               longitude={item.location
                 ? item.location.longitude : null}
             />}
-          keyExtractor={({ chit_id }) => chit_id.toString()}
+          keyExtractor={({ chit_id }) => chit_id.toString()} // eslint-disable-line camelcase
         />
       </View>
     )
