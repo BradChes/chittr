@@ -203,12 +203,13 @@ export default class PostScreen extends Component {
                             onGoBack: () => console.log(this.state.image)
                         })
                         }
-                        name='camera'
+                        name='camera' 
                     />
 
                     <ActionIcon
                         onPress={() => this.findCoordinates()}
-                        name='map-pin' />
+                        name='map-pin'
+                    />
 
                     {this.state.spinner &&
                         <ActivityIndicator style={styles.spinner} />
@@ -217,7 +218,7 @@ export default class PostScreen extends Component {
                         <ActionIcon
                             disabled={!enabled}
                             onPress={() => this._postChit()}
-                            name='share'
+                            name='share' 
                         />
                     }
                 </View>
