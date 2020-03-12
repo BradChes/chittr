@@ -1,14 +1,15 @@
 // React
 import React, { Component } from 'react';
-import { 
+import {
     StyleSheet,
     View,
     TextInput,
     FlatList,
-    Dimensions, 
+    Dimensions,
     ActivityIndicator,
     Alert,
-    Keyboard } from 'react-native';
+    Keyboard
+} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 // Components
@@ -21,13 +22,13 @@ const deviceWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, 
+        flex: 1,
     },
     searchBoxContainer: {
         flex: 1,
         marginTop: 40,
         marginBottom: 10,
-        justifyContent: 'center', 
+        justifyContent: 'center',
         alignItems: 'center'
     },
     input: {
@@ -56,21 +57,21 @@ export default class SearchScreen extends Component {
         this._readyUp();
     }
 
-    _readyUp = async () =>  {
+    _readyUp = async () => {
         try {
             const userInfo = await AsyncStorage.getItem('USER_INFO')
             const userInfoJson = JSON.parse(userInfo)
-            this.setState({id: userInfoJson.id})
-            this.setState({token: userInfoJson.token})
-          } catch(e) {
+            this.setState({ id: userInfoJson.id })
+            this.setState({ token: userInfoJson.token })
+        } catch (e) {
             //TODO
         }
     }
 
     _onPressedSearch = async () => {
-        const {query} = this.state;
+        const { query } = this.state;
         Keyboard.dismiss()
-        this.setState({loading: true});
+        this.setState({ loading: true });
 
         try {
             const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/search_user?q=' + query);
@@ -82,65 +83,65 @@ export default class SearchScreen extends Component {
             }
 
             const responseJson = await response.json();
-            
+
             this.setState({
                 isLoading: false,
                 results: responseJson,
             });
         }
-        catch(e) {
-            Alert.alert('Error',  'Couldn\'t reach the server.')
+        catch (e) {
+            Alert.alert('Error', 'Couldn\'t reach the server.')
         }
     }
 
     renderSeparator = () => {
         return (
-            <FlatListDivider/>
+            <FlatListDivider />
         );
     };
 
     render() {
-        if(this.state.isLoading) {
-            return(
-                <View style = { styles.container} >
-                    <ActivityIndicator/>
+        if (this.state.isLoading) {
+            return (
+                <View style={styles.container} >
+                    <ActivityIndicator />
                 </View>
             )
         }
-      
+
         return (
-            <View style={styles.container}> 
+            <View style={styles.container}>
                 <View style={styles.searchBoxContainer}>
                     <TextInput
-                        onChangeText = {query => this.setState({query})}
-                        style = {styles.input}
-                        placeholder = 'Search'
-                        value = {this.state.givenName}  
+                        onChangeText={query => this.setState({ query })}
+                        style={styles.input}
+                        placeholder='Search'
+                        value={this.state.givenName}
                     />
                     <ActionButton
-                        text = 'search'
-                        onPress = { () => this._onPressedSearch() } 
+                        text='search'
+                        onPress={() => this._onPressedSearch()}
                     />
                 </View>
                 <View style={styles.searchResultsContainer}>
-                        <FlatList
-                            data = { this.state.results }
-                            ItemSeparatorComponent = {this.renderSeparator }
-                            ListEmptyComponent = {
-                                <FlatListEmpty
-                                    message = "No search results."  
-                                />
-                            }
-                            renderItem = {({item}) => 
-                                <UserView
-                                    token = {this.state.token}
-                                    userId = {item.user_id}
-                                    user = {item.given_name + " " + item.family_name} 
-                                    email = {item.email}
-                                />
-                            }   
-                            keyExtractor = {({user_id}) => user_id.toString() } 
-                        />
+                    <FlatList
+                        data={this.state.results}
+                        ItemSeparatorComponent={this.renderSeparator}
+                        ListEmptyComponent={
+                            <FlatListEmpty
+                                message="No search results."
+                            />
+                        }
+                        renderItem={({ item }) =>
+                            <UserView
+                                token={this.state.token}
+                                userId={item.user_id}
+                                user={item.given_name + " " + item.family_name}
+                                email={item.email}
+                            />
+                        }
+                        keyExtractor={({ user_id }) => user_id.toString()}
+                    />
                 </View>
             </View>
         );

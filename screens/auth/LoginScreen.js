@@ -1,12 +1,13 @@
 // React
 import React, { Component } from 'react';
-import { 
-    View, 
-    Alert, 
-    Text, 
-    StyleSheet, 
+import {
+    View,
+    Alert,
+    Text,
+    StyleSheet,
     TextInput,
-    Dimensions } from 'react-native';
+    Dimensions
+} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 // Components
@@ -16,8 +17,8 @@ const deviceWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, 
-        justifyContent: 'center', 
+        flex: 1,
+        justifyContent: 'center',
         alignItems: 'center'
     },
     input: {
@@ -40,21 +41,21 @@ export default class LoginScreen extends Component {
         super(props);
 
         this.state = {
-            email: '', 
+            email: '',
             password: '',
             spinner: false
         };
     }
 
     _onPressedLogIn = async () => {
-        const {email, password} = this.state;
-        this.setState({spinner: true});
+        const { email, password } = this.state;
+        this.setState({ spinner: true });
         try {
             const response = await fetch("http://10.0.2.2:3333/api/v0.0.5/login", {
                 method: 'POST',
-                 headers: {
+                headers: {
                     'Content-Type': 'application/json'
-                }, 
+                },
                 body: JSON.stringify({
                     email: email,
                     password: password
@@ -63,41 +64,41 @@ export default class LoginScreen extends Component {
             if (response.status == 200) {
                 const responseJson = await response.json();
                 await AsyncStorage.setItem('USER_INFO', JSON.stringify(responseJson));
-                this.props.navigation.navigate('App');    
+                this.props.navigation.navigate('App');
             } else {
                 const responseText = await response.text();
                 Alert.alert('Error', responseText)
             }
         } catch (error) {
-            Alert.alert('Error',  'Couldn\'t reach the server.')
+            Alert.alert('Error', 'Couldn\'t reach the server.')
         }
-        this.setState({spinner: false})
+        this.setState({ spinner: false })
     }
 
     render() {
         return (
             <View style={styles.container}>
                 <TextInput
-                    keyboardType = "email-address"
-                    onChangeText = {email => this.setState({email})}
-                    style = {styles.input}
-                    placeholder = "Email Address"
-                    value = {this.state.email}  
+                    keyboardType="email-address"
+                    onChangeText={email => this.setState({ email })}
+                    style={styles.input}
+                    placeholder="Email Address"
+                    value={this.state.email}
                 />
                 <TextInput
-                    secureTextEntry = {true}
-                    onChangeText = {password => this.setState({password})}
-                    style = {styles.input}
-                    placeholder = "Password"
-                    value = {this.state.password}  
+                    secureTextEntry={true}
+                    onChangeText={password => this.setState({ password })}
+                    style={styles.input}
+                    placeholder="Password"
+                    value={this.state.password}
                 />
                 {this.state.spinner &&
                     <Text style={styles.spinnerTextStyle}>Working on it...</Text>
                 }
                 {!this.state.spinner &&
                     <ActionButton
-                    onPress = {() => this._onPressedLogIn()}
-                    text = 'Log in'/>
+                        onPress={() => this._onPressedLogIn()}
+                        text='Log in' />
                 }
             </View>
         );

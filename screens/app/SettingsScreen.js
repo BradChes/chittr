@@ -1,12 +1,13 @@
 // React
 import React, { Component } from 'react';
-import { 
+import {
     StyleSheet,
     View,
     Text,
     Alert,
     ActivityIndicator,
-    Dimensions } from 'react-native';
+    Dimensions
+} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 // Components
@@ -17,15 +18,15 @@ const deviceWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, 
+        flex: 1,
         justifyContent: 'center'
     },
     userInfoContainer: {
         flex: 2,
-        justifyContent: 'flex-start', 
+        justifyContent: 'flex-start',
         marginHorizontal: 20,
         marginBottom: 30
-        },
+    },
     followerManagementContainer: {
         flex: 2,
         justifyContent: 'flex-start',
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
     },
     logoutContainer: {
         flex: 1,
-        justifyContent: 'center', 
+        justifyContent: 'center',
         alignItems: 'center'
     },
     header: {
@@ -64,7 +65,7 @@ export default class SettingsScreen extends Component {
             token: '',
             givenName: '',
             familyName: '',
-            email: '', 
+            email: '',
             password: '',
             image: '',
             isLoading: true,
@@ -73,15 +74,15 @@ export default class SettingsScreen extends Component {
         this._readyUp()
     }
 
-    _readyUp = async () =>  {
+    _readyUp = async () => {
         try {
             const userInfo = await AsyncStorage.getItem('USER_INFO')
             const userInfoJson = JSON.parse(userInfo)
-            this.setState({id: userInfoJson.id})
-            this.setState({token: userInfoJson.token})
+            this.setState({ id: userInfoJson.id })
+            this.setState({ token: userInfoJson.token })
             this._getUserInfo()
-            this.setState({isLoading: false})
-          } catch(e) {
+            this.setState({ isLoading: false })
+        } catch (e) {
             //TODO
         }
     }
@@ -92,23 +93,23 @@ export default class SettingsScreen extends Component {
 
     _getUserInfo = async () => {
         try {
-            const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/user/'+ this.state.id);
+            const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/user/' + this.state.id);
             const responseJson = await response.json();
             this.setState({
                 givenName: responseJson.given_name,
                 familyName: responseJson.family_name,
-                email: responseJson.email, 
+                email: responseJson.email,
                 isLoading: false,
                 isRefreshing: false
             });
         }
-        catch(e) {
-            Alert.alert('Error',  'Couldn\'t reach the server.')
+        catch (e) {
+            Alert.alert('Error', 'Couldn\'t reach the server.')
         }
     }
 
     returnData(image) {
-        this.setState({image: image});
+        this.setState({ image: image });
     }
 
     _updateUserPicture = async () => {
@@ -118,7 +119,7 @@ export default class SettingsScreen extends Component {
         try {
             const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/user/photo', {
                 method: 'POST',
-                 headers: {
+                headers: {
                     'X-Authorization': token,
                     'Content-Type': 'image/jpeg'
                 },
@@ -132,7 +133,7 @@ export default class SettingsScreen extends Component {
             }
             this.setState({ isRefreshing: false });
         } catch (error) {
-            Alert.alert('Error',  'Couldn\'t reach the server.')
+            Alert.alert('Error', 'Couldn\'t reach the server.')
             this.setState({ isRefreshing: false });
         }
     }
@@ -142,29 +143,29 @@ export default class SettingsScreen extends Component {
         try {
             const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/logout', {
                 method: 'POST',
-                 headers: {
+                headers: {
                     'X-Authorization': token
                 }
             });
             if (response.status == 200) {
                 await AsyncStorage.clear()
-                this.props.navigation.navigate('Auth')   
+                this.props.navigation.navigate('Auth')
             } else {
                 const responseText = await response.text();
                 Alert.alert('Error', responseText)
             }
         } catch (error) {
-            Alert.alert('Error',  'Couldn\'t reach the server.')
+            Alert.alert('Error', 'Couldn\'t reach the server.')
         }
         await AsyncStorage.clear()
-        this.props.navigation.navigate('Auth')   
+        this.props.navigation.navigate('Auth')
     }
 
     render() {
-        if(this.state.isLoading || this.state.isRefreshing) {
-            return(
-                <View style = {styles.container}>
-                    <ActivityIndicator/>
+        if (this.state.isLoading || this.state.isRefreshing) {
+            return (
+                <View style={styles.container}>
+                    <ActivityIndicator />
                 </View>
             )
         }
@@ -174,47 +175,47 @@ export default class SettingsScreen extends Component {
                 <View style={styles.userInfoContainer}>
                     <Text style={styles.header}>User Information</Text>
                     <UserView
-                        disabled = {true}
-                        userId = {this.state.id}
-                        user = {this.state.givenName + " " + this.state.familyName} 
-                        email = {this.state.email}
+                        disabled={true}
+                        userId={this.state.id}
+                        user={this.state.givenName + " " + this.state.familyName}
+                        email={this.state.email}
                     />
                     <ActionButton
-                        onPress = {() => this.props.navigation.navigate('UserUpdate', {
+                        onPress={() => this.props.navigation.navigate('UserUpdate', {
                             onGoBack: () => this._onUserInformationUpdate()
                         })}
-                        text = 'Update User Information'/>
+                        text='Update User Information' />
                     <ActionButton
-                        onPress = {() => this.props.navigation.navigate('Camera', 
-                        { 
-                            returnData: this.returnData.bind(this),
-                            onGoBack: () => this._updateUserPicture()
-                        })}
-                        text = 'Update Profile Picture'/>
+                        onPress={() => this.props.navigation.navigate('Camera',
+                            {
+                                returnData: this.returnData.bind(this),
+                                onGoBack: () => this._updateUserPicture()
+                            })}
+                        text='Update Profile Picture' />
                 </View>
                 <View style={styles.followerManagementContainer}>
                     <Text style={styles.header}>Follower Management</Text>
                     <ActionButton
-                        onPress = {() => this.props.navigation.navigate('Following',
+                        onPress={() => this.props.navigation.navigate('Following',
                             {
                                 followsUrl: 'http://10.0.2.2:3333/api/v0.0.5/user/' + this.state.id + '/following',
                                 header: 'Following'
                             }
                         )}
-                        text = 'Following'/>
+                        text='Following' />
                     <ActionButton
-                        onPress = {() => this.props.navigation.navigate('Followers',
+                        onPress={() => this.props.navigation.navigate('Followers',
                             {
                                 followsUrl: 'http://10.0.2.2:3333/api/v0.0.5/user/' + this.state.id + '/followers',
                                 header: 'Followers'
                             }
                         )}
-                        text = 'Followers'/>
+                        text='Followers' />
                 </View>
                 <View style={styles.logoutContainer}>
                     <ActionButton
-                        onPress = {this._onPressedLogOut}
-                        text = 'Log Out'/>
+                        onPress={this._onPressedLogOut}
+                        text='Log Out' />
                 </View>
             </View>
         );

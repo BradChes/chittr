@@ -1,32 +1,31 @@
 // React
 import React, { Component } from 'react';
-import { 
+import {
     StyleSheet,
     View,
-    Text,
     TextInput,
-    Dimensions, 
+    Dimensions,
     Alert,
-    TouchableOpacity,
-    PermissionsAndroid } from 'react-native';
+    ActivityIndicator,
+    PermissionsAndroid,
+} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import Geolocation from 'react-native-geolocation-service';
 
 // Components
-import ActionButton from '../../components/ActionButton';
+import ActionIcon from '../../components/ActionIcon';
 
 const deviceWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, 
-        justifyContent: 'center', 
+        flex: 1,
+        justifyContent: 'center',
         alignItems: 'center'
     },
     actionContainer: {
         flexDirection: 'row',
-        justifyContent: 'center', 
+        justifyContent: 'center',
         alignItems: 'center'
     },
     input: {
@@ -38,15 +37,8 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         marginVertical: 10
     },
-    cameraIcon: {        
-        marginHorizontal: 20,
-        alignItems: 'center',
-        backgroundColor: 'red',
-        padding: 10,
-        borderRadius: 50
-    },
-    spinnerTextStyle: {
-        textAlign: 'center'
+    spinner: {
+        margin: 20,
     },
 });
 
@@ -68,20 +60,20 @@ export default class PostScreen extends Component {
         this._readyUp();
     }
 
-    _readyUp = async () =>  {
+    _readyUp = async () => {
         try {
             const userInfo = await AsyncStorage.getItem('USER_INFO')
             const userInfoJson = JSON.parse(userInfo)
-            this.setState({userId: userInfoJson.id})
-            this.setState({token: userInfoJson.token})
-          } catch(e) {
+            this.setState({ userId: userInfoJson.id })
+            this.setState({ token: userInfoJson.token })
+        } catch (e) {
             //TODO
         }
     }
 
     _postChit = async () => {
-        const {token, chit, image, location} = this.state;
-        this.setState({spinner: true})
+        const { token, chit, image, location } = this.state;
+        this.setState({ spinner: true })
 
         var jsonBody = JSON.stringify({
             timestamp: new Date().getTime(),
@@ -92,22 +84,21 @@ export default class PostScreen extends Component {
         try {
             const response = await fetch("http://10.0.2.2:3333/api/v0.0.5/chits", {
                 method: 'POST',
-                 headers: {
+                headers: {
                     'Content-Type': 'application/json',
                     'X-Authorization': token
-                }, 
+                },
                 body: jsonBody
             })
-            .then((response) => response.json())
-            .then((response) => {  
-                if (image !== '') {
-                    this._postImage(response.chit_id)
-                }
-            })
-            .catch(e => Alert.alert('Connection Error',  e)); 
+                .then((response) => response.json())
+                .then((response) => {
+                    if (image !== '') {
+                        this._postImage(response.chit_id)
+                    }
+                })
+                .catch(e => Alert.alert('Connection Error', e));
         } catch (error) {
-            console.log(error.message)
-            Alert.alert('Error',  'Couldn\'t reach the server.')
+            Alert.alert('Error', 'Couldn\'t reach the server.')
         }
         this.setState({
             chit: '',
@@ -121,7 +112,7 @@ export default class PostScreen extends Component {
         try {
             const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/chits/' + chitId + '/photo', {
                 method: 'POST',
-                 headers: {
+                headers: {
                     'X-Authorization': token,
                     'Content-Type': 'image/jpeg'
                 },
@@ -130,67 +121,67 @@ export default class PostScreen extends Component {
             if (response.status !== 201) {
                 const responseText = await response.text();
                 Alert.alert('Error', responseText)
-            } 
+            }
             this.setState({ isRefreshing: false });
         } catch (error) {
-            Alert.alert('Error',  'Couldn\'t reach the server to post image.')
+            Alert.alert('Error', 'Couldn\'t reach the server to post image.')
             this.setState({ isRefreshing: false });
         }
 
-        this.setState({image: ''});
+        this.setState({ image: '' });
     }
 
     returnData(image) {
-        this.setState({image: image});
+        this.setState({ image: image });
     }
 
-  findCoordinates = () => {
-    if(!this.state.locationPermission){
-      this.state.locationPermission = this.requestLocationPermission();
+    findCoordinates = () => {
+        if (!this.state.locationPermission) {
+            this.state.locationPermission = this.requestLocationPermission();
+        }
+
+        Geolocation.getCurrentPosition(
+            (position) => {
+                this.setState({
+                    location: {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude
+                    }
+                });
+            },
+            (error) => {
+                Alert.alert(error.message)
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 20000,
+                maximumAge: 1000
+            }
+        );
+    };
+
+    async requestLocationPermission() {
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                {
+                    title: 'Chittr Location Permission',
+                    message: 'This app requires access to your location.',
+                    buttonNeutral: 'Ask Me Later',
+                    buttonNegative: 'Cancel',
+                    buttonPositive: 'OK',
+                },
+            );
+
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (err) {
+            console.warn(err);
+        }
     }
-
-    Geolocation.getCurrentPosition(
-      (position) => {
-        this.setState({ 
-            location: { 
-                latitude: position.coords.latitude, 
-                longitude: position.coords.longitude
-            } 
-        });
-      },
-      (error) => {
-        Alert.alert(error.message)
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 20000,
-        maximumAge: 1000
-      }
-    );
-  };
-
-  async requestLocationPermission() {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: 'Lab6 Location Permission',
-          message: 'This app requires access to your location.',
-          buttonNeutral: 'Ask Me Later',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        },
-      );
-
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  }
 
     render() {
         const { chit } = this.state;
@@ -198,42 +189,36 @@ export default class PostScreen extends Component {
         return (
             <View style={styles.container}>
                 <TextInput
-                    onChangeText = {chit => this.setState({chit})}
-                    style = {styles.input}
-                    placeholder = "What's on your mind?"
-                    value = {this.state.chit}  
+                    onChangeText={chit => this.setState({ chit })}
+                    style={styles.input}
+                    placeholder="What's on your mind?"
+                    value={this.state.chit}
                 />
 
-                <View style = { styles.actionContainer }>
-                    <TouchableOpacity 
-                        style = {styles.cameraIcon} 
-                        onPress = {() => this.props.navigation.navigate('Camera', { 
+                <View style={styles.actionContainer}>
+
+                    <ActionIcon
+                        onPress={() => this.props.navigation.navigate('Camera', {
                             returnData: this.returnData.bind(this),
                             onGoBack: () => console.log(this.state.image)
                         })
-                    }>
-                        <Icon name = 'camera' 
-                            color = '#FFF'
-                            size = {20} />
-                    </TouchableOpacity>
+                        }
+                        name='camera' 
+                    />
 
-                    <TouchableOpacity 
-                        style = {styles.cameraIcon} 
-                        onPress = {() => this.findCoordinates()}
-                    >
-                        <Icon name = 'map-pin' 
-                            color = '#FFF'
-                            size = {20} />
-                    </TouchableOpacity>
+                    <ActionIcon
+                        onPress={() => this.findCoordinates()}
+                        name='map-pin'
+                    />
 
                     {this.state.spinner &&
-                        <Text style={styles.spinnerTextStyle}>Posting...</Text>
+                        <ActivityIndicator style={styles.spinner} />
                     }
                     {!this.state.spinner &&
-                        <ActionButton
-                            disabled = {!enabled}
-                            text = 'Submit'
-                            onPress = { () => this._postChit() } 
+                        <ActionIcon
+                            disabled={!enabled}
+                            onPress={() => this._postChit()}
+                            name='share' 
                         />
                     }
                 </View>

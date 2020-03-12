@@ -2,33 +2,38 @@
 import React, { Component } from 'react';
 import {
     StyleSheet,
-    TouchableOpacity,
-    Text
+    TouchableOpacity
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 
 const styles = StyleSheet.create({
     container: {
-        marginVertical: 10,
+        margin: 10,
         alignItems: 'center',
         backgroundColor: 'red',
-        paddingHorizontal: 50,
         padding: 10,
         borderRadius: 50
     },
-    text: {
-        color: 'white'
+    icon: {
+        alignItems: 'center',
+        backgroundColor: 'red',
+        color: '#FFF',
+        fontSize: 20
     }
 });
 
-export default class ActionButton extends Component {
+export default class ActionIcon extends Component {
 
     render() {
         return (
             <TouchableOpacity
-                disabled={this.props.disabled}
                 style={styles.container}
+                disabled={this.props.disabled}
                 onPress={() => this.props.onPress()}>
-                <Text style={styles.text}>{this.props.text}</Text>
+                <Icon
+                    style={styles.icon}
+                    name={this.props.name} />
             </TouchableOpacity>
         );
     }

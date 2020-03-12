@@ -1,14 +1,15 @@
 // React
 import React, { Component } from 'react';
-import { 
+import {
     StyleSheet,
     View,
-    Text } from 'react-native';
+    Text
+} from 'react-native';
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, 
-        justifyContent: 'center', 
+        flex: 1,
+        justifyContent: 'center',
         alignItems: 'center',
         marginVertical: 40
     },
@@ -19,9 +20,9 @@ const styles = StyleSheet.create({
 
 export default class FlatListEmpty extends Component {
     render() {
-        return(
-            <View style = { styles.container }>
-                <Text style = { styles.text }>{ this.props.message }</Text>
+        return (
+            <View style={styles.container}>
+                <Text style={styles.text}>{this.props.message}</Text>
             </View>
         );
     }

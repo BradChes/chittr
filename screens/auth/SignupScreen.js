@@ -1,12 +1,13 @@
 // React
 import React, { Component } from 'react';
-import { 
-    View, 
-    Alert, 
-    Text, 
-    StyleSheet, 
+import {
+    View,
+    Alert,
+    Text,
+    StyleSheet,
     TextInput,
-    Dimensions } from 'react-native';
+    Dimensions
+} from 'react-native';
 
 const deviceWidth = Dimensions.get('window').width;
 
@@ -15,8 +16,8 @@ import ActionButton from '../../components/ActionButton';
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, 
-        justifyContent: 'center', 
+        flex: 1,
+        justifyContent: 'center',
         alignItems: 'center'
     },
     input: {
@@ -41,22 +42,22 @@ export default class LoginScreen extends Component {
         this.state = {
             givenName: '',
             familyName: '',
-            email: '', 
+            email: '',
             password: '',
             spinner: false
         };
     }
 
     _onPressedSubmit = async () => {
-        const {givenName, familyName, email, password} = this.state;
+        const { givenName, familyName, email, password } = this.state;
 
-        this.setState({spinner: true});
+        this.setState({ spinner: true });
         try {
             const response = await fetch("http://10.0.2.2:3333/api/v0.0.5/user", {
                 method: 'POST',
-                 headers: {
+                headers: {
                     'Content-Type': 'application/json'
-                }, 
+                },
                 body: JSON.stringify({
                     given_name: givenName,
                     family_name: familyName,
@@ -66,7 +67,7 @@ export default class LoginScreen extends Component {
             });
             if (response.status == 201) {
                 Alert.alert(
-                    'Congraulations!',  
+                    'Congraulations!',
                     'You\'ve made an account on Chittr, welcome to the family.',
                     [
                         {
@@ -78,58 +79,58 @@ export default class LoginScreen extends Component {
                             onPress: () => this.props.navigation.navigate('Login')
                         }
                     ]
-                )    
+                )
             } else {
                 const responseText = await response.text();
                 Alert.alert('Error', responseText)
             }
         } catch (error) {
-            Alert.alert('Error',  'Couldn\'t reach the server.')
+            Alert.alert('Error', 'Couldn\'t reach the server.')
         }
-        this.setState({spinner: false})
+        this.setState({ spinner: false })
     }
 
     render() {
         return (
             <View style={styles.container}>
                 <TextInput
-                    autoCompleteType = 'name'
-                    onChangeText = {givenName => this.setState({givenName})}
-                    style = {styles.input}
-                    placeholder = 'First name'
-                    value = {this.state.givenName}  
-                />
-                    <TextInput
-                    autoCompleteType = 'name'
-                    onChangeText = {familyName => this.setState({familyName})}
-                    style = {styles.input}
-                    placeholder = 'Surname'
-                    value = {this.state.familyName}  
+                    autoCompleteType='name'
+                    onChangeText={givenName => this.setState({ givenName })}
+                    style={styles.input}
+                    placeholder='First name'
+                    value={this.state.givenName}
                 />
                 <TextInput
-                    keyboardType = 'email-address'
-                    autoCompleteType = 'email'
-                    onChangeText = {email => this.setState({email})}
-                    style = {styles.input}
-                    placeholder = 'Email Address'
-                    value = {this.state.email}  
+                    autoCompleteType='name'
+                    onChangeText={familyName => this.setState({ familyName })}
+                    style={styles.input}
+                    placeholder='Surname'
+                    value={this.state.familyName}
                 />
                 <TextInput
-                    secureTextEntry = {true}
-                    autoCompleteType = 'password'
-                    onChangeText = {password => this.setState({password})}
-                    style = {styles.input}
-                    placeholder = 'Password'
-                    value = {this.state.password}  
+                    keyboardType='email-address'
+                    autoCompleteType='email'
+                    onChangeText={email => this.setState({ email })}
+                    style={styles.input}
+                    placeholder='Email Address'
+                    value={this.state.email}
+                />
+                <TextInput
+                    secureTextEntry={true}
+                    autoCompleteType='password'
+                    onChangeText={password => this.setState({ password })}
+                    style={styles.input}
+                    placeholder='Password'
+                    value={this.state.password}
                 />
                 {this.state.spinner &&
                     <Text style={styles.spinnerTextStyle}>Working on it...</Text>
                 }
                 {!this.state.spinner &&
-                <ActionButton
-                    text = 'Submit'
-                    onPress = {this._onPressedSubmit} 
-                />
+                    <ActionButton
+                        text='Submit'
+                        onPress={this._onPressedSubmit}
+                    />
                 }
             </View>
         );

@@ -14,11 +14,11 @@ export const TabScreen = createBottomTabNavigator({
         screen: HomeScreen,
         navigationOptions: {
             tabBarLabel: 'Home',
-            tabBarIcon: ({tintColor}) => (
-                <Icon 
-                    name = 'home' 
-                    color = {tintColor} 
-                    size = {25} />
+            tabBarIcon: ({ tintColor }) => (
+                <Icon
+                    name='home'
+                    color={tintColor}
+                    size={25} />
             )
         }
     },
@@ -26,11 +26,11 @@ export const TabScreen = createBottomTabNavigator({
         screen: PostScreen,
         navigationOptions: {
             tabBarLabel: 'Post',
-            tabBarIcon: ({tintColor}) => (
-                <Icon 
-                    name = 'share' 
-                    color = {tintColor} 
-                    size = {25} />
+            tabBarIcon: ({ tintColor }) => (
+                <Icon
+                    name='share'
+                    color={tintColor}
+                    size={25} />
             )
         }
     },
@@ -38,11 +38,11 @@ export const TabScreen = createBottomTabNavigator({
         screen: SearchScreen,
         navigationOptions: {
             tabBarLabel: 'Search',
-            tabBarIcon: ({tintColor}) => (
-                <Icon 
-                    name = 'search' 
-                    color = {tintColor} 
-                    size = {25} />
+            tabBarIcon: ({ tintColor }) => (
+                <Icon
+                    name='search'
+                    color={tintColor}
+                    size={25} />
             )
         }
     },
@@ -50,11 +50,11 @@ export const TabScreen = createBottomTabNavigator({
         screen: SettingsScreen,
         navigationOptions: {
             tabBarLabel: 'Settings',
-            tabBarIcon: ({tintColor}) => (
-                <Icon 
-                    name = 'cog' 
-                    color = {tintColor} 
-                    size = {25} />
+            tabBarIcon: ({ tintColor }) => (
+                <Icon
+                    name='cog'
+                    color={tintColor}
+                    size={25} />
             )
         }
     }
