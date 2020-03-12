@@ -48,7 +48,7 @@ export default class LoginScreen extends Component {
     }
   }
 
-  async _onPressedSubmit () {
+  async onPressedSubmit () {
     const { givenName, familyName, email, password } = this.state
 
     this.setState({ spinner: true })
@@ -128,7 +128,7 @@ export default class LoginScreen extends Component {
         {!this.state.spinner &&
           <ActionButton
             text='Submit'
-            handleOnPress={this._onPressedSubmit}
+            handleOnPress={() => this.onPressedSubmit()}
           />}
       </View>
     )

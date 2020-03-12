@@ -73,20 +73,17 @@ export default class ChitView extends Component {
       <TouchableHighlight
         disabled={this.props.disabled}
         underlayColor='lightgray'
-        onPress={() =>
-          Alert.alert(
-            'Follower Management',
-            'Follow or unfollow, that is the question?',
-            [
-              {
-                text: 'Follow',
-                onPress: () => this.follow()
-              },
-              {
-                text: 'Unfollow',
-                onPress: () => this.unfollow()
-              }
-            ]
+        onPress={() => Alert.alert('Follower Management', 'Follow or unfollow, that is the question?',
+          [
+            {
+              text: 'Follow',
+              onPress: () => this.follow()
+            },
+            {
+              text: 'Unfollow',
+              onPress: () => this.unfollow()
+            }
+          ]
         )}
       >
 

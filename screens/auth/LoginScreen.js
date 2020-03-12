@@ -96,7 +96,7 @@ export default class LoginScreen extends Component {
           <Text style={styles.spinnerTextStyle}>Working on it...</Text>}
         {!this.state.spinner &&
           <ActionButton
-            onPress={() => this.onPressedLogIn()}
+            handleOnPress={() => this.onPressedLogIn()}
             text='Log in'
           />}
       </View>

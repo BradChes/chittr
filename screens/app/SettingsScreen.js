@@ -180,13 +180,13 @@ export default class SettingsScreen extends Component {
             email={this.state.email}
           />
           <ActionButton
-            onPress={() => this.props.navigation.navigate('UserUpdate', {
+            handleOnPress={() => this.props.navigation.navigate('UserUpdate', {
               onGoBack: () => this.onUserInformationUpdate()
             })}
             text='Update User Information'
           />
           <ActionButton
-            onPress={() => this.props.navigation.navigate('Camera',
+            handleOnPress={() => this.props.navigation.navigate('Camera',
               {
                 returnData: this.returnData.bind(this),
                 onGoBack: () => this.updateUserPicture()
@@ -197,7 +197,7 @@ export default class SettingsScreen extends Component {
         <View style={styles.followerManagementContainer}>
           <Text style={styles.header}>Follower Management</Text>
           <ActionButton
-            onPress={() => this.props.navigation.navigate('Following',
+            handleOnPress={() => this.props.navigation.navigate('Following',
               {
                 followsUrl: 'http://10.0.2.2:3333/api/v0.0.5/user/' + this.state.id + '/following',
                 header: 'Following'
@@ -206,7 +206,7 @@ export default class SettingsScreen extends Component {
             text='Following'
           />
           <ActionButton
-            onPress={() => this.props.navigation.navigate('Followers',
+            handleOnPress={() => this.props.navigation.navigate('Followers',
               {
                 followsUrl: 'http://10.0.2.2:3333/api/v0.0.5/user/' + this.state.id + '/followers',
                 header: 'Followers'
@@ -217,7 +217,7 @@ export default class SettingsScreen extends Component {
         </View>
         <View style={styles.logoutContainer}>
           <ActionButton
-            onPress={this._onPressedLogOut}
+            handleOnPress={() => this.onPressedLogOut()}
             text='Log Out'
           />
         </View>

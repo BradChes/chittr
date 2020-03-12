@@ -26,7 +26,7 @@ export default class ActionButton extends Component {
       <TouchableOpacity
         disabled={this.props.disabled}
         style={styles.container}
-        onPress={() => this.props.onPress()}
+        onPress={() => this.props.handleOnPress()}
       >
         <Text style={styles.text}>{this.props.text}</Text>
       </TouchableOpacity>

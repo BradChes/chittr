@@ -119,7 +119,7 @@ export default class SearchScreen extends Component {
           />
           <ActionButton
             text='search'
-            onPress={() => this.onPressedSearch()}
+            handleOnPress={() => this.onPressedSearch()}
           />
         </View>
         <View style={styles.searchResultsContainer}>
