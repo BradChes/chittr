@@ -7,14 +7,13 @@ import {
     TextInput,
     Dimensions, 
     Alert,
-    TouchableOpacity,
+    ActivityIndicator,
     PermissionsAndroid } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import Geolocation from 'react-native-geolocation-service';
 
 // Components
-import ActionButton from '../../components/ActionButton';
+import ActionIcon from '../../components/ActionIcon';
 
 const deviceWidth = Dimensions.get('window').width;
 
@@ -38,15 +37,8 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         marginVertical: 10
     },
-    cameraIcon: {        
-        marginHorizontal: 20,
-        alignItems: 'center',
-        backgroundColor: 'red',
-        padding: 10,
-        borderRadius: 50
-    },
-    spinnerTextStyle: {
-        textAlign: 'center'
+    spinner: {
+        margin: 20,
     },
 });
 
@@ -174,7 +166,7 @@ export default class PostScreen extends Component {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         {
-          title: 'Lab6 Location Permission',
+          title: 'Chittr Location Permission',
           message: 'This app requires access to your location.',
           buttonNeutral: 'Ask Me Later',
           buttonNegative: 'Cancel',
@@ -205,35 +197,28 @@ export default class PostScreen extends Component {
                 />
 
                 <View style = { styles.actionContainer }>
-                    <TouchableOpacity 
-                        style = {styles.cameraIcon} 
+
+                    <ActionIcon
                         onPress = {() => this.props.navigation.navigate('Camera', { 
                             returnData: this.returnData.bind(this),
                             onGoBack: () => console.log(this.state.image)
-                        })
-                    }>
-                        <Icon name = 'camera' 
-                            color = '#FFF'
-                            size = {20} />
-                    </TouchableOpacity>
+                            })
+                        }
+                        name = 'camera' 
+                    />
 
-                    <TouchableOpacity 
-                        style = {styles.cameraIcon} 
+                    <ActionIcon
                         onPress = {() => this.findCoordinates()}
-                    >
-                        <Icon name = 'map-pin' 
-                            color = '#FFF'
-                            size = {20} />
-                    </TouchableOpacity>
+                        name = 'map-pin'/>
 
                     {this.state.spinner &&
-                        <Text style={styles.spinnerTextStyle}>Posting...</Text>
+                        <ActivityIndicator style = { styles.spinner } />
                     }
                     {!this.state.spinner &&
-                        <ActionButton
-                            disabled = {!enabled}
-                            text = 'Submit'
-                            onPress = { () => this._postChit() } 
+                        <ActionIcon
+                            disabled = { !enabled }
+                            onPress = { () => this._postChit()}
+                            name = 'share' 
                         />
                     }
                 </View>

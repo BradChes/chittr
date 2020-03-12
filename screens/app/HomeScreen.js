@@ -56,7 +56,7 @@ export default class HomeScreen extends Component {
             });
         }
         catch(e) {
-            //Alert.alert('Error',  'Couldn\'t reach the server.')
+            Alert.alert('Error',  'Couldn\'t reach the server.')
         }
     }
 
@@ -107,4 +107,4 @@ export default class HomeScreen extends Component {
             </View>
         );
     }
-}
+}   
