@@ -4,7 +4,8 @@ import {
     StyleSheet,
     View,
     ActivityIndicator,
-    FlatList } from 'react-native';
+    FlatList,
+    Alert } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 // Components
@@ -55,7 +56,7 @@ export default class HomeScreen extends Component {
             });
         }
         catch(e) {
-            Alert.alert('Error',  'Couldn\'t reach the server.')
+            //Alert.alert('Error',  'Couldn\'t reach the server.')
         }
     }
 
@@ -96,7 +97,11 @@ export default class HomeScreen extends Component {
                             userId = { item.user.user_id }
                             user = { item.user.given_name + " " + item.user.family_name } 
                             timestamp = { item.timestamp }
-                            body = { item.chit_content }/> 
+                            body = { item.chit_content }
+                            latitude = { item.location ?
+                                item.location.latitude : null }
+                            longitude = { item.location ?
+                                item.location.longitude : null } /> 
                     }
                     keyExtractor = { ({ chit_id }) => chit_id.toString() } />
             </View>

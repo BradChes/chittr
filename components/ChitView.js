@@ -87,6 +87,12 @@ export default class ChitView extends Component {
                     }}
                     resizeMode = { FastImage.resizeMode.contain }
                 />
+                {this.props.latitude ? 
+                    <Text style = { styles.informationText }> 
+                        Position: {this.props.latitude}, {this.props.longitude} 
+                    </Text> : null
+                }
+                
             </View>
         </View>
       );
