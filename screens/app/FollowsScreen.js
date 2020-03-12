@@ -28,6 +28,7 @@ export default class FollowsScreen extends Component {
             id: 0,
             token: '',
             isLoading: true,
+            isRefreshing: false,
             results: [],
             header: this.props.navigation.state.params.header,
             followsUrl: this.props.navigation.state.params.followsUrl
@@ -55,12 +56,17 @@ export default class FollowsScreen extends Component {
             const responseJson = await response.json();
             this.setState({
                 isLoading: false,
+                isRefreshing: false,
                 results: responseJson,
             });
         }
         catch(e) {
             Alert.alert('Error',  'Couldn\'t reach the server.')
         }
+    }
+
+    _onRefresh() {
+        this.setState({ isRefreshing: true }, function() { this._getFollows() });
     }
 
     renderSeparator = () => {
@@ -82,6 +88,8 @@ export default class FollowsScreen extends Component {
             <View style = { styles.container }>
                 <FlatList
                     data = { this.state.results }
+                    onRefresh = { () => this._onRefresh() }
+                    refreshing = { this.state.isRefreshing }
                     ListHeaderComponent = {
                         <FlatListHeader
                             title = {this.state.header}
