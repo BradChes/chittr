@@ -1,25 +1,25 @@
 // React
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   StyleSheet,
   Text,
   TouchableOpacity,
   View
-} from 'react-native';
+} from 'react-native'
 
-// React-Native camera   
-import { RNCamera } from 'react-native-camera';
+// React-Native camera
+import { RNCamera } from 'react-native-camera'
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: 'black',
+    backgroundColor: 'black'
   },
   preview: {
     flex: 1,
     justifyContent: 'flex-end',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   capture: {
     flex: 0,
@@ -28,17 +28,17 @@ const styles = StyleSheet.create({
     padding: 15,
     paddingHorizontal: 20,
     alignSelf: 'center',
-    margin: 20,
-  },
-});
+    margin: 20
+  }
+})
 
 export default class CameraScreen extends Component {
-  render() {
+  render () {
     return (
       <View style={styles.container}>
         <RNCamera
           ref={ref => {
-            this.camera = ref;
+            this.camera = ref
           }}
           style={styles.preview}
           type={RNCamera.Constants.Type.back}
@@ -48,7 +48,7 @@ export default class CameraScreen extends Component {
             title: 'Permission to use camera',
             message: 'We need your permission to use your camera',
             buttonPositive: 'Ok',
-            buttonNegative: 'Cancel',
+            buttonNegative: 'Cancel'
           }}
         />
         <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center' }}>
@@ -57,26 +57,26 @@ export default class CameraScreen extends Component {
           </TouchableOpacity>
         </View>
       </View>
-    );
+    )
   }
 
-  takePicture = async () => {
+  async takePicture () {
     if (this.camera) {
       const options = {
         quality: 0.5,
         base64: true,
         orientation: 'portrait',
         fixOrientation: true
-      };
-      const data = await this.camera.takePictureAsync(options);
+      }
+      const data = await this.camera.takePictureAsync(options)
 
-      fetch(data.uri)
+      window.fetch(data.uri)
         .then((response) => response.blob())
         .then((response) => {
-          this.props.navigation.state.params.returnData(response);
-          this.props.navigation.state.params.onGoBack();
-          this.props.navigation.goBack();
-        });
+          this.props.navigation.state.params.returnData(response)
+          this.props.navigation.state.params.onGoBack()
+          this.props.navigation.goBack()
+        })
     }
   };
 }
