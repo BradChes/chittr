@@ -1,5 +1,5 @@
 # Chittr
-[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![JavaScript Style Guide](https://cdn.rawgit.com/standard/standard/master/badge.svg)](https://github.com/standard/standard)
 <p align="center">
   <img src="images/app-icon.png " alt="Chittr application icon"
 	  title="Chittr application icon" align="center" width="200" height="200" />
