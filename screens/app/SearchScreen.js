@@ -118,7 +118,7 @@ export default class SearchScreen extends Component {
             value={this.state.givenName}
           />
           <ActionButton
-            text='search'
+            text='Search'
             handleOnPress={() => this.onPressedSearch()}
           />
         </View>

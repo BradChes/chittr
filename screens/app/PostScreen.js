@@ -14,6 +14,7 @@ import Geolocation from 'react-native-geolocation-service'
 
 // Components
 import ActionIcon from '../../components/ActionIcon'
+import ActionButton from '../../components/ActionButton'
 
 const deviceWidth = Dimensions.get('window').width
 
@@ -211,7 +212,7 @@ export default class PostScreen extends Component {
           />
 
           <ActionIcon
-            onPress={() => console.log("draft")}
+            onPress={() => console.log("save draft")}
             name='edit'
           />
 
@@ -224,6 +225,10 @@ export default class PostScreen extends Component {
               name='share'
             />}
         </View>
+        <ActionButton
+          text='Saved drafts'
+          handleOnPress={() => console.log("saved drafts")}
+        />
       </View>
     )
   }
