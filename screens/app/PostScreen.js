@@ -227,7 +227,7 @@ export default class PostScreen extends Component {
         </View>
         <ActionButton
           text='Saved drafts'
-          handleOnPress={() => console.log("saved drafts")}
+          handleOnPress={() => this.props.navigation.navigate('Drafts')}
         />
       </View>
     )
