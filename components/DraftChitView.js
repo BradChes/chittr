@@ -8,6 +8,7 @@ import {
   TouchableHighlight,
   Alert
 } from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage'
 
 const styles = StyleSheet.create({
   superContainer: {
@@ -38,7 +39,18 @@ export default class ChitView extends Component {
   constructor () {
     super()
     this.state = {
-      showImage: true
+      token: ''
+    }
+    this.readyUp()
+  }
+
+  async readyUp () {
+    try {
+      const userInfo = await AsyncStorage.getItem('USER_INFO')
+      const userInfoJson = JSON.parse(userInfo)
+      this.setState({ token: userInfoJson.token })
+    } catch(e) {
+      console.log(e.message)
     }
   }
 
@@ -50,21 +62,63 @@ export default class ChitView extends Component {
     console.log("edit")
   }
 
-  post() {
-    console.log("post")
+  async post () {
+    const { token } = this.state
+
+    var jsonBody = JSON.stringify({
+      timestamp: new Date().getTime(),
+      chit_content: this.props.body,
+      location: this.props.location
+    })
+
+    try {
+      window.fetch('http://10.0.2.2:3333/api/v0.0.5/chits', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Authorization': token
+        },
+        body: jsonBody
+      })
+        .then((response) => response.json())
+        .then((response) => {
+          if (this.props.imageData.blob !== '') {
+            this.postImage(response.chit_id)
+          }
+        })
+        .catch(e => Alert.alert('Connection Error', e.message))
+    } catch (error) {
+      Alert.alert('Error', 'Couldn\'t reach the server.')
+    }
+  }
+
+  async postImage (chitId) {
+    const { token } = this.state
+
+    try {
+      const response = await window.fetch('http://10.0.2.2:3333/api/v0.0.5/chits/' + chitId + '/photo', {
+        method: 'POST',
+        headers: {
+          'X-Authorization': token,
+          'Content-Type': 'image/jpeg'
+        },
+        body: this.props.imageData.blob
+      })
+      if (response.status !== 201) {
+        const responseText = await response.text()
+        Alert.alert('Error', responseText)
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Couldn\'t reach the server to post image.')
+    }
   }
 
   render () {
     return (
       <TouchableHighlight
-      disabled={this.props.disabled}
       underlayColor='lightgray'
-      onPress={() => Alert.alert('Follower Management', 'Follow or unfollow, that is the question?',
+      onPress={() => Alert.alert('Draft Management', 'Edit or post your selected draft?',
         [
-          {
-            text: 'Delete',
-            onPress: () => this.delete()
-          },
           {
             text: 'Edit',
             onPress: () => this.edit()
@@ -79,8 +133,8 @@ export default class ChitView extends Component {
       <View style={styles.superContainer}>
         <View style={styles.bodyContainer}>
           <Text style={styles.bodyText}>{this.props.body}</Text>
-          {this.props.imageUri ? <Image style={styles.bodyImage} source={{ uri: this.props.imageUri }} /> : null}
-          {this.props.latitude ? <Text style={styles.informationText}> Position: {this.props.latitude}, {this.props.longitude} </Text> : null}
+          {this.props.imageData.uri ? <Image style={styles.bodyImage} source={{ uri: this.props.imageData.uri }} /> : null}
+          {this.props.location.latitude ? <Text style={styles.informationText}> Position: {this.props.location.latitude}, {this.props.location.longitude} </Text> : null}
         </View>
       </View>
     </TouchableHighlight>

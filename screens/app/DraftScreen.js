@@ -45,7 +45,7 @@ export default class DraftScreen extends Component {
       this.setState({ isLoading: false })
       this.setState({ draftChits: draftChitsJson })
     } catch (e) {
-      console.log(e)
+      console.log(e.message)
     }
   }
 
@@ -78,12 +78,10 @@ export default class DraftScreen extends Component {
             <DraftChitView
               chitId={item.id}
               body={item.chit}
-              imageUri = {item.imageData.uri}
-              latitude={item.location
-                ? item.location.latitude : null}
-              longitude={item.location
-                ? item.location.longitude : null}
-            />}
+              imageData = {item.imageData}
+              location={item.location}
+            />
+          }
           keyExtractor={({ id }) => id.toString()}
         />
       </View>

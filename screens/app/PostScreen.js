@@ -84,7 +84,7 @@ export default class PostScreen extends Component {
       this.setState({ userId: userInfoJson.id })
       this.setState({ token: userInfoJson.token })
     } catch(e) {
-      console.log(e)
+      console.log(e.message)
     }
   }
 
@@ -113,7 +113,7 @@ export default class PostScreen extends Component {
             this.postImage(response.chit_id)
           }
         })
-        .catch(e => Alert.alert('Connection Error', e))
+        .catch(e => Alert.alert('Connection Error', e.message))
     } catch (error) {
       Alert.alert('Error', 'Couldn\'t reach the server.')
     }
@@ -203,7 +203,6 @@ export default class PostScreen extends Component {
 
     draftChits.push(draftChit)
 
-    console.log(draftChit)
     await AsyncStorage.setItem('DRAFT_CHITS', JSON.stringify(draftChits))
   }
 
