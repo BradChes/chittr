@@ -9,6 +9,10 @@ import {
   Alert
 } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
+import BackgroundTimer from 'react-native-background-timer';
+
+//Components
+import ActionIcon from '../components/ActionIcon'
 
 const styles = StyleSheet.create({
   superContainer: {
@@ -90,6 +94,8 @@ export default class ChitView extends Component {
     } catch (error) {
       Alert.alert('Error', 'Couldn\'t reach the server.')
     }
+
+    BackgroundTimer.stopBackgroundTimer();
   }
 
   async postImage (chitId) {
@@ -111,7 +117,16 @@ export default class ChitView extends Component {
     } catch (error) {
       Alert.alert('Error', 'Couldn\'t reach the server to post image.')
     }
+
+    BackgroundTimer.stopBackgroundTimer();
   }
+
+schedule() {
+  BackgroundTimer.runBackgroundTimer(() => { 
+    this.post()
+    console.log("Posting  schedule chit")
+  }, 3000);
+}
 
   render () {
     return (
@@ -136,7 +151,12 @@ export default class ChitView extends Component {
             {this.props.imageData.uri ? <Image style={styles.bodyImage} source={{ uri: this.props.imageData.uri }} /> : null}
             {this.props.location.latitude ? <Text style={styles.informationText}> Position: {this.props.location.latitude}, {this.props.location.longitude} </Text> : null}
           </View>
+          <ActionIcon
+            onPress={() => this.schedule()}
+            name='calendar'
+          />   
         </View>
+ 
       </TouchableHighlight>
     )
   }
