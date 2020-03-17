@@ -42,7 +42,14 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 150,
-    height: 150
+    height: 150,
+    marginVertical: 5
+  },
+  informationText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'gray',
+    marginVertical: 5
   },
   spinner: {
     margin: 20

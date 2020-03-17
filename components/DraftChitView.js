@@ -17,10 +17,18 @@ const styles = StyleSheet.create({
   },
   bodyImage: {
     width: 150,
-    height: 150
+    height: 150,
+    marginVertical: 5
   },
   bodyText: {
-    fontSize: 22
+    fontSize: 22,
+    marginVertical: 5
+  },
+  informationText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'gray',
+    marginVertical: 5  
   }
 })
 
