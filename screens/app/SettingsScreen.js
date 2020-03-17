@@ -67,7 +67,10 @@ export default class SettingsScreen extends Component {
       familyName: '',
       email: '',
       password: '',
-      image: '',
+      imageData: {
+        uri: '',
+        blob: ''
+      },
       isLoading: true,
       isRefreshing: false
     }
@@ -107,12 +110,13 @@ export default class SettingsScreen extends Component {
     }
   }
 
-  returnData (image) {
-    this.setState({ image: image })
+  returnData (imageData) {
+    this.setState({ imageData: imageData })
+    this.updateUserPicture()
   }
 
   async updateUserPicture () {
-    const { token, image } = this.state
+    const { token, imageData } = this.state
     this.setState({ isRefreshing: true })
 
     try {
@@ -122,7 +126,7 @@ export default class SettingsScreen extends Component {
           'X-Authorization': token,
           'Content-Type': 'image/jpeg'
         },
-        body: image
+        body: imageData.blob
       })
       if (response.status !== 201) {
         const responseText = await response.text()
@@ -188,8 +192,7 @@ export default class SettingsScreen extends Component {
           <ActionButton
             handleOnPress={() => this.props.navigation.navigate('Camera',
               {
-                returnData: this.returnData.bind(this),
-                onGoBack: () => this.updateUserPicture()
+                onGoBack: this.returnData.bind(this)
               })}
             text='Update Profile Picture'
           />

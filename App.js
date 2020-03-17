@@ -1,5 +1,6 @@
 // Navigation Screen
 import { TabScreen } from './screens/navigation/TabScreen'
+import DraftScreen from './screens/app/DraftScreen'
 import UpdateScreen from './screens/app/UpdateScreen'
 import FollowsScreen from './screens/app/FollowsScreen'
 import CameraScreen from './screens/app/CameraScreen'
@@ -15,6 +16,7 @@ import { createStackNavigator } from 'react-navigation-stack'
 
 const AppStack = createStackNavigator({
   Tab: TabScreen,
+  Drafts: DraftScreen,
   UserUpdate: UpdateScreen,
   Following: FollowsScreen,
   Followers: FollowsScreen,

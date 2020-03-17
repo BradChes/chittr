@@ -6,6 +6,8 @@ import {
   TextInput,
   Dimensions,
   Alert,
+  Text,
+  Image,
   ActivityIndicator,
   PermissionsAndroid
 } from 'react-native'
@@ -14,6 +16,7 @@ import Geolocation from 'react-native-geolocation-service'
 
 // Components
 import ActionIcon from '../../components/ActionIcon'
+import ActionButton from '../../components/ActionButton'
 
 const deviceWidth = Dimensions.get('window').width
 
@@ -37,6 +40,17 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     marginVertical: 10
   },
+  image: {
+    width: 150,
+    height: 150,
+    marginVertical: 5
+  },
+  informationText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'gray',
+    marginVertical: 5
+  },
   spinner: {
     margin: 20
   }
@@ -49,7 +63,10 @@ export default class PostScreen extends Component {
       userId: 0,
       token: '',
       chit: '',
-      image: '',
+      imageData: {
+        uri: '',
+        blob: ''
+      },
       location: {
         latitude: 0.0,
         longitude: 0.0
@@ -67,12 +84,12 @@ export default class PostScreen extends Component {
       this.setState({ userId: userInfoJson.id })
       this.setState({ token: userInfoJson.token })
     } catch (e) {
-      // TODO
+      console.log(e.message)
     }
   }
 
   async postChit () {
-    const { token, chit, image, location } = this.state
+    const { token, chit, imageData, location } = this.state
     this.setState({ spinner: true })
 
     var jsonBody = JSON.stringify({
@@ -92,11 +109,11 @@ export default class PostScreen extends Component {
       })
         .then((response) => response.json())
         .then((response) => {
-          if (image !== '') {
+          if (imageData.blob !== '') {
             this.postImage(response.chit_id)
           }
         })
-        .catch(e => Alert.alert('Connection Error', e))
+        .catch(e => Alert.alert('Connection Error', e.message))
     } catch (error) {
       Alert.alert('Error', 'Couldn\'t reach the server.')
     }
@@ -107,7 +124,7 @@ export default class PostScreen extends Component {
   }
 
   async postImage (chitId) {
-    const { token, image } = this.state
+    const { token, imageData } = this.state
 
     try {
       const response = await window.fetch('http://10.0.2.2:3333/api/v0.0.5/chits/' + chitId + '/photo', {
@@ -116,7 +133,7 @@ export default class PostScreen extends Component {
           'X-Authorization': token,
           'Content-Type': 'image/jpeg'
         },
-        body: image
+        body: imageData.blob
       })
       if (response.status !== 201) {
         const responseText = await response.text()
@@ -128,11 +145,17 @@ export default class PostScreen extends Component {
       this.setState({ isRefreshing: false })
     }
 
-    this.setState({ image: '' })
+    this.setState({
+      imageData: {
+        uri: '',
+        blob: ''
+      }
+    })
   }
 
-  returnData (image) {
-    this.setState({ image: image })
+  returnData (imageData) {
+    console.log(imageData)
+    this.setState({ imageData: imageData })
   }
 
   findCoordinates () {
@@ -159,6 +182,29 @@ export default class PostScreen extends Component {
       }
     )
   };
+
+  async saveDraft () {
+    const storedDraftChits = await AsyncStorage.getItem('DRAFT_CHITS')
+    const storedDraftChitsJson = JSON.parse(storedDraftChits)
+
+    var chitId = storedDraftChitsJson ? storedDraftChitsJson.length + 1 : 1
+
+    var draftChit = {
+      id: chitId,
+      chit: this.state.chit,
+      imageData: this.state.imageData,
+      location: this.state.location
+    }
+
+    var draftChits = []
+    if (storedDraftChitsJson !== null) {
+      draftChits = draftChits.concat(storedDraftChitsJson)
+    }
+
+    draftChits.push(draftChit)
+
+    await AsyncStorage.setItem('DRAFT_CHITS', JSON.stringify(draftChits))
+  }
 
   async requestLocationPermission () {
     try {
@@ -199,8 +245,7 @@ export default class PostScreen extends Component {
 
           <ActionIcon
             onPress={() => this.props.navigation.navigate('Camera', {
-              returnData: this.returnData.bind(this),
-              onGoBack: () => console.log(this.state.image)
+              onGoBack: this.returnData.bind(this)
             })}
             name='camera'
           />
@@ -208,6 +253,11 @@ export default class PostScreen extends Component {
           <ActionIcon
             onPress={() => this.findCoordinates()}
             name='map-pin'
+          />
+
+          <ActionIcon
+            onPress={() => this.saveDraft()}
+            name='edit'
           />
 
           {this.state.spinner &&
@@ -219,6 +269,12 @@ export default class PostScreen extends Component {
               name='share'
             />}
         </View>
+        {this.state.imageData.uri ? <Image style={styles.image} source={{ uri: this.state.imageData.uri }} /> : null}
+        {this.state.location.latitude ? <Text style={styles.informationText}> Position: {this.state.location.latitude}, {this.state.location.longitude} </Text> : null}
+        <ActionButton
+          text='Saved drafts'
+          handleOnPress={() => this.props.navigation.navigate('Drafts')}
+        />
       </View>
     )
   }

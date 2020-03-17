@@ -42,7 +42,7 @@ export default class HomeScreen extends Component {
       this.setState({ token: userInfoJson.token })
       this.getChits()
     } catch (e) {
-      console.log(e)
+      console.log(e.message)
     }
   }
 

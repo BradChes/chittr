@@ -73,8 +73,11 @@ export default class CameraScreen extends Component {
       window.fetch(data.uri)
         .then((response) => response.blob())
         .then((response) => {
-          this.props.navigation.state.params.returnData(response)
-          this.props.navigation.state.params.onGoBack()
+          var imageData = {
+            uri: data.uri,
+            blob: response
+          }
+          this.props.navigation.state.params.onGoBack(imageData)
           this.props.navigation.goBack()
         })
     }
