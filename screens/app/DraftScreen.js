@@ -26,6 +26,14 @@ export default class DraftScreen extends Component {
     this.state = {
       id: 0,
       token: '',
+      draftChit: {
+        chit: '',
+        image: '',
+        location: {
+          latitude: 0.0,
+          longitude: 0.0
+        }
+      },
       isLoading: true,
       chitListData: []
     }
@@ -35,10 +43,17 @@ export default class DraftScreen extends Component {
   async readyUp () {
     try {
       const userInfo = await AsyncStorage.getItem('USER_INFO')
+      const draftChit = await AsyncStorage.getItem('DRAFT_CHITS')
+
       const userInfoJson = JSON.parse(userInfo)
+      const draftChitJson = JSON.parse(draftChit)
+
       this.setState({ id: userInfoJson.id })
       this.setState({ token: userInfoJson.token })
       this.setState({ isLoading: false })
+      this.setState({ draftChit: draftChitJson})
+
+      console.log(this.state.draftChit)
     } catch (e) {
       console.log(e)
     }

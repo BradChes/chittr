@@ -161,6 +161,15 @@ export default class PostScreen extends Component {
     )
   };
 
+  async saveDraft() {
+    var draftChit = {
+      chit: this.state.chit,
+      image: this.state.image,
+      location: this.state.location,
+    }
+    await AsyncStorage.setItem('DRAFT_CHITS', JSON.stringify(draftChit))
+  }
+
   async requestLocationPermission () {
     try {
       const granted = await PermissionsAndroid.request(
@@ -212,7 +221,7 @@ export default class PostScreen extends Component {
           />
 
           <ActionIcon
-            onPress={() => console.log("save draft")}
+            onPress={() => this.saveDraft()}
             name='edit'
           />
 
