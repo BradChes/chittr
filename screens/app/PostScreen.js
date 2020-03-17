@@ -210,6 +210,11 @@ export default class PostScreen extends Component {
             name='map-pin'
           />
 
+          <ActionIcon
+            onPress={() => console.log("draft")}
+            name='edit'
+          />
+
           {this.state.spinner &&
             <ActivityIndicator style={styles.spinner} />}
           {!this.state.spinner &&
