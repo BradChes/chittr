@@ -18,10 +18,10 @@ Before running this React-Native project, there are a couple of steps to do befo
 
 3. Open up Android Studio, navigate to the AVD manager and boot up an emulator you would like to use to see this application in.
 
-4. When steps 1, 2 and 3 have been completed you are now ready to run this project. Once again, from within the projects directory, run `react-native run-android`. This should begin the process of building and launching the Chittr application on the Android emulator you hvae open.
+4. When steps 1, 2 and 3 have been completed you are now ready to run this project. Once again, from within the projects directory, run `react-native run-android`. This should begin the process of building and launching the Chittr application on the Android emulator you have open.
 
 ## Introduction
-This is a React-Native mobile application using the Chittr API. Within the application a user can signup for a Chittr account. From there, they can log in and access/interact with the Chittr API. Activites within the application are broken down into tabs.
+This is a React-Native mobile application using the Chittr API. Within the application a user can signup for a Chittr account. From there, they can log in and access/interact with the Chittr API. Activities within the application are broken down into tabs.
 
 ### Home
 From the home tab a logged in user can see a list of others, as well as theirs, chits.
@@ -44,7 +44,7 @@ This tab is dedicated to searching for other users on Chittr. When a user enters
 The final tab is where all the management takes place, and has been divided into sub headings for readability.
 - User Information
   - Update the profile picture by using the camera on device
-  - Update user informtation including:
+  - Update user information including:
     - First name
     - Surname
     - Email address
@@ -72,7 +72,7 @@ An asynchronous, unencrypted, persistent, key-value storage system for React-Nat
 https://github.com/react-native-community/async-storage
 
 ### React Native Camera
-Enables the ability to use the camera on the device. Chittr needs the camera so that a user can update their profile picture as well as include a picture on one of their chitss.
+Enables the ability to use the camera on the device. Chittr needs the camera so that a user can update their profile picture as well as include a picture on one of their chits.
 
 https://github.com/react-native-community/react-native-camera
 
@@ -96,7 +96,7 @@ Used to display the tabs a logged in user will see. Helps with the navigation be
 https://github.com/react-navigation/tabs
 
 ### React Navigation Stack
-Stacks were used when tabs weren't necessary. Mainly when displaying none prominent views, for example:
+Stacks were used when tabs weren't necessary. Mainly when displaying non-prominent views, for example:
 - Sign up
 - Log in
 - Camera
