@@ -6,13 +6,19 @@ import {
   Text,
   Image,
   TouchableHighlight,
-  Alert
+  Alert,
+  Modal,
+  TextInput,
+  Dimensions
 } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
-import BackgroundTimer from 'react-native-background-timer';
+import BackgroundTimer from 'react-native-background-timer'
 
-//Components
+// Components
 import ActionIcon from '../components/ActionIcon'
+import ActionButton from '../components/ActionButton'
+
+const deviceWidth = Dimensions.get('window').width
 
 const styles = StyleSheet.create({
   superContainer: {
@@ -36,14 +42,29 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'gray',
     marginVertical: 5
-  }
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center'
+  },
+  modalInput: {
+    width: deviceWidth - 50,
+    backgroundColor: '#FFFFFF',
+    borderColor: 'red',
+    borderWidth: 1,
+    borderRadius: 20,
+    paddingLeft: 10,
+    marginVertical: 10
+  },
 })
 
 export default class ChitView extends Component {
   constructor () {
     super()
     this.state = {
-      token: ''
+      token: '',
+      modalVisible: false,
+      scheduleTime: '0'
     }
     this.readyUp()
   }
@@ -56,10 +77,6 @@ export default class ChitView extends Component {
     } catch (e) {
       console.log(e.message)
     }
-  }
-
-  delete () {
-    console.log('delete')
   }
 
   edit () {
@@ -95,7 +112,7 @@ export default class ChitView extends Component {
       Alert.alert('Error', 'Couldn\'t reach the server.')
     }
 
-    BackgroundTimer.stopBackgroundTimer();
+    BackgroundTimer.stopBackgroundTimer()
   }
 
   async postImage (chitId) {
@@ -118,46 +135,81 @@ export default class ChitView extends Component {
       Alert.alert('Error', 'Couldn\'t reach the server to post image.')
     }
 
-    BackgroundTimer.stopBackgroundTimer();
+    BackgroundTimer.stopBackgroundTimer()
   }
 
-schedule() {
-  BackgroundTimer.runBackgroundTimer(() => { 
-    this.post()
-    console.log("Posting  schedule chit")
-  }, 3000);
-}
+  schedule () {
+    var parsedScheduleTime = parseInt(this.state.scheduleTime)
+    BackgroundTimer.runBackgroundTimer(() => {
+      this.post()
+      console.log('Posting  schedule chit')
+    }, parsedScheduleTime * 6000)
+  }
+
+  openModal () {
+    this.setState({ modalVisible: true })
+  }
+
+  closeModal () {
+    this.setState({ modalVisible: false })
+    this.schedule()
+  }
 
   render () {
     return (
-      <TouchableHighlight
-        underlayColor='lightgray'
-        onPress={() => Alert.alert('Draft Management', 'Edit or post your selected draft?',
-          [
-            {
-              text: 'Edit',
-              onPress: () => this.edit()
-            },
-            {
-              text: 'Post',
-              onPress: () => this.post()
-            }
-          ]
-        )}
-      >
-        <View style={styles.superContainer}>
-          <View style={styles.bodyContainer}>
-            <Text style={styles.bodyText}>{this.props.body}</Text>
-            {this.props.imageData.uri ? <Image style={styles.bodyImage} source={{ uri: this.props.imageData.uri }} /> : null}
-            {this.props.location.latitude ? <Text style={styles.informationText}> Position: {this.props.location.latitude}, {this.props.location.longitude} </Text> : null}
+      <View>
+        <TouchableHighlight
+          underlayColor='lightgray'
+          onPress={() => Alert.alert('Draft Management', 'Edit or post your selected draft?',
+            [
+              {
+                text: 'Edit',
+                onPress: () => this.edit()
+              },
+              {
+                text: 'Post',
+                onPress: () => this.post()
+              }
+            ]
+          )}
+        >
+          <View style={styles.superContainer}>
+            <View style={styles.bodyContainer}>
+              <Text style={styles.bodyText}>{this.props.body}</Text>
+              {this.props.imageData.uri ? <Image style={styles.bodyImage} source={{ uri: this.props.imageData.uri }} /> : null}
+              {this.props.location.latitude ? <Text style={styles.informationText}> Position: {this.props.location.latitude}, {this.props.location.longitude} </Text> : null}
+            </View>
+            <ActionIcon
+              onPress={() => this.openModal()}
+              name='calendar'
+            />
           </View>
-          <ActionIcon
-            onPress={() => this.schedule()}
-            name='calendar'
-          />   
-        </View>
- 
-      </TouchableHighlight>
+
+        </TouchableHighlight>
+        <Modal
+          visible={this.state.modalVisible}
+          animationType='slide'
+          onRequestClose={() => this.closeModal()}
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.innerContainer}>
+              <Text>Schedule by the minute?</Text>
+              <TextInput
+                autoCompleteType='tel'
+                keyboardType='numeric'
+                onChangeText={scheduleTime => this.setState({ scheduleTime })}
+                style={styles.modalInput}
+                placeholder='30'
+                value={this.state.scheduleTime}
+            />
+                      <ActionButton
+            text='Submit'
+            handleOnPress={() => this.closeModal()}
+          />
+            </View>
+          </View>
+        </Modal>
+      </View>
     )
   }
 }
