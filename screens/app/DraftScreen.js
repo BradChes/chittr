@@ -28,7 +28,6 @@ export default class DraftScreen extends Component {
       token: '',
       draftChits: [],
       isLoading: true,
-      chitListData: []
     }
     this.readyUp()
   }
@@ -45,8 +44,6 @@ export default class DraftScreen extends Component {
       this.setState({ token: userInfoJson.token })
       this.setState({ isLoading: false })
       this.setState({ draftChits: draftChitsJson })
-
-      console.log(this.state.draftChits)
     } catch (e) {
       console.log(e)
     }
@@ -70,7 +67,7 @@ export default class DraftScreen extends Component {
     return (
       <View style={styles.container}>
         <FlatList
-          data={this.state.chitListData}
+          data={this.state.draftChits}
           ItemSeparatorComponent={this.renderSeparator}
           ListEmptyComponent={
             <FlatListEmpty
@@ -79,17 +76,14 @@ export default class DraftScreen extends Component {
           }
           renderItem={({ item }) =>
             <ChitView
-              chitId={item.chit_id}
-              userId={item.user.user_id}
-              user={item.user.given_name + ' ' + item.user.family_name}
-              timestamp={item.timestamp}
-              body={item.chit_content}
+              chitId={item.id}
+              body={item.chit}
               latitude={item.location
                 ? item.location.latitude : null}
               longitude={item.location
                 ? item.location.longitude : null}
             />}
-          keyExtractor={({ chit_id }) => chit_id.toString()} // eslint-disable-line camelcase
+          keyExtractor={({ id }) => id.toString()}
         />
       </View>
     )

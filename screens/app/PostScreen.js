@@ -162,19 +162,23 @@ export default class PostScreen extends Component {
   };
 
   async saveDraft() {
+    const storedDraftChits = await AsyncStorage.getItem('DRAFT_CHITS')
+    const storedDraftChitsJson = JSON.parse(storedDraftChits)
+
+    var chitId = storedDraftChitsJson ? storedDraftChitsJson.length + 1 : 1
+
     var draftChit = {
+      id: chitId,
       chit: this.state.chit,
       image: this.state.image,
       location: this.state.location,
     }
-    const storedDraftChits = await AsyncStorage.getItem('DRAFT_CHITS')
-    const storedDraftChitsJson = JSON.parse(storedDraftChits)
     
     var draftChits = []
     if(storedDraftChitsJson !== null) {
       draftChits = draftChits.concat(storedDraftChitsJson)
     }
-    
+
     draftChits.push(draftChit)
     await AsyncStorage.setItem('DRAFT_CHITS', JSON.stringify(draftChits))
   }
