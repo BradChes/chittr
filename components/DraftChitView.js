@@ -4,7 +4,9 @@ import {
   StyleSheet,
   View,
   Text,
-  Image
+  Image,
+  TouchableHighlight,
+  Alert
 } from 'react-native'
 
 const styles = StyleSheet.create({
@@ -40,8 +42,40 @@ export default class ChitView extends Component {
     }
   }
 
+  delete() {
+    console.log("delete")
+  }
+
+  edit() {
+    console.log("edit")
+  }
+
+  post() {
+    console.log("post")
+  }
+
   render () {
     return (
+      <TouchableHighlight
+      disabled={this.props.disabled}
+      underlayColor='lightgray'
+      onPress={() => Alert.alert('Follower Management', 'Follow or unfollow, that is the question?',
+        [
+          {
+            text: 'Delete',
+            onPress: () => this.delete()
+          },
+          {
+            text: 'Edit',
+            onPress: () => this.edit()
+          },
+          {
+            text: 'Post',
+            onPress: () => this.post()
+          },
+        ]
+      )}
+    >
       <View style={styles.superContainer}>
         <View style={styles.bodyContainer}>
           <Text style={styles.bodyText}>{this.props.body}</Text>
@@ -49,6 +83,7 @@ export default class ChitView extends Component {
           {this.props.latitude ? <Text style={styles.informationText}> Position: {this.props.latitude}, {this.props.longitude} </Text> : null}
         </View>
       </View>
+    </TouchableHighlight>
     )
   }
 }
