@@ -50,7 +50,10 @@ export default class PostScreen extends Component {
       userId: 0,
       token: '',
       chit: '',
-      image: '',
+      imageData: {
+        uri: '',
+        blob: ''
+      },
       location: {
         latitude: 0.0,
         longitude: 0.0
@@ -67,13 +70,13 @@ export default class PostScreen extends Component {
       const userInfoJson = JSON.parse(userInfo)
       this.setState({ userId: userInfoJson.id })
       this.setState({ token: userInfoJson.token })
-    } catch (e) {
-      // TODO
+    } catch(e) {
+      console.log(e)
     }
   }
 
   async postChit () {
-    const { token, chit, image, location } = this.state
+    const { token, chit, imageData, location } = this.state
     this.setState({ spinner: true })
 
     var jsonBody = JSON.stringify({
@@ -93,7 +96,7 @@ export default class PostScreen extends Component {
       })
         .then((response) => response.json())
         .then((response) => {
-          if (image !== '') {
+          if (imageData.blob !== '') {
             this.postImage(response.chit_id)
           }
         })
@@ -108,7 +111,7 @@ export default class PostScreen extends Component {
   }
 
   async postImage (chitId) {
-    const { token, image } = this.state
+    const { token, imageData } = this.state
 
     try {
       const response = await window.fetch('http://10.0.2.2:3333/api/v0.0.5/chits/' + chitId + '/photo', {
@@ -117,7 +120,7 @@ export default class PostScreen extends Component {
           'X-Authorization': token,
           'Content-Type': 'image/jpeg'
         },
-        body: image
+        body: imageData.blob
       })
       if (response.status !== 201) {
         const responseText = await response.text()
@@ -129,11 +132,17 @@ export default class PostScreen extends Component {
       this.setState({ isRefreshing: false })
     }
 
-    this.setState({ image: '' })
+    this.setState({ 
+      imageData: {
+        uri: '',
+        blob: ''
+      } 
+    })
   }
 
-  returnData (image) {
-    this.setState({ image: image })
+  returnData (imageData) {
+    console.log(imageData)
+    this.setState({ imageData: imageData })
   }
 
   findCoordinates () {
@@ -170,7 +179,7 @@ export default class PostScreen extends Component {
     var draftChit = {
       id: chitId,
       chit: this.state.chit,
-      image: this.state.image,
+      imageData: this.state.imageData,
       location: this.state.location,
     }
     
@@ -180,6 +189,8 @@ export default class PostScreen extends Component {
     }
 
     draftChits.push(draftChit)
+
+    console.log(draftChit)
     await AsyncStorage.setItem('DRAFT_CHITS', JSON.stringify(draftChits))
   }
 
@@ -222,8 +233,7 @@ export default class PostScreen extends Component {
 
           <ActionIcon
             onPress={() => this.props.navigation.navigate('Camera', {
-              returnData: this.returnData.bind(this),
-              onGoBack: () => console.log(this.state.image)
+              onGoBack: this.returnData.bind(this)
             })}
             name='camera'
           />

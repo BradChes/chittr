@@ -3,11 +3,9 @@ import React, { Component } from 'react'
 import {
   StyleSheet,
   View,
-  Text
+  Text,
+  Image
 } from 'react-native'
-
-// FastImage
-import FastImage from 'react-native-fast-image'
 
 const styles = StyleSheet.create({
   superContainer: {
@@ -39,15 +37,7 @@ export default class ChitView extends Component {
       <View style={styles.superContainer}>
         <View style={styles.bodyContainer}>
           <Text style={styles.bodyText}>{this.props.body}</Text>
-          {/* <FastImage
-            style={styles.bodyImage}
-            source={{
-              uri: 'http://10.0.2.2:3333/api/v0.0.5/chits/' + this.props.chitId + '/photo',
-              headers: { 'Content-Type': 'image/png' },
-              priority: FastImage.priority.normal
-            }}
-            resizeMode={FastImage.resizeMode.contain}
-          /> */}
+          {this.props.imageUri ? <Image style={styles.bodyImage} source={{ uri: this.props.imageUri }} /> : null}
           {this.props.latitude ? <Text style={styles.informationText}> Position: {this.props.latitude}, {this.props.longitude} </Text> : null}
         </View>
       </View>

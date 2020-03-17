@@ -78,6 +78,7 @@ export default class DraftScreen extends Component {
             <DraftChitView
               chitId={item.id}
               body={item.chit}
+              imageUri = {item.imageData.uri}
               latitude={item.location
                 ? item.location.latitude : null}
               longitude={item.location
