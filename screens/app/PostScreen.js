@@ -167,7 +167,16 @@ export default class PostScreen extends Component {
       image: this.state.image,
       location: this.state.location,
     }
-    await AsyncStorage.setItem('DRAFT_CHITS', JSON.stringify(draftChit))
+    const storedDraftChits = await AsyncStorage.getItem('DRAFT_CHITS')
+    const storedDraftChitsJson = JSON.parse(storedDraftChits)
+    
+    var draftChits = []
+    if(storedDraftChitsJson !== null) {
+      draftChits = draftChits.concat(storedDraftChitsJson)
+    }
+    
+    draftChits.push(draftChit)
+    await AsyncStorage.setItem('DRAFT_CHITS', JSON.stringify(draftChits))
   }
 
   async requestLocationPermission () {
