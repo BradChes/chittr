@@ -12,6 +12,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 import DraftChitView from './../../components/DraftChitView'
 import FlatListEmpty from '../../components/FlatListEmpty'
 import FlatListDivider from '../../components/FlatListDivider'
+import ActionButton from '../../components/ActionButton'
 
 const styles = StyleSheet.create({
   container: {
@@ -35,15 +36,14 @@ export default class DraftScreen extends Component {
   async readyUp () {
     try {
       const userInfo = await AsyncStorage.getItem('USER_INFO')
-      const draftChits = await AsyncStorage.getItem('DRAFT_CHITS')
-
       const userInfoJson = JSON.parse(userInfo)
-      const draftChitsJson = JSON.parse(draftChits)
 
       this.setState({ id: userInfoJson.id })
       this.setState({ token: userInfoJson.token })
+
+      this.getDrafts()
+
       this.setState({ isLoading: false })
-      this.setState({ draftChits: draftChitsJson })
     } catch (e) {
       console.log(e.message)
     }
@@ -54,6 +54,18 @@ export default class DraftScreen extends Component {
       <FlatListDivider />
     )
   };
+
+  async getDrafts() {
+    const draftChits = await AsyncStorage.getItem('DRAFT_CHITS')
+    const draftChitsJson = JSON.parse(draftChits)
+
+    this.setState({ draftChits: draftChitsJson })
+  }
+
+  async clearDrafts() {
+    await AsyncStorage.removeItem('DRAFT_CHITS');
+    this.getDrafts()
+  }
 
   render () {
     if (this.state.isLoading) {
@@ -84,6 +96,9 @@ export default class DraftScreen extends Component {
           }
           keyExtractor={({ id }) => id.toString()}
         />
+          <ActionButton
+            text='Clear drafts'
+            handleOnPress={() => this.clearDrafts()}/>
       </View>
     )
   }
