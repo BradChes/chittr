@@ -6,6 +6,8 @@ import {
   TextInput,
   Dimensions,
   Alert,
+  Text,
+  Image,
   ActivityIndicator,
   PermissionsAndroid
 } from 'react-native'
@@ -37,6 +39,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingLeft: 10,
     marginVertical: 10
+  },
+  image: {
+    width: 150,
+    height: 150
   },
   spinner: {
     margin: 20
@@ -257,6 +263,8 @@ export default class PostScreen extends Component {
               name='share'
             />}
         </View>
+          {this.state.imageData.uri ? <Image style={styles.image} source={{ uri: this.state.imageData.uri }} /> : null}
+          {this.state.location.latitude ? <Text style={styles.informationText}> Position: {this.state.location.latitude}, {this.state.location.longitude} </Text> : null}
         <ActionButton
           text='Saved drafts'
           handleOnPress={() => this.props.navigation.navigate('Drafts')}
