@@ -9,7 +9,7 @@ import {
 import AsyncStorage from '@react-native-community/async-storage'
 
 // Components
-import ChitView from './../../components/ChitView'
+import DraftChitView from './../../components/DraftChitView'
 import FlatListEmpty from '../../components/FlatListEmpty'
 import FlatListDivider from '../../components/FlatListDivider'
 
@@ -75,7 +75,7 @@ export default class DraftScreen extends Component {
             />
           }
           renderItem={({ item }) =>
-            <ChitView
+            <DraftChitView
               chitId={item.id}
               body={item.chit}
               latitude={item.location
