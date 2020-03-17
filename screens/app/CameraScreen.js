@@ -75,7 +75,7 @@ export default class CameraScreen extends Component {
         .then((response) => {
           var imageData = {
             uri: data.uri,
-            blob:response
+            blob: response
           }
           this.props.navigation.state.params.onGoBack(imageData)
           this.props.navigation.goBack()

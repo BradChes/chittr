@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: 'gray',
-    marginVertical: 5  
+    marginVertical: 5
   }
 })
 
@@ -49,17 +49,17 @@ export default class ChitView extends Component {
       const userInfo = await AsyncStorage.getItem('USER_INFO')
       const userInfoJson = JSON.parse(userInfo)
       this.setState({ token: userInfoJson.token })
-    } catch(e) {
+    } catch (e) {
       console.log(e.message)
     }
   }
 
-  delete() {
-    console.log("delete")
+  delete () {
+    console.log('delete')
   }
 
-  edit() {
-    console.log("edit")
+  edit () {
+    console.log('edit')
   }
 
   async post () {
@@ -116,28 +116,28 @@ export default class ChitView extends Component {
   render () {
     return (
       <TouchableHighlight
-      underlayColor='lightgray'
-      onPress={() => Alert.alert('Draft Management', 'Edit or post your selected draft?',
-        [
-          {
-            text: 'Edit',
-            onPress: () => this.edit()
-          },
-          {
-            text: 'Post',
-            onPress: () => this.post()
-          },
-        ]
-      )}
-    >
-      <View style={styles.superContainer}>
-        <View style={styles.bodyContainer}>
-          <Text style={styles.bodyText}>{this.props.body}</Text>
-          {this.props.imageData.uri ? <Image style={styles.bodyImage} source={{ uri: this.props.imageData.uri }} /> : null}
-          {this.props.location.latitude ? <Text style={styles.informationText}> Position: {this.props.location.latitude}, {this.props.location.longitude} </Text> : null}
+        underlayColor='lightgray'
+        onPress={() => Alert.alert('Draft Management', 'Edit or post your selected draft?',
+          [
+            {
+              text: 'Edit',
+              onPress: () => this.edit()
+            },
+            {
+              text: 'Post',
+              onPress: () => this.post()
+            }
+          ]
+        )}
+      >
+        <View style={styles.superContainer}>
+          <View style={styles.bodyContainer}>
+            <Text style={styles.bodyText}>{this.props.body}</Text>
+            {this.props.imageData.uri ? <Image style={styles.bodyImage} source={{ uri: this.props.imageData.uri }} /> : null}
+            {this.props.location.latitude ? <Text style={styles.informationText}> Position: {this.props.location.latitude}, {this.props.location.longitude} </Text> : null}
+          </View>
         </View>
-      </View>
-    </TouchableHighlight>
+      </TouchableHighlight>
     )
   }
 }

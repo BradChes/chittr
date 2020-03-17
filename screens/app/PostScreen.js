@@ -83,7 +83,7 @@ export default class PostScreen extends Component {
       const userInfoJson = JSON.parse(userInfo)
       this.setState({ userId: userInfoJson.id })
       this.setState({ token: userInfoJson.token })
-    } catch(e) {
+    } catch (e) {
       console.log(e.message)
     }
   }
@@ -145,11 +145,11 @@ export default class PostScreen extends Component {
       this.setState({ isRefreshing: false })
     }
 
-    this.setState({ 
+    this.setState({
       imageData: {
         uri: '',
         blob: ''
-      } 
+      }
     })
   }
 
@@ -183,7 +183,7 @@ export default class PostScreen extends Component {
     )
   };
 
-  async saveDraft() {
+  async saveDraft () {
     const storedDraftChits = await AsyncStorage.getItem('DRAFT_CHITS')
     const storedDraftChitsJson = JSON.parse(storedDraftChits)
 
@@ -193,11 +193,11 @@ export default class PostScreen extends Component {
       id: chitId,
       chit: this.state.chit,
       imageData: this.state.imageData,
-      location: this.state.location,
+      location: this.state.location
     }
-    
+
     var draftChits = []
-    if(storedDraftChitsJson !== null) {
+    if (storedDraftChitsJson !== null) {
       draftChits = draftChits.concat(storedDraftChitsJson)
     }
 
@@ -269,8 +269,8 @@ export default class PostScreen extends Component {
               name='share'
             />}
         </View>
-          {this.state.imageData.uri ? <Image style={styles.image} source={{ uri: this.state.imageData.uri }} /> : null}
-          {this.state.location.latitude ? <Text style={styles.informationText}> Position: {this.state.location.latitude}, {this.state.location.longitude} </Text> : null}
+        {this.state.imageData.uri ? <Image style={styles.image} source={{ uri: this.state.imageData.uri }} /> : null}
+        {this.state.location.latitude ? <Text style={styles.informationText}> Position: {this.state.location.latitude}, {this.state.location.longitude} </Text> : null}
         <ActionButton
           text='Saved drafts'
           handleOnPress={() => this.props.navigation.navigate('Drafts')}

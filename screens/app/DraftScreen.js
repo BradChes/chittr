@@ -4,7 +4,7 @@ import {
   StyleSheet,
   View,
   ActivityIndicator,
-  FlatList,
+  FlatList
 } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 
@@ -28,7 +28,7 @@ export default class DraftScreen extends Component {
       id: 0,
       token: '',
       draftChits: [],
-      isLoading: true,
+      isLoading: true
     }
     this.readyUp()
   }
@@ -55,15 +55,15 @@ export default class DraftScreen extends Component {
     )
   };
 
-  async getDrafts() {
+  async getDrafts () {
     const draftChits = await AsyncStorage.getItem('DRAFT_CHITS')
     const draftChitsJson = JSON.parse(draftChits)
 
     this.setState({ draftChits: draftChitsJson })
   }
 
-  async clearDrafts() {
-    await AsyncStorage.removeItem('DRAFT_CHITS');
+  async clearDrafts () {
+    await AsyncStorage.removeItem('DRAFT_CHITS')
     this.getDrafts()
   }
 
@@ -90,15 +90,15 @@ export default class DraftScreen extends Component {
             <DraftChitView
               chitId={item.id}
               body={item.chit}
-              imageData = {item.imageData}
+              imageData={item.imageData}
               location={item.location}
-            />
-          }
+            />}
           keyExtractor={({ id }) => id.toString()}
         />
-          <ActionButton
-            text='Clear drafts'
-            handleOnPress={() => this.clearDrafts()}/>
+        <ActionButton
+          text='Clear drafts'
+          handleOnPress={() => this.clearDrafts()}
+        />
       </View>
     )
   }
