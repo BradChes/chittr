@@ -35,7 +35,8 @@ export default class DraftScreen extends Component {
     this.state = {
       token: '',
       draftChits: [],
-      isLoading: true
+      isLoading: true,
+      isRefreshing: false
     }
     this.readyUp()
   }
@@ -51,24 +52,31 @@ export default class DraftScreen extends Component {
     }
   }
 
-  renderSeparator () {
-    return (
-      <FlatListDivider />
-    )
-  };
+  onRefresh () {
+    this.setState({ isRefreshing: true }, function () { this.getDrafts() })
+  }
 
   async getDrafts () {
     const draftChits = await AsyncStorage.getItem('DRAFT_CHITS')
     const draftChitsJson = JSON.parse(draftChits)
 
-    this.setState({ draftChits: draftChitsJson })
-    this.setState({ isLoading: false })
+    this.setState({
+      draftChits: draftChitsJson,
+      isLoading: false, 
+      isRefreshing: false,
+    })
   }
 
   async clearDrafts () {
     await AsyncStorage.removeItem('DRAFT_CHITS')
     this.getDrafts()
   }
+
+  renderSeparator () {
+    return (
+      <FlatListDivider />
+    )
+  };
 
   render () {
     if (this.state.isLoading) {
@@ -85,6 +93,8 @@ export default class DraftScreen extends Component {
 
         <FlatList
           data={this.state.draftChits}
+          onRefresh={() => this.onRefresh()}
+          refreshing={this.state.isRefreshing}
           ItemSeparatorComponent={this.renderSeparator}
           ListEmptyComponent={
             <FlatListEmpty

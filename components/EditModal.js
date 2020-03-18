@@ -152,6 +152,8 @@ export default class EditModal extends Component {
     draftChits[this.props.draftChitId - 1] = draftChit
 
     await AsyncStorage.setItem('DRAFT_CHITS', JSON.stringify(draftChits))
+    
+    this.props.close()
   }
 
   render () {
