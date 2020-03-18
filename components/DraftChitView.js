@@ -23,7 +23,7 @@ const deviceWidth = Dimensions.get('window').width
 const styles = StyleSheet.create({
   superContainer: {
     flexDirection: 'row',
-    justifyContent:'space-between',
+    justifyContent: 'space-between',
     paddingHorizontal: 10,
     paddingVertical: 10
   },
@@ -94,7 +94,7 @@ export default class DraftChitView extends Component {
     console.log('edit')
   }
 
-  async post () {  
+  async post () {
     const { token } = this.state
 
     var jsonBody = JSON.stringify({
@@ -150,7 +150,7 @@ export default class DraftChitView extends Component {
     BackgroundTimer.setTimeout(() => {
       this.post()
       console.log('Posting schedule chit')
-    }, parsedScheduleTime * 6000);
+    }, parsedScheduleTime * 6000)
   }
 
   openModal () {
