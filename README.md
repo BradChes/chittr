@@ -104,3 +104,8 @@ Stacks were used when tabs weren't necessary. Mainly when displaying non-promine
 - Followers
 
 https://github.com/react-navigation/stack
+
+### React Native Background Timer
+This library helps set up the scheduling for sending a chit at a certain time.
+
+https://github.com/ocetnik/react-native-background-timer
