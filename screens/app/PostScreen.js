@@ -183,29 +183,6 @@ export default class PostScreen extends Component {
     )
   };
 
-  async saveDraft () {
-    const storedDraftChits = await AsyncStorage.getItem('DRAFT_CHITS')
-    const storedDraftChitsJson = JSON.parse(storedDraftChits)
-
-    var chitId = storedDraftChitsJson ? storedDraftChitsJson.length + 1 : 1
-
-    var draftChit = {
-      id: chitId,
-      chit: this.state.chit,
-      imageData: this.state.imageData,
-      location: this.state.location
-    }
-
-    var draftChits = []
-    if (storedDraftChitsJson !== null) {
-      draftChits = draftChits.concat(storedDraftChitsJson)
-    }
-
-    draftChits.push(draftChit)
-
-    await AsyncStorage.setItem('DRAFT_CHITS', JSON.stringify(draftChits))
-  }
-
   async requestLocationPermission () {
     try {
       const granted = await PermissionsAndroid.request(
@@ -227,6 +204,29 @@ export default class PostScreen extends Component {
     } catch (err) {
       console.warn(err)
     }
+  }
+
+  async saveDraft () {
+    const storedDraftChits = await AsyncStorage.getItem('DRAFT_CHITS')
+    const storedDraftChitsJson = JSON.parse(storedDraftChits)
+
+    var chitId = storedDraftChitsJson ? storedDraftChitsJson.length + 1 : 1
+
+    var draftChit = {
+      id: chitId,
+      chit: this.state.chit,
+      imageData: this.state.imageData,
+      location: this.state.location
+    }
+
+    var draftChits = []
+    if (storedDraftChitsJson !== null) {
+      draftChits = draftChits.concat(storedDraftChitsJson)
+    }
+
+    draftChits.push(draftChit)
+
+    await AsyncStorage.setItem('DRAFT_CHITS', JSON.stringify(draftChits))
   }
 
   render () {

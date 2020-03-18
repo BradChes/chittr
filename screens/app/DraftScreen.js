@@ -33,7 +33,6 @@ export default class DraftScreen extends Component {
   constructor () {
     super()
     this.state = {
-      id: 0,
       token: '',
       draftChits: [],
       isLoading: true
@@ -45,7 +44,6 @@ export default class DraftScreen extends Component {
     try {
       const userInfo = await AsyncStorage.getItem('USER_INFO')
       const userInfoJson = JSON.parse(userInfo)
-      this.setState({ id: userInfoJson.id })
       this.setState({ token: userInfoJson.token })
       this.getDrafts()
     } catch (e) {
@@ -95,7 +93,7 @@ export default class DraftScreen extends Component {
           }
           renderItem={({ item }) =>
             <DraftChitView
-              chitId={item.id}
+              draftChitId={item.id}
               body={item.chit}
               imageData={item.imageData}
               location={item.location}
