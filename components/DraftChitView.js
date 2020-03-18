@@ -174,6 +174,9 @@ export default class DraftChitView extends Component {
           onPress={() => Alert.alert('Draft Management', 'Edit or post your selected draft?',
             [
               {
+                text: 'Cancel'
+              },
+              {
                 text: 'Edit',
                 onPress: () => this.edit()
               },
