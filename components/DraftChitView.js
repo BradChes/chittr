@@ -147,11 +147,13 @@ export default class DraftChitView extends Component {
 
   schedule () {
     if(this.state.scheduleTime !== '') {
-      var parsedScheduleTime = parseInt(this.state.scheduleTime)
-      BackgroundTimer.setTimeout(() => {
-        this.post()
-        console.log('Posting schedule chit')
-      }, parsedScheduleTime * 6000)
+      if(!isNaN(this.state.scheduleTime)) {
+        var parsedScheduleTime = parseInt(this.state.scheduleTime)
+        BackgroundTimer.setTimeout(() => {
+          this.post()
+          console.log('Posting schedule chit')
+        }, parsedScheduleTime * 6000)
+      }
     }
   }
 
