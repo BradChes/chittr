@@ -23,6 +23,7 @@ const deviceWidth = Dimensions.get('window').width
 const styles = StyleSheet.create({
   superContainer: {
     flexDirection: 'row',
+    justifyContent:'space-between',
     paddingHorizontal: 10,
     paddingVertical: 10
   },
