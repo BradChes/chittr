@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingLeft: 10,
     marginVertical: 10
-
   },
   spinnerTextStyle: {
     textAlign: 'center'

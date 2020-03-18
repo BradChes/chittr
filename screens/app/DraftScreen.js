@@ -37,13 +37,9 @@ export default class DraftScreen extends Component {
     try {
       const userInfo = await AsyncStorage.getItem('USER_INFO')
       const userInfoJson = JSON.parse(userInfo)
-
       this.setState({ id: userInfoJson.id })
       this.setState({ token: userInfoJson.token })
-
       this.getDrafts()
-
-      this.setState({ isLoading: false })
     } catch (e) {
       console.log(e.message)
     }
@@ -60,6 +56,7 @@ export default class DraftScreen extends Component {
     const draftChitsJson = JSON.parse(draftChits)
 
     this.setState({ draftChits: draftChitsJson })
+    this.setState({ isLoading: false })
   }
 
   async clearDrafts () {
