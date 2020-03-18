@@ -22,11 +22,16 @@ const deviceWidth = Dimensions.get('window').width
 
 const styles = StyleSheet.create({
   superContainer: {
+    flexDirection: 'row',
     paddingHorizontal: 10,
     paddingVertical: 10
   },
   bodyContainer: {
     flexDirection: 'column'
+  },
+  scheduleContainer: {
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   bodyImage: {
     width: 150,
@@ -184,10 +189,12 @@ export default class ChitView extends Component {
               {this.props.imageData.uri ? <Image style={styles.bodyImage} source={{ uri: this.props.imageData.uri }} /> : null}
               {this.props.location.latitude ? <Text style={styles.informationText}> Position: {this.props.location.latitude}, {this.props.location.longitude} </Text> : null}
             </View>
-            <ActionIcon
-              onPress={() => this.openModal()}
-              name='calendar'
-            />
+            <View style={styles.scheduleContainer}>
+              <ActionIcon
+                onPress={() => this.openModal()}
+                name='calendar'
+              />
+            </View>
           </View>
         </TouchableHighlight>
 
