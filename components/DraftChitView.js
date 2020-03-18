@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingLeft: 10,
     marginVertical: 10
-  },
+  }
 })
 
 export default class ChitView extends Component {
@@ -160,7 +160,7 @@ export default class ChitView extends Component {
     this.schedule()
   }
 
-  render () { 
+  render () {
     return (
       <View>
         <TouchableHighlight
@@ -206,11 +206,11 @@ export default class ChitView extends Component {
                 style={styles.modalInput}
                 placeholder='30'
                 value={this.state.scheduleTime}
-            />
-                      <ActionButton
-            text='Submit'
-            handleOnPress={() => this.closeModal()}
-          />
+              />
+              <ActionButton
+                text='Submit'
+                handleOnPress={() => this.closeModal()}
+              />
             </View>
           </View>
         </Modal>
