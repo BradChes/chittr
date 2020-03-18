@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'gray',
     marginVertical: 5
-  },
+  }
 })
 
 export default class EditModal extends Component {
@@ -67,7 +67,7 @@ export default class EditModal extends Component {
         longitude: 0.0
       },
       locationPermission: false,
-      draftChits: [],
+      draftChits: []
     }
     this.readyUp()
   }
@@ -76,7 +76,7 @@ export default class EditModal extends Component {
     try {
       const draftChits = await AsyncStorage.getItem('DRAFT_CHITS')
       const draftChitsJson = JSON.parse(draftChits)
-      this.setState({draftChits: draftChitsJson})
+      this.setState({ draftChits: draftChitsJson })
       var draftChit = this.state.draftChits[this.props.draftChitId - 1]
       this.setState({ chit: draftChit.chit })
       this.setState({ imageData: draftChit.imageData })
@@ -152,7 +152,7 @@ export default class EditModal extends Component {
     draftChits[this.props.draftChitId - 1] = draftChit
 
     await AsyncStorage.setItem('DRAFT_CHITS', JSON.stringify(draftChits))
-    
+
     this.props.close()
   }
 
@@ -164,13 +164,15 @@ export default class EditModal extends Component {
       <Modal
         visible={this.props.visible}
         animationType='slide'
-        onRequestClose={() => this.props.close()} >
+        onRequestClose={() => this.props.close()}
+      >
         <View style={styles.container}>
           <TextInput
             onChangeText={chit => this.setState({ chit })}
             style={styles.input}
             placeholder="What's on your mind?"
-            value={this.state.chit} />
+            value={this.state.chit}
+          />
 
           <View style={styles.actionContainer}>
             {/* <ActionIcon

@@ -20,13 +20,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   listContainer: {
-    flex: 8,
+    flex: 8
   },
   deleteContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
-  },
+  }
 })
 
 export default class DraftScreen extends Component {
@@ -62,8 +62,8 @@ export default class DraftScreen extends Component {
 
     this.setState({
       draftChits: draftChitsJson,
-      isLoading: false, 
-      isRefreshing: false,
+      isLoading: false,
+      isRefreshing: false
     })
   }
 
@@ -89,33 +89,33 @@ export default class DraftScreen extends Component {
 
     return (
       <View style={styles.superContainer}>
-              <View style={styles.listContainer}>
+        <View style={styles.listContainer}>
 
-        <FlatList
-          data={this.state.draftChits}
-          onRefresh={() => this.onRefresh()}
-          refreshing={this.state.isRefreshing}
-          ItemSeparatorComponent={this.renderSeparator}
-          ListEmptyComponent={
-            <FlatListEmpty
-              message='There are no drafts to display at the moment...'
-            />
-          }
-          renderItem={({ item }) =>
-            <DraftChitView
-              draftChitId={item.id}
-              body={item.chit}
-              imageData={item.imageData}
-              location={item.location}
-            />}
-          keyExtractor={({ id }) => id.toString()}
-        />
+          <FlatList
+            data={this.state.draftChits}
+            onRefresh={() => this.onRefresh()}
+            refreshing={this.state.isRefreshing}
+            ItemSeparatorComponent={this.renderSeparator}
+            ListEmptyComponent={
+              <FlatListEmpty
+                message='There are no drafts to display at the moment...'
+              />
+            }
+            renderItem={({ item }) =>
+              <DraftChitView
+                draftChitId={item.id}
+                body={item.chit}
+                imageData={item.imageData}
+                location={item.location}
+              />}
+            keyExtractor={({ id }) => id.toString()}
+          />
         </View>
         <View style={styles.deleteContainer}>
-        <ActionButton
-          text='Clear drafts'
-          handleOnPress={() => this.clearDrafts()}
-        />
+          <ActionButton
+            text='Clear drafts'
+            handleOnPress={() => this.clearDrafts()}
+          />
         </View>
       </View>
     )

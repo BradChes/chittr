@@ -19,7 +19,6 @@ import ActionIcon from '../components/ActionIcon'
 import ActionButton from '../components/ActionButton'
 import EditModal from '../components/EditModal'
 
-
 const deviceWidth = Dimensions.get('window').width
 
 const styles = StyleSheet.create({
@@ -149,8 +148,8 @@ export default class DraftChitView extends Component {
   }
 
   schedule () {
-    if(this.state.scheduleTime !== '') {
-      if(!isNaN(this.state.scheduleTime)) {
+    if (this.state.scheduleTime !== '') {
+      if (!isNaN(this.state.scheduleTime)) {
         var parsedScheduleTime = parseInt(this.state.scheduleTime)
         BackgroundTimer.setTimeout(() => {
           this.post()
@@ -237,11 +236,11 @@ export default class DraftChitView extends Component {
           </View>
         </Modal>
 
-
         <EditModal
           draftChitId={this.props.draftChitId}
           visible={this.state.editModalVisible}
-          close={() => this.closeEditModal()}/>
+          close={() => this.closeEditModal()}
+        />
       </View>
     )
   }
