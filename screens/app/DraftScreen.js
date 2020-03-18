@@ -20,9 +20,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   listContainer: {
-    justifyContent: 'center'
+    flex: 8,
   },
   deleteContainer: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
   },
