@@ -15,10 +15,17 @@ import FlatListDivider from '../../components/FlatListDivider'
 import ActionButton from '../../components/ActionButton'
 
 const styles = StyleSheet.create({
-  container: {
+  superContainer: {
     flex: 1,
     justifyContent: 'center'
-  }
+  },
+  listContainer: {
+    justifyContent: 'center'
+  },
+  deleteContainer: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
 })
 
 export default class DraftScreen extends Component {
@@ -67,14 +74,16 @@ export default class DraftScreen extends Component {
   render () {
     if (this.state.isLoading) {
       return (
-        <View style={styles.container}>
+        <View style={styles.superContainer}>
           <ActivityIndicator />
         </View>
       )
     }
 
     return (
-      <View style={styles.container}>
+      <View style={styles.superContainer}>
+              <View style={styles.listContainer}>
+
         <FlatList
           data={this.state.draftChits}
           ItemSeparatorComponent={this.renderSeparator}
@@ -92,10 +101,13 @@ export default class DraftScreen extends Component {
             />}
           keyExtractor={({ id }) => id.toString()}
         />
+        </View>
+        <View style={styles.deleteContainer}>
         <ActionButton
           text='Clear drafts'
           handleOnPress={() => this.clearDrafts()}
         />
+        </View>
       </View>
     )
   }
