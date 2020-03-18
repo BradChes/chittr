@@ -256,6 +256,7 @@ export default class PostScreen extends Component {
           />
 
           <ActionIcon
+            disabled={!enabled}
             onPress={() => this.saveDraft()}
             name='edit'
           />
