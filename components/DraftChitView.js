@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   }
 })
 
-export default class ChitView extends Component {
+export default class DraftChitView extends Component {
   constructor () {
     super()
     this.state = {
@@ -94,7 +94,7 @@ export default class ChitView extends Component {
     console.log('edit')
   }
 
-  async post () {
+  async post () {  
     const { token } = this.state
 
     var jsonBody = JSON.stringify({
@@ -122,8 +122,6 @@ export default class ChitView extends Component {
     } catch (error) {
       Alert.alert('Error', 'Couldn\'t reach the server.')
     }
-
-    BackgroundTimer.stopBackgroundTimer()
   }
 
   async postImage (chitId) {
@@ -145,16 +143,14 @@ export default class ChitView extends Component {
     } catch (error) {
       Alert.alert('Error', 'Couldn\'t reach the server to post image.')
     }
-
-    BackgroundTimer.stopBackgroundTimer()
   }
 
   schedule () {
     var parsedScheduleTime = parseInt(this.state.scheduleTime)
-    BackgroundTimer.runBackgroundTimer(() => {
+    BackgroundTimer.setTimeout(() => {
       this.post()
-      console.log('Posting  schedule chit')
-    }, parsedScheduleTime * 6000)
+      console.log('Posting schedule chit')
+    }, parsedScheduleTime * 6000);
   }
 
   openModal () {
