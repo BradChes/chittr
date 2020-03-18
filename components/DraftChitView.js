@@ -47,6 +47,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center'
   },
+  innerContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   modalInput: {
     width: deviceWidth - 50,
     backgroundColor: '#FFFFFF',
@@ -64,7 +69,7 @@ export default class ChitView extends Component {
     this.state = {
       token: '',
       modalVisible: false,
-      scheduleTime: '0'
+      scheduleTime: ''
     }
     this.readyUp()
   }
@@ -155,7 +160,7 @@ export default class ChitView extends Component {
     this.schedule()
   }
 
-  render () {
+  render () { 
     return (
       <View>
         <TouchableHighlight
@@ -184,8 +189,8 @@ export default class ChitView extends Component {
               name='calendar'
             />
           </View>
-
         </TouchableHighlight>
+
         <Modal
           visible={this.state.modalVisible}
           animationType='slide'
@@ -193,7 +198,7 @@ export default class ChitView extends Component {
         >
           <View style={styles.modalContainer}>
             <View style={styles.innerContainer}>
-              <Text>Schedule by the minute?</Text>
+              <Text>Delay this chit (By the minute)?</Text>
               <TextInput
                 autoCompleteType='tel'
                 keyboardType='numeric'
