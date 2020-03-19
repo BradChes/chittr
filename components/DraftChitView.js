@@ -17,6 +17,7 @@ import BackgroundTimer from 'react-native-background-timer'
 // Components
 import ActionIcon from '../components/ActionIcon'
 import ActionButton from '../components/ActionButton'
+import EditModal from '../components/EditModal'
 
 const deviceWidth = Dimensions.get('window').width
 
@@ -74,7 +75,8 @@ export default class DraftChitView extends Component {
     super()
     this.state = {
       token: '',
-      modalVisible: false,
+      editModalVisible: false,
+      scheduleModalVisible: false,
       scheduleTime: ''
     }
     this.readyUp()
@@ -91,7 +93,7 @@ export default class DraftChitView extends Component {
   }
 
   edit () {
-    console.log('edit')
+
   }
 
   async post () {
@@ -146,19 +148,31 @@ export default class DraftChitView extends Component {
   }
 
   schedule () {
-    var parsedScheduleTime = parseInt(this.state.scheduleTime)
-    BackgroundTimer.setTimeout(() => {
-      this.post()
-      console.log('Posting schedule chit')
-    }, parsedScheduleTime * 6000)
+    if (this.state.scheduleTime !== '') {
+      if (!isNaN(this.state.scheduleTime)) {
+        var parsedScheduleTime = parseInt(this.state.scheduleTime)
+        BackgroundTimer.setTimeout(() => {
+          this.post()
+          console.log('Posting schedule chit')
+        }, parsedScheduleTime * 6000)
+      }
+    }
   }
 
-  openModal () {
-    this.setState({ modalVisible: true })
+  openEditModal () {
+    this.setState({ editModalVisible: true })
   }
 
-  closeModal () {
-    this.setState({ modalVisible: false })
+  closeEditModal () {
+    this.setState({ editModalVisible: false })
+  }
+
+  openScheduleModal () {
+    this.setState({ scheduleModalVisible: true })
+  }
+
+  closeScheduleModal () {
+    this.setState({ scheduleModalVisible: false })
     this.schedule()
   }
 
@@ -170,8 +184,11 @@ export default class DraftChitView extends Component {
           onPress={() => Alert.alert('Draft Management', 'Edit or post your selected draft?',
             [
               {
+                text: 'Cancel'
+              },
+              {
                 text: 'Edit',
-                onPress: () => this.edit()
+                onPress: () => this.openEditModal()
               },
               {
                 text: 'Post',
@@ -188,7 +205,7 @@ export default class DraftChitView extends Component {
             </View>
             <View style={styles.scheduleContainer}>
               <ActionIcon
-                onPress={() => this.openModal()}
+                onPress={() => this.openScheduleModal()}
                 name='calendar'
               />
             </View>
@@ -196,9 +213,9 @@ export default class DraftChitView extends Component {
         </TouchableHighlight>
 
         <Modal
-          visible={this.state.modalVisible}
+          visible={this.state.scheduleModalVisible}
           animationType='slide'
-          onRequestClose={() => this.closeModal()}
+          onRequestClose={() => this.closeScheduleModal()}
         >
           <View style={styles.modalContainer}>
             <View style={styles.innerContainer}>
@@ -213,11 +230,17 @@ export default class DraftChitView extends Component {
               />
               <ActionButton
                 text='Submit'
-                handleOnPress={() => this.closeModal()}
+                handleOnPress={() => this.closeScheduleModal()}
               />
             </View>
           </View>
         </Modal>
+
+        <EditModal
+          draftChitId={this.props.draftChitId}
+          visible={this.state.editModalVisible}
+          close={() => this.closeEditModal()}
+        />
       </View>
     )
   }

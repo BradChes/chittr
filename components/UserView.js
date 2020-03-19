@@ -76,6 +76,9 @@ export default class ChitView extends Component {
         onPress={() => Alert.alert('Follower Management', 'Follow or unfollow, that is the question?',
           [
             {
+              text: 'Cancel'
+            },
+            {
               text: 'Follow',
               onPress: () => this.follow()
             },
