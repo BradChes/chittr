@@ -58,7 +58,7 @@ export default class UpdateScreen extends Component {
       this.setState({ id: userInfoJson.id })
       this.setState({ token: userInfoJson.token })
     } catch (e) {
-      // TODO
+      console.log(e.message)
     }
   }
 

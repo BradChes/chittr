@@ -27,7 +27,7 @@ export default class AuthLoadingScreen extends Component {
       const userToken = await AsyncStorage.getItem('USER_INFO')
       this.props.navigation.navigate(userToken ? 'App' : 'Auth')
     } catch (e) {
-      // TODO
+      console.log(e.message)
     }
   }
 

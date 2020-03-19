@@ -46,7 +46,7 @@ export default class FollowsScreen extends Component {
       this.setState({ token: userInfoJson.token })
       this.getFollows()
     } catch (e) {
-      // TODO
+      console.log(e.message)
     }
   }
 

@@ -86,7 +86,7 @@ export default class SettingsScreen extends Component {
       this.getUserInfo()
       this.setState({ isLoading: false })
     } catch (e) {
-      // TODO
+      console.log(e.message)
     }
   }
 
