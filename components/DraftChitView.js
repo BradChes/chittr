@@ -92,10 +92,6 @@ export default class DraftChitView extends Component {
     }
   }
 
-  edit () {
-
-  }
-
   async post () {
     const { token } = this.state
 
