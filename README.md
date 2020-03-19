@@ -16,7 +16,7 @@ Before running this React-Native project, there are a couple of steps to do befo
 
 2. Once the project has been cloned from GitHub, navigate to the projects directory from within terminal and run `npm install`. This is to download a package and it's dependencies that this project relies on.
 
-3. Open up Android Studio, navigate to the AVD manager and boot up an emulator you would like to use to see this application in.
+3. Open up Android Studio using this project's `android` folder. Once the Android project has loaded, from the build tab, select the `Make Project` option. Then, navigate to the AVD manager and boot up an emulator you would like to use to see this application in.
 
 4. When steps 1, 2 and 3 have been completed you are now ready to run this project. Once again, from within the projects directory, run `react-native run-android`. This should begin the process of building and launching the Chittr application on the Android emulator you have open.
 
