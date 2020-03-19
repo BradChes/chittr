@@ -7,7 +7,6 @@ import {
   Dimensions,
   Alert,
   Text,
-  Image,
   PermissionsAndroid,
   Modal
 } from 'react-native'
@@ -84,11 +83,6 @@ export default class EditModal extends Component {
     } catch (e) {
       console.log(e.message)
     }
-  }
-
-  returnData (imageData) {
-    console.log(imageData)
-    this.setState({ imageData: imageData })
   }
 
   findCoordinates () {
@@ -175,12 +169,6 @@ export default class EditModal extends Component {
           />
 
           <View style={styles.actionContainer}>
-            {/* <ActionIcon
-              onPress={() => this.props.navigation.navigate('Camera', {
-                onGoBack: this.returnData.bind(this)
-              })}
-              name='camera'
-            /> */}
 
             <ActionIcon
               onPress={() => this.findCoordinates()}
@@ -194,7 +182,6 @@ export default class EditModal extends Component {
             />
 
           </View>
-          {this.state.imageData.uri ? <Image style={styles.image} source={{ uri: this.state.imageData.uri }} /> : null}
           {this.state.location.latitude ? <Text style={styles.informationText}> Position: {this.state.location.latitude}, {this.state.location.longitude} </Text> : null}
         </View>
       </Modal>
