@@ -156,7 +156,7 @@ export default class UpdateScreen extends Component {
           <ActionButton
             disabled={!enabled}
             text='Submit'
-            onPress={() => this.onPressedSubmit()}
+            handleOnPress={() => this.onPressedSubmit()}
           />}
       </View>
     )

@@ -154,7 +154,6 @@ export default class PostScreen extends Component {
   }
 
   returnData (imageData) {
-    console.log(imageData)
     this.setState({ imageData: imageData })
   }
 
